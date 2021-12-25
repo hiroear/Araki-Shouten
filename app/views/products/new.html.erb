@@ -1,0 +1,17 @@
+<h1>New Products</h1>
+<%= form_with model: @product do |f| %>
+  <%= f.text_field :name %>
+  <%= f.text_area :description %>
+  <%= f.number_field :price %>
+  <%= f.collection_select(:category_id,  @categories, :id, :name) %>
+  <%= f.submit "Create" %>
+<% end %>
+
+<%= link_to "Back", products_path %>
+
+<!--f.collection_select: モデルからの情報を元に選択ボックスを生成 ▶︎ 選択肢から選んでDBに送る。
+◉ 構文： f.collection_select(メソッド名, オブジェクトの配列, value属性, テキスト)
+◉ 第一引数 メソッド名(:category_id,): この情報をもとに、selectタグのid属性、name属性を決める (<select name="○○" id="◯◯">)
+◉ 第二引数 オブジェクトの配列(@categories): 選択肢ボックスはどの配列が元になるのか (コントローラーのnewアクションに定義)
+◉ 第三引数 value属性(:id): 選択された場合その値がDBに送られる。今回は:idなのでidがDBに送られる (<option value="◯◯">選択肢</option>)
+◉ 第四引数 テキスト(:name): 選択ボックスに実際に表示するテキストをカラムで指定-->
