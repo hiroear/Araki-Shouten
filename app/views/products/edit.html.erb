@@ -1,11 +1,16 @@
-<h1>Update Products</h1>
+<h1>商品編集</h1>
+<table>
 <%= form_with model: @product do |f| %>
-  <%= f.text_field :name %>
-  <%= f.text_area :description %>
-  <%= f.number_field :price %>
-  <%= f.collection_select(:category_id, @categories, :id, :name) %>
-  <%= f.submit "Update" %>
+  <tr><td><%= f.text_field :name %></td></tr>
+  <tr><td><%= f.text_area :description %></td></tr>
+  <tr><td><%= f.number_field :price %></td></tr>
+  <tr><td>カテゴリ選択：<%= f.collection_select(:category_id,  @categories, :id, :name) %></td></tr>
+  <tr><td><%= f.submit "更新" %></td></tr>
 <% end %>
+</table>
 
 <%= link_to "Back", products_path %>
+
+<!--rails側はフォームの状態によってどのリクエストなのかを自動的に判断する。-->
+<!--フォームに初期値があり、かつパラメータを渡した状態でsubmitすれば、自動的にPUTもしくはPATCHリクエストだと判断される-->
 

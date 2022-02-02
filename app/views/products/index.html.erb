@@ -1,12 +1,24 @@
-<h1>Products#index</h1>
-<% @products.each do |product| %>
-  <%= product.name %>
-  <%= product.description %>
-  <%= product.price %>
-  <%= link_to "Show", product_path(product) %>
-  <%= link_to "Edit", edit_product_path(product) %>
-  <%= link_to "Delete", product_path(product), method: :delete, data: { confirm: 'Are you sure?' } %>
-  <br>
-<% end %>
+<h1>商品一覧</h1>
+<table style="text-align:center;">
+  <tr>
+    <th>商品ID</th>
+    <th>商品名</th>
+    <th>商品説明</th>
+    <th>価格</th>
+  </tr>
+  
+  <% @products.each do |product| %>
+  <tr>
+    <td><%= product.id %></td>
+    <td style="width: 100px;"><%= product.name %></td>
+    <td style="width: 200px;"><%= product.description %></td>
+    <td style="width: 100px;"><%= product.price %></td>
+    <td><%= link_to "Show", product_path(product) %></td>
+    <td><%= link_to "Edit", edit_product_path(product) %></td>
+    <td><%= link_to "Delete", product_path(product), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+  <% end %>
+</table>
+
 <br>
 <%= link_to "New", new_product_path %>

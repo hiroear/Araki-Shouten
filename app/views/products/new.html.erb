@@ -1,11 +1,13 @@
-<h1>New Products</h1>
+<h1>新規商品登録</h1>
+<table>
 <%= form_with model: @product do |f| %>
-  <%= f.text_field :name %>
-  <%= f.text_area :description %>
-  <%= f.number_field :price %>
-  <%= f.collection_select(:category_id,  @categories, :id, :name) %>
-  <%= f.submit "Create" %>
+  <tr><td><%= f.text_field :name, placeholder:'商品名' %></td></tr>
+  <tr><td><%= f.text_area :description, placeholder:'商品説明'%></td></tr>
+  <tr><td><%= f.number_field :price, placeholder:'価格' %></td></tr>
+  <tr><td>カテゴリ選択：<%= f.collection_select(:category_id,  @categories, :id, :name) %></td></tr>
+  <tr><td><%= f.submit "作成" %></td></tr>
 <% end %>
+</table>
 
 <%= link_to "Back", products_path %>
 
