@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   
   devise_scope :user do
     root :to => "users/sessions#new" #rootをusers/sessionsコントローラのnewアクション(ログイン画面)に設定
-    get "signup", :to => "users/registrations#new"
+    get "signup", :to => "users/registrations#new" #signup...URLにつける名前(アクセスする)
     get "verify", :to => "users/registrations#verify" #アカウント作成後、メールの送信完了を知らせる画面にリダイレクトされるよう画面のルーティングを設定
     get "login", :to => "users/sessions#new"
     delete "logout", :to => "users/sessions#destroy"

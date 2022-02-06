@@ -1,24 +1,26 @@
-<h1>商品一覧</h1>
-<table style="text-align:center;">
-  <tr>
-    <th>商品ID</th>
-    <th>商品名</th>
-    <th>商品説明</th>
-    <th>価格</th>
-  </tr>
-  
-  <% @products.each do |product| %>
-  <tr>
-    <td><%= product.id %></td>
-    <td style="width: 100px;"><%= product.name %></td>
-    <td style="width: 200px;"><%= product.description %></td>
-    <td style="width: 100px;"><%= product.price %></td>
-    <td><%= link_to "Show", product_path(product) %></td>
-    <td><%= link_to "Edit", edit_product_path(product) %></td>
-    <td><%= link_to "Delete", product_path(product), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-  <% end %>
-</table>
+<!--商品一覧-->
+<div class="row">
+  <div class="col-9" style="background: #ddd;"> <!--グレー-->
+    <div class="container mt-4">
+      <div class="row w-100">
 
-<br>
-<%= link_to "New", new_product_path %>
+        <% @products.each do |product|%>
+        <div class="col-3" style="background: #9dc2f2;"> <!--水色-->
+          <%= link_to product_path(product) do %>
+            <%= image_tag "/images/dummy.png", class: "img-thumbnail"%>
+          <% end %>
+          <div class="row">
+            <div class="col-12" style="background:#fad2fc;"> <!--ピンク-->
+              <p class="samazon-product-label mt-2">
+                <%= product.name %><br>
+                <label>¥<%= product.price %></label>
+              </p>
+            </div>
+          </div>
+        </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
