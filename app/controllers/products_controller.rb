@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+  before_action :set_product, only: [:show, :edit, :update, :destroy]
   
   # GET  prefix:products  /products
   def index
@@ -7,8 +8,10 @@ class ProductsController < ApplicationController
 
   # GET  prefix:product  /products/1
   def show
-    @product = Product.find(params[:id])
-    # 商品データを代入したインスタンス変数をshowビューへ渡す
+    @reviews = @product.reviews
+      #商品に関する全てのレビューを取得
+    @review = @reviews.new
+      #レビューのフォーム(showテンプレート)にnewで渡してsubmitさせる
   end
 
   # GET  prefix:new_product  /products/new
@@ -27,25 +30,26 @@ class ProductsController < ApplicationController
 
   # GET  prefix:edit_product  /products/1/edit
   def edit
-    @product = Product.find(params[:id])
     @categories = Category.all
   end
 
   # PATCH/PUT  prefix:product  /products/1
   def update
-    @product = Product.find(params[:id]) #更新前の商品データが @productに格納される
     @product.update(product_params)      #updateメソッドの引数にproduct_paramsを渡し商品データを更新
     redirect_to product_url(@product)
   end
 
   # DELETE  prefix:product  /products/1
   def destroy
-    @product = Product.find(params[:id])
     @product.destroy
     redirect_to products_url #indexページに遷移するので引数はなし
   end
   
   private
+    def set_product
+      @product = Product.find(params[:id])
+    end
+  
     def product_params
       params.require(:product).permit(:name, :description, :price, :category_id)
       # collection_select()メソッドにカテゴリIDを渡すので、ストロングパラメータのホワイトリストにもcategory_idを追加

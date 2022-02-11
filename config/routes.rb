@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     :confirmations => 'users/confirmations', #デフォルトで作られてるconfirmationsコントローラを継承して'users/confirmations'コントローラを使ってね！
     :unlocks => 'users/unlocks', #デフォルトで作られてるunlocksコントローラを継承して'users/unlocks'コントローラを使ってね！
   }
-  # カスタマイズしたら子供のコントローラを優先する
+  # Deviseはカスタマイズしたら子供のコントローラを優先する
   
   devise_scope :user do
     root :to => "users/sessions#new" #rootをusers/sessionsコントローラのnewアクション(ログイン画面)に設定
@@ -15,6 +15,11 @@ Rails.application.routes.draw do
     get "login", :to => "users/sessions#new"
     delete "logout", :to => "users/sessions#destroy"
   end
-  resources :products
+  
+  resources :products do
+    resources :reviews, only: [:create]
+    # product_reviews  POST  /products/:product_id/reviews  reviews#create
+  end
+  
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
