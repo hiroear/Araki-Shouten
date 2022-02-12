@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :favorite]
   
   # GET  prefix:products  /products
   def index
@@ -37,6 +37,7 @@ class ProductsController < ApplicationController
   def update
     @product.update(product_params)      #updateメソッドの引数にproduct_paramsを渡し商品データを更新
     redirect_to product_url(@product)
+    # showテンプレートにリダイレクト
   end
 
   # DELETE  prefix:product  /products/1
@@ -44,6 +45,14 @@ class ProductsController < ApplicationController
     @product.destroy
     redirect_to products_url #indexページに遷移するので引数はなし
   end
+  
+  def favorite
+    current_user.toggle_like!(@product)
+    # ユーザーがその商品をまだお気に入りに追加していなければ追加し、すでに追加していればそれを外す処理
+    redirect_to product_url @product
+    # showテンプレートにリダイレクト
+  end
+  
   
   private
     def set_product

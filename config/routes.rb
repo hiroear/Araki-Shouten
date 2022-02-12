@@ -18,8 +18,12 @@ Rails.application.routes.draw do
   
   resources :products do
     resources :reviews, only: [:create]
-    # product_reviews  POST  /products/:product_id/reviews  reviews#create
+      #⬆︎︎ product_reviews  POST  /products/:product_id/reviews  reviews#create
+    member do
+      get :favorite
+    end
+      #⬆︎ favorite_product GET  /products/:id/favorite  products#favorite
   end
   
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
 end
