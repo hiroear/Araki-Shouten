@@ -3,7 +3,7 @@
   <div class="col-9" style="background: #ddd;"> <!--グレー-->
     <div class="container mt-4">
       <div class="row w-100">
-
+        
         <% @products.each do |product|%>
         <div class="col-3" style="background: #9dc2f2;"> <!--水色-->
           <%= link_to product_path(product) do %>
@@ -19,8 +19,9 @@
           </div>
         </div>
         <% end %>
-
+        
       </div>
     </div>
+    <%= paginate @products %>
   </div>
 </div>

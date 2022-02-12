@@ -1,9 +1,12 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :favorite]
+  PER = 15
+    #コードがマジックナンバーばかりになってしまうと、システムを改修したいときに苦労する為、極力マジックナンバーは避ける為定義
   
   # GET  prefix:products  /products
   def index
-    @products = Product.all
+    @products = Product.page(params[:page]).per(PER)
+    #kaminariをインストールして.pageメソッドと.perメソッドを使えるようになった
   end
 
   # GET  prefix:product  /products/1
