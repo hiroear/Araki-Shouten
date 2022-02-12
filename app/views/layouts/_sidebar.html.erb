@@ -1,0 +1,16 @@
+<!--サイドバー。入れ子にして親カテゴリ毎に各カテゴリ（子カテゴリ）を並べて表示-->
+
+<div class="container">
+  <% @major_category_names.each do |major_category_name| %>
+    <h2><%= major_category_name %></h2>
+      <% @categories.each do |category| %>
+        <% if category.major_category_name == major_category_name %>
+          <label class="samazon-sidebar-category-label">
+            <%= link_to category.name, products_path(category: category.id) %>
+            <!--リンク先URLにハッシュ{キー:値の組合せ}で引数を渡すことで、コントローラへその値を渡し
+            コントローラのアクション内でparams[:category]と記述すれば、その値を受け取ることができる-->
+          </label>
+        <% end %>
+      <% end %>
+  <% end %>
+</div>
