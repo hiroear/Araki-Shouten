@@ -39,6 +39,8 @@
       <div class="form-group">
         <%= f.label "カテゴリ" %>
         <%= f.select :category_id, @categories.map { |category| [category.name, category.id] }, {}, class: "form-control" %>
+        
+        <!--[["ビジネス", 1],["人文", 2]........]-->
       </div>
 
       <%= f.submit "商品を登録", class:"btn btn-success" %>

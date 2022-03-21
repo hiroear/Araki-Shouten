@@ -4,7 +4,7 @@
   <!--サイドバー-->
   <div class="col-2">
     <%= render partial: "layouts/sidebar", locals: { categories: @categories, major_category_names: @major_category_names } %>
-    <!--呼び出すパーシャル名の後にハッシュ{キー:値の組み合わせ}を記述することで、パーシャルに変数を渡すことができる-->
+    <!--呼び出すパーシャル名の後にハッシュで、インスタンス変数をローカル変数にしてパーシャルに渡すことができる-->
   </div>
     
   <!--右側の商品一覧表示部分-->
@@ -13,8 +13,21 @@
   <!--トップ > カテゴリ名　　カテゴリ名の商品一覧 ○ 件-->
     <div class="container">
       <% if @category.present? %>
-        <%= link_to "トップ", "#", category: @major_category_name %> > <%= @category.name %>
+        <%= link_to "トップ", root_path, category: @major_category_name %> > <%= @category.name %>
         <h1><%= @category.name %>の商品一覧<%= @products.count %>件</h1>
+        
+        <!--⬇︎並び替え-->
+        <%= form_with url: products_path, method: :get, local: true, class: "form-inline" do |f| %>
+          <%= f.hidden_field :sort_category, value: @category.id %>
+          <!--:sort_categoryというパラメータに@category.idの情報を渡している。params[:sort_category]で中身を参照-->
+          並び替え
+          <% if @sorted.present? %>
+            <%= f.select :sort, @sort_list, selected: @sorted, onChange: "javascript: this.form.submit();", class: "form-inline ml-2" %>
+          <% else %>
+            <%= f.select :sort, @sort_list, {}, onChange: "javascript: this.form.submit();", class: "form-inline ml-2" %>
+          <% end %>
+        <% end %>
+        
       <% end %>
     </div>
     

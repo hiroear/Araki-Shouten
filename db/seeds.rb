@@ -52,3 +52,14 @@ product_ids.each do
   )
   array_number += 1
 end
+
+# 30.times do |i|
+  
+#     Product.create(
+#     name: "product-{i+1}",
+#     description: "description-{i+1}",
+#     price: (i+1)*10,
+#     category_id: category_ids[array_number]
+#   )
+  
+# end

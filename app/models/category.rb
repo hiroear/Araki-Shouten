@@ -6,11 +6,12 @@ class Category < ApplicationRecord
   #uniqメソッド: 重複するデータを削除
   #scopeを使ってメソッド定義することで、事前にscope内で指定した実行してほしいクエリを渡すことができる
   
-  scope :request_category, -> (category) {
-    if category != "none"
-      find(category.to_i)
-    else
-      ""
-    end
-  }
+  # scope :request_category, -> (category) {
+  #   if category != "none"
+  #     find(category.to_i)
+  #   else
+  #     ""
+  #   end
+  # }
+  scope :request_category, -> (category) { find(category.to_i) }
 end

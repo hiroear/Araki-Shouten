@@ -9,16 +9,56 @@ class Product < ApplicationRecord
   
   PER = 15
   #⬆︎コードがマジックナンバーばかりになってしまうとシステム改修の際苦労する為、極力マジックナンバーを避ける為定義する
-  scope :display_list, -> (category, page) { 
-    if category != "none"
-      where(category_id: category).page(page).per(PER)
-    else
-      page(page).per(PER)
-    end
-  }
+  # scope :display_list, -> (category, page) { 
+  #   if category != "none"
+  #     where(category_id: category).page(page).per(PER)
+  #   else
+  #     page(page).per(PER)
+  #   end
+  # }
+  # Product.where(category_id: 1).page(2).per(15)
   #引数の(category)はparams[:category]又は"none"のいずれか。引数の(page)はparams[:page]で一定
   #categoryの値が"none"でない場合は where(category_id: category).page(page).per(PER)を返す( Product.where(category_id: params[:category]).page(params[:page]).per(15) )
   # 一方で、categoryの値が"none"だった場合はpage(page).per(PER)を返す( Product.page(params[:page]).per(15) )
+  
+  
+  scope :display_list, -> (page) { page(page).per(PER) }
+  scope :on_category, -> (category) { where(category_id: category) }
+  scope :sort_order, -> (order) { order(order) }
+  
+  # scope :category_products, -> (category, page) { 
+  #   where(category_id: category).page(page).per(PER)
+  # }
+  scope :category_products, -> (category, page) { 
+    on_category(category).
+    display_list(page)
+  }
+  
+  #⬇︎ productsテーブルのpriceまたはupdated_atの値を使って商品を昇順・降順で並び替え
+  # scope :sort_products, -> (sort_order, page) {
+  #   where(category_id: sort_order[:sort_category]).order(sort_order[:sort]).
+  #   page(page).per(PER)
+  # }
+  scope :sort_products, -> (sort_order, page) {
+    on_category(sort_order[:sort_category]).
+    sort_order(sort_order[:sort]).
+    display_list(page)
+  }
+  # Product.where(category_id: sort_order[:sort_category]).order(sort_order[:sort])
+  # Product.where(category_id: 1).order("price asc")
+  
+  #sort_listで生成されるハッシュがProductクラスにpriceカラムやupdate_atカラムがあるという事を
+  #知っているのでProductクラスのscopeとして定義
+  scope :sort_list, -> { 
+     {
+       "並び替え" => "", 
+       "価格の安い順" => "price asc",
+       "価格の高い順" => "price desc", 
+       "出品の古い順" => "updated_at asc", 
+       "出品の新しい順" => "updated_at desc"
+     }
+   }
+   
   
   
   acts_as_likeable
