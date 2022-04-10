@@ -1,0 +1,106 @@
+<!--マイページ画面 /users/mypage-->
+<div class="container d-flex justify-content-center mt-3">
+  <div class="w-50">
+    
+    <h1>マイページ</h1>
+    
+    <hr>
+    
+    <div class="container">
+      <div class="d-flex justify-content-between">
+        <div class="row">
+          <div class="col-2 d-flex align-items-center">
+            <i class="fas fa-user fa-3x"></i>
+          </div>
+          <div class="col-9 d-flex align-items-center ml-2 mt-3">
+            <div class="d-flex flex-column">
+              <label for="user-name">会員情報の編集</label>
+              <p>アカウント情報の編集</p>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <!-- mypage_edit_users_path	 GET	 /users/mypage/edit  users#edit  会員情報の編集画面へ-->
+          <%= link_to mypage_edit_users_path do %>
+            <i class="fas fa-chevron-right fa-2x"></i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <hr>
+    
+    <div class="container">
+      <div class="d-flex justify-content-between">
+        <div class="row">
+          <div class="col-2 d-flex align-items-center">
+            <i class="fas fa-archive fa-3x"></i>
+          </div>
+          <div class="col-9 d-flex align-items-center ml-2 mt-3">
+            <div class="d-flex flex-column">
+              <label for="user-name">注文履歴</label>
+              <p>注文履歴を確認できます</p>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <!--mypage_users_path	 GET	/users/mypage  users#mypage  マイページ画面へ-->
+          <%= link_to mypage_users_path do %>
+            <i class="fas fa-chevron-right fa-2x"></i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    
+    <div class="container">
+      <div class="d-flex justify-content-between">
+        <div class="row">
+          <div class="col-2 d-flex align-items-center">
+            <i class="fas fa-map-marked fa-3x"></i>
+          </div>
+          <div class="col-9 d-flex align-items-center ml-3 mt-3">
+            <div class="d-flex flex-column">
+              <label for="user-name">お届け先の変更</label>
+              <p>登録住所の変更</p>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <!--mypage_address_edit_users_path	GET  /users/mypage/address/edit   users#edit_address  登録住所変更画面へ-->
+          <%= link_to mypage_address_edit_users_path do %>
+            <i class="fas fa-chevron-right fa-2x"></i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <hr>
+
+    <div class="container">
+      <div class="d-flex justify-content-between">
+        <div class="row">
+          <div class="col-2 d-flex align-items-center">
+            <i class="fas fa-sign-out-alt fa-3x"></i>
+          </div>
+          <div class="col-9 d-flex align-items-center ml-2 mt-3">
+            <div class="d-flex flex-column">
+              <label for="user-name">ログアウト</label>
+              <p>ログアウトします</p>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <!--logout_path	 DELETE	 /logout   users/sessions#destroy-->
+          <%= link_to logout_path, method: :delete do %>
+            <i class="fas fa-chevron-right fa-2x"></i>
+          <% end %>          
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+  </div>
+</div>

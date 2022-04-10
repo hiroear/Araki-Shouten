@@ -22,7 +22,9 @@
       <!-- user_signed_in? はユーザがログインしているか調べるdeviseのHelperメソッド -->
       <% if user_signed_in? %>
         <li class="nav-item mr-5">
-          <%= link_to "ログアウト", logout_path, method: :delete, class: "dropdown-item" %>
+          <%= link_to mypage_users_path, class: "nav-link" do %>
+            <i class="fas fa-user mr-1"></i><label>マイページ</label>
+          <% end %>
         </li>
       <% else %>
         <li class="nav-item mr-5">
