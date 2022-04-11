@@ -8,7 +8,7 @@
   </div>
     
   <!--右側の商品一覧表示部分-->
-  <div class="col-9" style="background: #ddd;"> <!--グレー-->
+  <div class="col-9">
   
   <!--トップ > カテゴリ名　　カテゴリ名の商品一覧 ○ 件-->
     <div class="container">
@@ -34,12 +34,12 @@
     <div class="container mt-4">
       <div class="row w-100">
         <% @products.each do |product|%>
-        <div class="col-3" style="background: #9dc2f2;"> <!--水色-->
+        <div class="col-3">
           <%= link_to product_path(product) do %>
             <%= image_tag "/images/dummy.png", class: "img-thumbnail"%>
           <% end %>
           <div class="row">
-            <div class="col-12" style="background:#fad2fc;"> <!--ピンク-->
+            <div class="col-12">
               <p class="samazon-product-label mt-2">
                 <%= product.name %><br>
                 <label>¥<%= product.price %></label>

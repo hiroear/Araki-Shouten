@@ -51,6 +51,14 @@ class UsersController < ApplicationController
   end
   
   
+  # mypage_favorite_users_path 	GET	 /users/mypage/favorite  users#favorite
+  def favorite
+    @favorites = @user.likees(Product)
+    # likeesメソッド :socializationをインストールしたことで使えるようになったメソッド
+    # likees(Product) :ログインユーザーがお気に入りに追加したすべての商品のデータを取得
+  end
+  
+  
   
   private
     def set_user

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       put "mypage", :to => "users#update"   #mypage_address_edit_users  PUT  /users/mypage  users#update
       get "mypage/edit_password", :to => "users#edit_password"   #mypage_edit_password_users_path	 GET	/users/mypage/edit_password   users#edit_password
       put "mypage/password", :to => "users#update_password"     #mypage_password_users_path 	PUT	 /users/mypage/password   users#update_password
+      get "mypage/favorite", :to => "users#favorite"   #mypage_favorite_users_path 	GET	 /users/mypage/favorite  users#favorite
     end
   end
   

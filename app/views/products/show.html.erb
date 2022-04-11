@@ -1,13 +1,13 @@
 <!--商品詳細閲覧ページ-->
 
-<div class="d-flex justify-content-center" style="background: #ddd;"> <!--グレー-->
-  <div class="row w-75" style="background: #c8faec;"> <!--ミント-->
-    <div class="col-5 offset-1" style="background: #9dc2f2;"> <!--ブルー-->
+<div class="d-flex justify-content-center">
+  <div class="row w-75">
+    <div class="col-5 offset-1">
       <%= image_tag "/images/dummy.png", class: "w-100 img-fuild" %>
     </div>
 
-    <div class="col" style="background: #ffedab;"> <!--イエロー-->
-      <div class="d-flex flex-column" style="background: #ffb278;"> <!--オレンジ-->
+    <div class="col">
+      <div class="d-flex flex-column">
         <h1 class="">
           <%= @product.name %>
         </h1>
@@ -55,7 +55,7 @@
       <h3 class="float-left">カスタマーレビュー</h3>
     </div>
 
-    <div class="offset-1 col-10" style="background: #e0baf7;"> <!--パープル-->
+    <div class="offset-1 col-10">
       <!-- レビューを実装する箇所-->
       <div class="row">
         <% @reviews.each do |review| %>
