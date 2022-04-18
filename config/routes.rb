@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   
   resource :users, only: [:edit, :update] do
     collection do
+      get "cart", :to => "shopping_carts#index"  #cart_users_path 	GET	 /users/cart  shopping_carts#index
+      post "cart/create", :to => "shopping_carts#create"   #cart_create_users_path	POST	/users/cart/create  shopping_carts#create
+      delete "cart", :to => "shopping_carts#destroy"  #cart_users_path 	DELETE	/users/cart 	shopping_carts#destroy
       get "mypage", :to => "users#mypage"   #mypage_users  GET  /users/mypage  users#mypage
       get "mypage/edit", :to => "users#edit"   #mypage_edit_users  GET  /users/mypage/edit  users#edit
       get "mypage/address/edit", :to => "users#edit_address"   #mypage_address_edit_users  GET  /users/mypage/address/edit  users#edit_address

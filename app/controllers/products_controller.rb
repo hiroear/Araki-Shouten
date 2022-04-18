@@ -84,8 +84,9 @@ class ProductsController < ApplicationController
     redirect_to products_url #indexページに遷移するので引数はなし
   end
   
+  
   def favorite
-    # user = current_user
+    # user = current_user  ⬅︎テキストには説明文で必要と書いてある
     current_user.toggle_like!(@product)
       # ユーザーがその商品をまだお気に入りに追加していなければ追加し、すでに追加していればそれを外す処理
     redirect_to product_url @product

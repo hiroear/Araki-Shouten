@@ -15,11 +15,4 @@ class ReviewsController < ApplicationController
     end
     #deviseで用意されているcurrent_userメソッドで、ユーザーのidをパラメータに加える
     
-    # ⬇︎この書き方で書くとレビューが反映されなかった。なぜ？
-    # def review_params
-    #   params.require(:review).permit(:content)
-    #   merge( user_id: current_user.id, product_id: params[:product_id] )
-    # end
-    
-    
 end

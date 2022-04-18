@@ -50,6 +50,9 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts_as_shopping_cart (0.4.1)
+      money-rails (~> 1.5)
+      rails (> 4)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     archive-zip (0.12.0)
@@ -143,6 +146,15 @@ GEM
       rake
     mini_mime (1.1.2)
     minitest (5.15.0)
+    monetize (1.12.0)
+      money (~> 6.12)
+    money (6.16.0)
+      i18n (>= 0.6.4, <= 2)
+    money-rails (1.15.0)
+      activesupport (>= 3.0)
+      monetize (~> 1.9)
+      money (~> 6.13)
+      railties (>= 3.0)
     msgpack (1.4.2)
     nio4r (2.5.8)
     nokogiri (1.12.5-x86_64-linux)
@@ -254,6 +266,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  acts_as_shopping_cart
   bootsnap (>= 1.1.0)
   bootstrap (~> 4.6.0)
   byebug
