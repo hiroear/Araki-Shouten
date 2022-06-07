@@ -3,8 +3,7 @@ class ProductsController < ApplicationController
   
   # GET  prefix:products  /products
   def index
-    # @products = Product.page(params[:page]).per(PER)
-      #kaminariをインストールして.pageメソッドと.perメソッドを使えるようになった
+    # @products = Product.page(params[:page]).per(PER) (kaminariの.pageメソッドと.perメソッド)
       
     # @products = Product.display_list(category_params, params[:page])
       # 例：Product.where(category_id: 1).page(2).per(15)
@@ -17,40 +16,31 @@ class ProductsController < ApplicationController
       #_sidebarのカテゴリ名のリンクから受け取った値(category.id)を元に category_paramsで条件分岐
       # Categoryモデル内の request_categoryメソッドで category.idが存在していれば indexアクション内での処理は @category = Category.find(カテゴリid)になり、インスタンス変数@categoryにカテゴリのデータが代入される
     
-    if sort_params.present?  #sort_paramsの情報が渡ってきた時(並び替え時)
-      #並び替えをした時の商品データを返す
-      @sorted = sort_params[:sort]
-              # params[:sort_category]
-      @category = Category.request_category(sort_params[:sort_category])
-      # @category = Category.find(1)
-      
+    if sort_params.present?  #sort_paramsが渡ってきた時(並び替え時) 並び替え後の商品データを返す
+      @sorted = sort_params[:sort]  # params[:sort_category]
+      @category = Category.request_category(sort_params[:sort_category]) # @category = Category.find(1)
       @products = Product.sort_products(sort_params, params[:page])
-      
-    elsif params[:category].present?  #sort_paramsは存在せず、params[:category]が存在する時(カテゴリを選択時）
-      #選択したカテゴリに属する商品データを返す
-      @category = Category.request_category(params[:category])
+    elsif params[:category].present?  #params[:category]だけが渡ってきた時(サイドバーカテゴリ選択時）
+      @category = Category.request_category(params[:category])     # @category = Category.find(1)
       @products = Product.category_products(@category, params[:page])
-      
-    else  #どちらも存在しない時(indexページにアクセス時)
-      #indexページにアクセスしたときに表示させる商品データを返す
-      #indexページではカテゴリによる表示をさせないようインスタンス変数@categoryには値を代入しない
-      @products = Product.display_list(params[:page])
+    else  #通常の商品一覧(indexページにアクセス)
+      @products = Product.display_list(params[:page])  #Product.where(category_id: 1).page(2).per(15)
     end
     
     @categories = Category.all
     @major_category_names = Category.major_categories
-      #Categoryモデルのmajor_categoriesメソッドでカテゴリを呼び出し、@major_category_namesに代入
+    #Categoryモデルのmajor_category_nameカラムのデータのみを major_category_namesに代入
       
     @sort_list = Product.sort_list
   end
 
+
   # GET  prefix:product  /products/1
   def show
-    @reviews = @product.reviews
-      #商品に関する全てのレビューを取得
-    @review = @reviews.new
-      #レビューのフォーム(showテンプレート)にnewで渡してsubmitさせる
+    @reviews = @product.reviews.all  #該当の商品に関する全てのレビューを取得 (allは省略可)
+    @review = @reviews.new   #reviewの新しいインスタンスを生成し、レビューフォームに渡す
   end
+
 
   # GET  prefix:new_product  /products/new
   def new
@@ -58,46 +48,50 @@ class ProductsController < ApplicationController
     @categories = Category.all
   end
 
+
   # POST  prefix:products  /products
   def create
     @product = Product.new(product_params)
     @product.save
-    redirect_to product_url(@product)
-      # ⬆︎個別の商品ページに遷移(showアクション)引数の@productは表示させたいデータのIDを渡している
+    redirect_to product_url(@product)    #個別の商品ページに遷移。引数の(@product)は表示させたいproduct_id
   end
+
 
   # GET  prefix:edit_product  /products/1/edit
   def edit
     @categories = Category.all
   end
 
+
   # PATCH/PUT  prefix:product  /products/1
   def update
-    @product.update(product_params)      #updateメソッドの引数にproduct_paramsを渡し商品データを更新
+    @product.update(product_params)      #引数に(product_params)を渡し商品データを更新
     redirect_to product_url(@product)
-      # showテンプレートにリダイレクト
   end
+
 
   # DELETE  prefix:product  /products/1
   def destroy
     @product.destroy
-    redirect_to products_url #indexページに遷移するので引数はなし
+    redirect_to products_url  #indexページに遷移するので引数(id)はなし
   end
   
   
+  # GET  favorite_product_path 	/products/:id/favorite
   def favorite
-    # user = current_user  ⬅︎テキストには説明文で必要と書いてある
     current_user.toggle_like!(@product)
-      # ユーザーがその商品をまだお気に入りに追加していなければ追加し、すでに追加していればそれを外す処理
-    redirect_to product_url @product
-      # showテンプレートにリダイレクト
+      # ユーザーがその商品をまだお気に入りに追加していなければ追加、すでに追加していればそれを外す処理
+    redirect_to product_url @product    # showテンプレートにリダイレクト引数の()は省略可
   end
+  
   
   
   private
+  
     def set_product
       @product = Product.find(params[:id])
     end
+  
   
     def product_params
       params.require(:product).permit(:name, :description, :price, :category_id)
@@ -112,6 +106,6 @@ class ProductsController < ApplicationController
     
     def sort_params
       params.permit(:sort, :sort_category)
-      #index の並び替え部分 :sort と :sort_category の情報をjavascriptによるsubmit()で取得
+      #index の並び替え部分からの params[:sort]、params[:sort_category] をjavascriptによるsubmit()で取得
     end
 end

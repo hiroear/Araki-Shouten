@@ -8,11 +8,9 @@
       </span>
       <h3 class="mt-3 mb-3">お届け先変更</h3>
         <hr>
-        <%= form_with model: @user, url: mypage_users_path, local: true, method: :put do |f| %>
-          <!--mypage_users_path :users#mypage (マイページ画面へ遷移)-->
-          
+        <!--⬇︎form_with model: @userを入れるとフォームに@userの情報は入る。今回はf.text_fieldの中にvalue: @user.name,を記述-->
+        <%= form_with url: mypage_users_path, local: true, method: :put do |f| %>
         <div class="form-group row">
-          
           <%= f.label :name, "", class: "col-md-5 col-form-label text-md-left" do %><!--.col-form-label :フォームコントロールの中央垂直に配置-->
             氏名
             <span class="ml-1 samazon-require-input-label">
@@ -24,6 +22,7 @@
             <%=
               f.text_field :name,
               class: "form-control #{"is-invalid" if @user.errors.messages[:name].present? } samazon-login-input",
+              value: @user.name,
               autofocus: "true",
               required: "",
               autocomplete: "name",
@@ -50,6 +49,7 @@
             <%=
               f.text_field :postal_code,
               class: "form-control #{"is-invalid" if @user.errors.messages[:postal_code].present? } samazon-login-input",
+              value: @user.postal_code,
               required: "",
               placeholder: "150-0043"
             %>
@@ -68,6 +68,7 @@
             <%=
               f.text_field :address,
               class: "form-control #{"is-invalid" if @user.errors.messages[:address].present? } samazon-login-input",
+              value: @user.address,
               required: "",
               placeholder: "東京都渋谷区道玄坂２丁目１１−１"
             %>
@@ -86,6 +87,7 @@
             <%=
               f.text_field :phone,
               class: "form-control #{"is-invalid" if @user.errors.messages[:phone].present? } samazon-login-input",
+              value: @user.phone,
               required: "",
               placeholder: "03-5790-9039"
             %>
@@ -104,6 +106,7 @@
             <%=
               f.email_field :email,
               class: "form-control #{"is-invalid" if @user.errors.messages[:email].present? } samazon-login-input",
+              value: @user.email,
               autofocus: "true",
               required: "",
               autocomplete: "email",

@@ -21,8 +21,8 @@
         <hr>
       </div>
 
-      <% if user_signed_in? %><!--ログインしていたら-->
-        <%= form_with url: cart_create_users_path, local: true do |f| %>
+      <% if user_signed_in? %> <!--ログインしていたら-->
+        <%= form_with url: cart_users_path, local: true do |f| %>
           <%= f.hidden_field :product_id, value: @product.id %><!--product.idを hiddenで送信-->
           <%= f.hidden_field :name, value: @product.name %><!--product.nameを hiddenで送信　【これ必要？】-->
           <%= f.hidden_field :price, value: @product.price %><!--product.priceを hiddenで送信-->

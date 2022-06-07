@@ -2,6 +2,7 @@ class ReviewsController < ApplicationController
   def create
     product = Product.find(params[:product_id]) #レビューが投稿された商品データを取得
     review = product.reviews_new                #Productモデルに記述のreviews_newメソッド (reviewをcreateするnewメソッド)
+    # review = Review.new(product_id: product.id)
     review.save_review(review, review_params)   #save_reviewメソッド。引数にストロングパラメータを渡す
     redirect_to product_url(product)
   end

@@ -26,9 +26,13 @@ class User < ApplicationRecord
       params.delete(:password_confirmation) if params[:password_confirmation].blank?
     end
  
-    result = update(params, *options)
+    result = update(params, *options)  # true / false
     clean_up_passwords
+    logger.debug("==================== user model #{result}")
     result
   end
+  
+  
+  validates :name, presence: true
   
 end

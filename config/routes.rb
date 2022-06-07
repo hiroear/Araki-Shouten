@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   # Deviseはカスタマイズしたら子供のコントローラを優先する
   
   devise_scope :user do
-    root :to => "users/sessions#new" #rootをusers/sessionsコントローラのnewアクション(ログイン画面)に設定
+    # root :to => "users/sessions#new" #rootをusers/sessionsコントローラのnewアクション(ログイン画面)に設定
+    root :to => "web#index"  #root_path	GET	/	web#index (root(TOP画面)を web#indexに設定)
     get "signup", :to => "users/registrations#new" #signup...URLにつける名前(アクセスする時)
     get "verify", :to => "users/registrations#verify" #アカウント作成後、メールの送信完了を知らせる画面にリダイレクトされるよう画面のルーティングを設定
     get "login", :to => "users/sessions#new"
@@ -20,7 +21,7 @@ Rails.application.routes.draw do
   resource :users, only: [:edit, :update] do
     collection do
       get "cart", :to => "shopping_carts#index"  #cart_users_path 	GET	 /users/cart  shopping_carts#index
-      post "cart/create", :to => "shopping_carts#create"   #cart_create_users_path	POST	/users/cart/create  shopping_carts#create
+      post "cart", :to => "shopping_carts#create"   #cart_create_users_path	POST	/users/cart/create  shopping_carts#create
       delete "cart", :to => "shopping_carts#destroy"  #cart_users_path 	DELETE	/users/cart 	shopping_carts#destroy
       get "mypage", :to => "users#mypage"   #mypage_users  GET  /users/mypage  users#mypage
       get "mypage/edit", :to => "users#edit"   #mypage_edit_users  GET  /users/mypage/edit  users#edit
@@ -36,8 +37,12 @@ Rails.application.routes.draw do
   # member :idをパラメータで渡したい場合
   # collection :全てのデータを対象としたアクションの場合(idをパラメータで渡さなくて良い場合)
   
+  
+  # post '/products/:product_id/reviews' => 'reviews#create'
+  
   resources :products do
     resources :reviews, only: [:create]
+    
       #⬆︎︎ product_reviews  POST  /products/:product_id/reviews  reviews#create
     member do
       get :favorite

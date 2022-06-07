@@ -11,8 +11,6 @@
       <hr>
       
       <%= form_with url: mypage_users_path, local: true, method: :put do |f| %>
-        <!--mypage_users_path :users#mypage (マイページ画面へ遷移)-->
-        
         <div class="form-group">
           <div class="d-flex justify-content-between">
             <%= f.label :name, "氏名", class: "text-md-left samazon-edit-user-info-label" %>
@@ -23,13 +21,25 @@
           <div class="collapse show userName"><!--collapse :ボタンなどをトリガーにしてコンテンツの折り畳みができるBootstrap。 href属性をもつリンクや data-target属性をもつボタンで使用可能。どちらも data-toggle="collapse"が必要-->
             <h1 class="samazon-edit-user-info-value"><%= @user.name %></h1>
           </div>
+          
+          <style>
+            .is-invalid {
+              background: red;
+            }
+            
+            .invalid-feedback {
+              color: red;
+              display: block;
+            }
+          </style>
+          
           <div class="collapse editUserName">
             <%=
               f.text_field :name,
-              class: "form-control #{"is-invalid" if @user.errors.messages[:name].present? } ",
+              class: "form-control #{"is-invalid" if @user.errors.messages[:name].present? }",
               value: @user.name,
-              autofocus: "true",
-              required: "",
+              autofocus: true,
+              # required: "",
               autocomplete: "name",
               placeholder: "名前を入力"
             %>
@@ -37,7 +47,7 @@
             <%= f.submit "保存", class: "btn samazon-submit-button mt-3 w-25" %>
             
             <% if @user.errors.messages[:name].present? %>
-            <span class="invalid-feedback" role="alert">
+            <span class="samazon-error-message">
               <strong>氏名を入力してください</strong>
             </span>
             <% end %>
@@ -89,6 +99,8 @@
           <div class="collapse show userPhone">
             <h1 class="samazon-edit-user-info-value"><%= @user.phone %></h1>
           </div>
+
+          
           <div class="collapse editUserPhone">
           <%= 
             f.text_field :phone,
@@ -117,15 +129,15 @@
 
 <!--アロー関数-->
 <script type="text/javascript">
-    let switchEditUserInfo = (textClass, inputClass, labelClass) => {
-        if ($(textClass).css('display') == 'block') {   //これはどういう条件？
-            $(labelClass).text("キャンセル");      //ボタンを[キャンセル]に変更
-            $(textClass).collapse('hide');         //氏名表示エリアを非表示
-            $(inputClass).collapse('show');        //氏名編集フォームエリアを表示
-        } else {
-            $(labelClass).text("編集");            //ボタンが[編集]の場合は
-            $(textClass).collapse('show');         //氏名表示エリアを表示
-            $(inputClass).collapse('hide');        //氏名編集フォームエリアを非表示
-        }
+  let switchEditUserInfo = (textClass, inputClass, labelClass) => {
+    if ($(textClass).css('display') == 'block') {   //.userNameというclass がblock要素なら
+        $(labelClass).text("キャンセル");      //ボタンを[キャンセル]に変更
+        $(textClass).collapse('hide');         //氏名表示エリアを非表示
+        $(inputClass).collapse('show');        //氏名編集フォームエリアを表示
+    } else {
+        $(labelClass).text("編集");            //ボタンが[編集]の場合は
+        $(textClass).collapse('show');         //氏名表示エリアを表示
+        $(inputClass).collapse('hide');        //氏名編集フォームエリアを非表示
     }
+  }
 </script>

@@ -13,9 +13,17 @@ class UsersController < ApplicationController
   # 会員情報編集・更新
   # mypage_users_path	PUT 	/users/mypage	  users#update
   def update
-    @user.update_without_password(user_params)
-    # update_without_passwordは deviseをインストールし使えるようになった、パスワードなしでパスワード以外の値を変更できるメソッド
-    redirect_to mypage_users_url
+    logger.debug("============================== users controllers update before #{user_params}")
+    result = @user.update_without_password(user_params)
+    # update_without_password :パスワードなしでパスワード以外の値を変更できるdeviseのメソッド
+    logger.debug("============================== users controllers update after error #{@user.errors.messages[:name].present?}")
+
+    # redirect_to mypage_users_url
+    if result
+      redirect_to request.referer, notice: '正しく更新されました。'
+    else
+      redirect_to request.referer, notice: '正しく更新されませんでした。入力に不備があります。'
+    end
   end
 
 
@@ -34,11 +42,13 @@ class UsersController < ApplicationController
   # パスワード編集・更新
   # mypage_password_users_path	 PUT 	/users/mypage/password   users#update_password
   def update_password
-    if password_set?  ︎#[:password]と[:password_confirmation]がフォームで送られてきたら
-      @user.update_password(user_params) 
+    logger.debug("==================== password change #{params[:password]}")
+    
+    if password_set? #true
+      @user.update_password({password: params[:password], password_confirmation: params[:password_confirmation]}) 
       flash[:notice] = "パスワードは正しく更新されました。"
       redirect_to root_url
-    else              ︎#[:password]と[:password_confirmation]が存在しなければ
+    else            #false
       @user.errors.add(:password, "パスワードに不備があります。")
       render "edit_password"
     end
@@ -68,13 +78,13 @@ class UsersController < ApplicationController
     
   
     def user_params
-      params.permit(:name, :email, :address, :phone, :password, :password_confirmation)
+      params.permit(:name, :email, :address, :postal_code, :phone, :password, :password_confirmation)
     end
     
     
     # ⬇︎[:password]と[:password_confirmation]がフォームで送られてきたら実行?
     def password_set?
-      user_params[:password].present? && user_params[:password_confirmation].present? ?
+      params[:password].present? && params[:password_confirmation].present? ?
       true : false
     end
 end

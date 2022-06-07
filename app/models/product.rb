@@ -7,8 +7,7 @@ class Product < ApplicationRecord
   end
   
   
-  PER = 15
-  #⬆︎コードがマジックナンバーばかりになってしまうとシステム改修の際苦労する為、極力マジックナンバーを避ける為定義する
+  PER = 15　#マジックナンバー対策
   # scope :display_list, -> (category, page) { 
   #   if category != "none"
   #     where(category_id: category).page(page).per(PER)
@@ -19,7 +18,7 @@ class Product < ApplicationRecord
   # Product.where(category_id: 1).page(2).per(15)
   #引数の(category)はparams[:category]又は"none"のいずれか。引数の(page)はparams[:page]で一定
   #categoryの値が"none"でない場合は where(category_id: category).page(page).per(PER)を返す( Product.where(category_id: params[:category]).page(params[:page]).per(15) )
-  # 一方で、categoryの値が"none"だった場合はpage(page).per(PER)を返す( Product.page(params[:page]).per(15) )
+  #categoryの値が"none"だった場合はpage(page).per(PER)を返す( Product.page(params[:page]).per(15) )
   
   
   scope :display_list, -> (page) { page(page).per(PER) }
