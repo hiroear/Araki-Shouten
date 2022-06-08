@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'dashboard', to: 'dashboard#index'  #dashboard_path	 GET	/dashboard
+  
   devise_for :users, :controllers => {
     :registrations => 'users/registrations', #デフォルトで作られてるregistrationsコントローラを継承して'users/registrations'コントローラを使ってね！
     :sessions => 'users/sessions', #デフォルトで作られてるsessionsコントローラを継承して'users/sessions'コントローラを使ってね！
@@ -38,8 +40,7 @@ Rails.application.routes.draw do
   # collection :全てのデータを対象としたアクションの場合(idをパラメータで渡さなくて良い場合)
   
   
-  # post '/products/:product_id/reviews' => 'reviews#create'
-  
+  # post '/products/:product_id/reviews' => 'reviews#create'  でもOK
   resources :products do
     resources :reviews, only: [:create]
     
