@@ -55,13 +55,16 @@
       <h3 class="float-left">カスタマーレビュー</h3>
     </div>
 
-    <div class="offset-1 col-10">
-      <!-- レビューを実装する箇所-->
+    <div class="offset-1 col-10"><!-- レビューを実装する箇所-->
       <div class="row">
         <% @reviews.each do |review| %>
           <div class="offset-md-5 col-md-5">
+            <h3 class="review-score-color"><%= score_on_star(review.score) %></h3>
             <p class="h3"><%= review.content %></p>
-            <label><%= review.created_at %></label>
+            <h6><%= review.user.name %></h6>
+            <p><%= l review.created_at %></p>
+            <!--l（エル）メソッドを使ってレビューの投稿時間を表示。lメソッドは、アプリケーションのロケールに合わせて時間のフォーマットを指定できるメソッド-->
+            <!--lメソッドを使用するにはロケールファイルが必要(config/locales/ja.yml)-->
           </div>
         <% end %>
       </div>
@@ -69,10 +72,18 @@
       <!--ログインしている場合のみレビュー用のフォームが表示される-->
       <% if user_signed_in? %>
         <div class="row">
-          <div class="offset-md-5 col-md-5">
+          <div class="offset-md-3 col-md-9">
             <%= form_with model: @review, url: product_reviews_path(@product) do |f| %>
-              <%= f.text_area :content, class: "form-control m-2" %>
-              <%= f.submit "レビューを追加" , class:"btn samazon-submit-button ml-2"%>
+              <hr>
+              <div class="row ml-1">
+                <h5 class="review-h5">評価</h5>
+                <%= f.select :score, @star_repeat_select, {}, class: "form-control review-score-color ml-3" %>
+              </div>
+              
+              <h5 class="ml-3 mt-2">レビュー内容</h5>
+              <%= f.text_area :content, class: "form-control m-2 ml-3" %>
+              <%= f.submit "レビューを追加" , class:"btn samazon-submit-button ml-3"%>
+              <hr>
             <% end %>
           </div>
         </div>

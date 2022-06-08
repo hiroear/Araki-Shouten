@@ -208,3 +208,17 @@ label {
   border-radius: 2px;
   background-color: #0fbe9f;
 }
+
+.review-h5 {
+  margin-left: 1rem;
+  line-height: 2.2rem
+}
+
+.review-score-color {
+  width: 50%;
+  color: #0fbe9f;
+}
+
+.review-score-color:focus {
+  color: #0fbe9f;
+}

@@ -2,12 +2,16 @@ class Product < ApplicationRecord
   belongs_to :category
   has_many :reviews
   
+  #該当のProductモデルに紐づくReviewモデルが必要なので Productモデルにメソッドを記述
   def reviews_new
-    reviews.new #reviewをcreateする時のnewするメソッド
+    reviews.new  #reviewモデルの新しいインスタンスをnew(作成)するメソッド
+  end
+  def reviews_with_id
+    reviews.all.reviews_with_id  #reviews.all.where.not(product_id: nil)
   end
   
   
-  PER = 15　#マジックナンバー対策
+  PER = 15  #マジックナンバー対策
   # scope :display_list, -> (category, page) { 
   #   if category != "none"
   #     where(category_id: category).page(page).per(PER)
