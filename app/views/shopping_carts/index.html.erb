@@ -57,7 +57,29 @@
     <%= form_with url: cart_users_path , method: :delete, class: "d-flex justify-content-end mt-3" do |f| %><!--shopping_carts#destroyへ-->
       <%= link_to "買い物を続ける", products_path, class: "btn samazon-favorite-button border-dark text-dark mr-3" %>
         <!--⬆︎products_path :商品一覧へ(products#index)-->
-      <%= f.submit "購入を確定する", class: "btn samazon-submit-button" %>
+      <div class="btn samazon-submit-button" data-toggle="modal" data-target="#buy-confirm-modal">購入を確定する</div>
+        <!--⬆︎購入を確定するボタンには data-toggle="modal"とdata-target="#buy-confirm-modal"という記述を追加しているが、これはモーダルを使用する宣言と、画面に表示するモーダルのIDを指定している。ここで指定されたIDを持つHTML要素をモーダルとして呼び出すことができる-->
+        <!--⬇︎以下呼び出されるモーダルのコード-->
+      <div class="modal fade" id="buy-confirm-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">購入を確定しますか？</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn samazon-favorite-button border-dark text-dark" data-dismiss="modal">閉じる</button>
+              <button type="submit" class="btn samazon-submit-button">購入</button>
+              <!--⬆︎form_with内で type="submit"が設定されているボタン等をクリックすると、各データを送信する仕組みになっている為 form_with内にモーダルを配置し、購入ボタンを記述-->
+            </div>
+            
+          </div>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>
