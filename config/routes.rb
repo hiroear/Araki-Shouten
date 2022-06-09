@@ -1,25 +1,37 @@
 Rails.application.routes.draw do
-  get 'dashboard', to: 'dashboard#index'  #dashboard_path	 GET	/dashboard
   
+  # Deviseはカスタマイズ可能。元々あるコントローラーを継承した子供のコントローラーを優先する
   devise_for :users, :controllers => {
-    :registrations => 'users/registrations', #デフォルトで作られてるregistrationsコントローラを継承して'users/registrations'コントローラを使ってね！
-    :sessions => 'users/sessions', #デフォルトで作られてるsessionsコントローラを継承して'users/sessions'コントローラを使ってね！
-    :passwords => 'users/passwords', #デフォルトで作られてるpasswordsコントローラを継承して'users/passwords'コントローラを使ってね！
-    :confirmations => 'users/confirmations', #デフォルトで作られてるconfirmationsコントローラを継承して'users/confirmations'コントローラを使ってね！
-    :unlocks => 'users/unlocks', #デフォルトで作られてるunlocksコントローラを継承して'users/unlocks'コントローラを使ってね！
+    :registrations => 'users/registrations', #デフォルトのregistrationsコントローラを継承し'users/registrations'コントローラを使用
+    :sessions => 'users/sessions', #デフォルトのsessionsコントローラを継承し'users/sessions'コントローラを使用
+    :passwords => 'users/passwords', #デフォルトのpasswordsコントローラを継承し'users/passwords'コントローラを使用
+    :confirmations => 'users/confirmations', #デフォルトのconfirmationsコントローラを継承し'users/confirmations'コントローラを使用
+    :unlocks => 'users/unlocks', #デフォルトのunlocksコントローラを継承し'users/unlocks'コントローラを使用
   }
-  # Deviseはカスタマイズしたら子供のコントローラを優先する
-  
+
   devise_scope :user do
     # root :to => "users/sessions#new" #rootをusers/sessionsコントローラのnewアクション(ログイン画面)に設定
-    root :to => "web#index"  #root_path	GET	/	web#index (root(TOP画面)を web#indexに設定)
-    get "signup", :to => "users/registrations#new" #signup...URLにつける名前(アクセスする時)
+    root :to => "web#index"  #root_path	 GET	/	web#index (root(TOP画面)を web#indexに設定)
+    get "signup", :to => "users/registrations#new" #signup...URL(アクセスする時)
     get "verify", :to => "users/registrations#verify" #アカウント作成後、メールの送信完了を知らせる画面にリダイレクトされるよう画面のルーティングを設定
     get "login", :to => "users/sessions#new"
     delete "logout", :to => "users/sessions#destroy"
   end
   
   
+  devise_for :admins, :controllers => {
+    :sessions => 'admins/sessions'  #デフォルトのsessionsコントローラを継承し'admins/sessions'コントローラを使用
+  }
+  
+  devise_scope :admin do
+    get 'dashboard', to: 'dashboard#index'
+    get 'dashboard/login', to: 'admins/sessions#new'  #  GET/ URL: dashboard/login で admins/sessionsコントローラのnewアクションを実行
+    post 'dashboard/login', to: 'admins/sessions#create'
+    delete 'dashboard/logout', to: 'admins/sessions#destroy'
+  end
+  
+  
+  #users = mypage
   resource :users, only: [:edit, :update] do
     collection do
       get "cart", :to => "shopping_carts#index"  #cart_users_path 	GET	 /users/cart  shopping_carts#index
@@ -40,15 +52,14 @@ Rails.application.routes.draw do
   # collection :全てのデータを対象としたアクションの場合(idをパラメータで渡さなくて良い場合)
   
   
-  # post '/products/:product_id/reviews' => 'reviews#create'  でもOK
+  
   resources :products do
-    resources :reviews, only: [:create]
+    resources :reviews, only: [:create]  #product_reviews  POST  /products/:product_id/reviews   reviews#create
+    # post '/products/:product_id/reviews' => 'reviews#create'  でもOK
     
-      #⬆︎︎ product_reviews  POST  /products/:product_id/reviews  reviews#create
     member do
-      get :favorite
+      get :favorite   #favorite_product  GET  /products/:id/favorite  products#favorite
     end
-      #⬆︎ favorite_product GET  /products/:id/favorite  products#favorite
   end
   
 

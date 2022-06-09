@@ -2,8 +2,8 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  # devise用のストロングパラメータをコールバックで呼び出す
   before_action :configure_sign_in_params, only: [:create]
-  # ⬆︎devise用のストロングパラメータを読み込ませるため、コールバックを設定
 
   # GET /resource/sign_in
   # def new
