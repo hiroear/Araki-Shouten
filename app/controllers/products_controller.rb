@@ -25,6 +25,7 @@ class ProductsController < ApplicationController
       @products = Product.category_products(@category, params[:page])
     else  #通常の商品一覧(indexページにアクセス)
       @products = Product.display_list(params[:page])  #Product.where(category_id: 1).page(2).per(15)
+      logger.debug("================= products controllers index #{@products}")
     end
     
     @categories = Category.all

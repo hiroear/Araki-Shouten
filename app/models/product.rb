@@ -11,7 +11,7 @@ class Product < ApplicationRecord
   end
   
   
-  PER = 15  #マジックナンバー対策
+  # PER = 15
   # scope :display_list, -> (category, page) { 
   #   if category != "none"
   #     where(category_id: category).page(page).per(PER)
@@ -25,7 +25,9 @@ class Product < ApplicationRecord
   #categoryの値が"none"だった場合はpage(page).per(PER)を返す( Product.page(params[:page]).per(15) )
   
   
-  scope :display_list, -> (page) { page(page).per(PER) }
+  # ⬇︎変更 scope :display_list, -> (page) { page(page).per(PER) }
+  extend DisplayList
+  
   scope :on_category, -> (category) { where(category_id: category) }
   scope :sort_order, -> (order) { order(order) }
   
@@ -65,7 +67,7 @@ class Product < ApplicationRecord
   
   
   acts_as_likeable
-  # ⬇︎gem 'socializationによって、以下のメソッドがProductモデルで使えるようになった(引数のuserは変数、Userはモデル名)
+  # gem 'socializationによって、以下のメソッドがProductモデルで使えるようになった(引数のuserは変数、Userはモデル名)
   # product.liked_by?(user)  :そのユーザーが「いいね」をつけていればtrueを返し、つけていなければfalseを返す
   # product.likers(User)  :「いいね」をつけたユーザーを全て返す
   # ↓「いいね」をつけたユーザーの数をカウントし、整数を返す

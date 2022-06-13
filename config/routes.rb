@@ -30,6 +30,17 @@ Rails.application.routes.draw do
     delete 'dashboard/logout', to: 'admins/sessions#destroy'
   end
   
+  namespace :dashboard do
+    resources :categories, except: [:new] #ダッシュボードのカテゴリ管理 (newアクションを省く)
+      # dashboard_categories_path	 GET 	/dashboard/categories  dashboard/categories#index
+      #                            POST	/dashboard/categories  dashboard/categories#create
+      # edit_dashboard_category_path	GET	/dashboard/categories/:id/edit	dashboard/categories#edit
+      # dashboard_category_path	GET 	/dashboard/categories/:id   dashboard/categories#show
+      #                         PUT	 /dashboard/categories/:id   dashboard/categories#update
+      #                         DELETE	/dashboard/categories/:id   dashboard/categories#destroy
+    resources :products, except: [:show] #ダッシュボードの商品管理 (showアクションを省く)
+  end
+  
   
   #users = mypage
   resource :users, only: [:edit, :update] do
