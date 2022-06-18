@@ -30,15 +30,16 @@ Rails.application.routes.draw do
     delete 'dashboard/logout', to: 'admins/sessions#destroy'
   end
   
-  namespace :dashboard do
-    resources :categories, except: [:new] #ダッシュボードのカテゴリ管理 (newアクションを省く)
+  namespace :dashboard do # controllers/dashboard/
+    resources :categories, except: [:new] #ダッシュボード/カテゴリ管理 (newアクション省く)
       # dashboard_categories_path	 GET 	/dashboard/categories  dashboard/categories#index
       #                            POST	/dashboard/categories  dashboard/categories#create
       # edit_dashboard_category_path	GET	/dashboard/categories/:id/edit	dashboard/categories#edit
       # dashboard_category_path	GET 	/dashboard/categories/:id   dashboard/categories#show
       #                         PUT	 /dashboard/categories/:id   dashboard/categories#update
       #                         DELETE	/dashboard/categories/:id   dashboard/categories#destroy
-    resources :products, except: [:show] #ダッシュボードの商品管理 (showアクションを省く)
+    resources :products, except: [:show] #ダッシュボード/商品管理/商品一覧 (showアクション省く)
+    resources :major_categories, except: [:new] #ダッシュボード/親カテゴリ管理 (newアクション省く)
   end
   
   
@@ -64,7 +65,7 @@ Rails.application.routes.draw do
   
   
   
-  resources :products do
+  resources :products, only: [:index, :show, :favorite]  do
     resources :reviews, only: [:create]  #product_reviews  POST  /products/:product_id/reviews   reviews#create
     # post '/products/:product_id/reviews' => 'reviews#create'  でもOK
     

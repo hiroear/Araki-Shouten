@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :favorite]
+  before_action :set_product, only: [:show, :favorite]
   
   # GET  prefix:products  /products
   def index
@@ -45,39 +45,11 @@ class ProductsController < ApplicationController
   end
 
 
-  # GET  prefix:new_product  /products/new
-  def new
-    @product = Product.new
-    @categories = Category.all
-  end
-
-
-  # POST  prefix:products  /products
-  def create
-    @product = Product.new(product_params)
-    @product.save
-    redirect_to product_url(@product)    #個別の商品ページに遷移。引数の(@product)は表示させたいproduct_id
-  end
-
-
-  # GET  prefix:edit_product  /products/1/edit
-  def edit
-    @categories = Category.all
-  end
-
-
-  # PATCH/PUT  prefix:product  /products/1
-  def update
-    @product.update(product_params)      #引数に(product_params)を渡し商品データを更新
-    redirect_to product_url(@product)
-  end
-
-
-  # DELETE  prefix:product  /products/1
-  def destroy
-    @product.destroy
-    redirect_to products_url  #indexページに遷移するので引数(id)はなし
-  end
+  # DELETE  product_path  /products/1
+  # def destroy
+  #   @product.destroy
+  #   redirect_to products_url  #indexページに遷移するので引数(id)はなし
+  # end
   
   
   # GET  favorite_product_path 	/products/:id/favorite

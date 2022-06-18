@@ -23,9 +23,9 @@
           <% if @sorted.present? %>
             <!--<= f.select :sort, @sort_list, selected: @sorted, onChange: "javascript: this.form.submit();", class: "form-inline ml-2" %>-->
             <!-- 2022/4/24 上記を下記に修正しました。by matsushita  -->
-            <%= f.select :sort, @sort_list, {selected: @sorted}, {onChange: "submit(this.form)", class: "form-inline ml-2"} %>
+            <%= f.select :sort, @sort_list, {selected: @sorted}, {onChange: "submit(this.form)", class: "form-inline ml-2 form-control"} %>
           <% else %>
-            <%= f.select :sort, @sort_list, {}, onChange: "javascript: this.form.submit();", class: "form-inline ml-2" %>
+            <%= f.select :sort, @sort_list, {}, onChange: "javascript: this.form.submit();", class: "form-inline ml-2 form-control" %>
           <% end %>
         <% end %>
         

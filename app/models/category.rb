@@ -1,6 +1,7 @@
 class Category < ApplicationRecord
   has_many :products, dependent: :destroy
-  #dependent: :destroy...カテゴリを削除する際 そのカテゴリに紐づいている商品も同時に削除
+    #dependent: :destroy...カテゴリを削除する際 そのカテゴリに紐づいている商品も同時に削除
+  belongs_to :major_category
   
   scope :major_categories, -> { pluck(:major_category_name).uniq }
   #pluck(:major_category_name): 全てのカテゴリデータの中からmajor_category_nameのカラムのみを取得。

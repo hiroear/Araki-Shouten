@@ -65,7 +65,14 @@ class Product < ApplicationRecord
    }
    
   
+  scope :search_for_id_and_name, -> (keyword) {
+    where('name LIKE ?', "%#{keyword}%").or(where('id LIKE ?', "%#{keyword}%"))
+    # LIKE :あいまい検索
+    # ? :プレースホルダー("%#{keyword}%"" がここに入る)
+    # "%キーワード%" :キーワードの文字を部分一致で検索。必ずダブルクォートの中に入れる 
+  }
   
+
   acts_as_likeable
   # gem 'socializationによって、以下のメソッドがProductモデルで使えるようになった(引数のuserは変数、Userはモデル名)
   # product.liked_by?(user)  :そのユーザーが「いいね」をつけていればtrueを返し、つけていなければfalseを返す
