@@ -10,6 +10,7 @@ class Dashboard::CategoriesController < ApplicationController
     @categories = Category.display_list(params[:page])
     logger.debug("================= dashboard/categories controllers index #{@categories}")
     @category = Category.new
+    @major_categories = MajorCategory.all
   end
   
   
@@ -28,11 +29,13 @@ class Dashboard::CategoriesController < ApplicationController
   
   # edit_dashboard_category_path	GET	/dashboard/categories/:id/edit	dashboard/categories#edit
   def edit
+    @major_categories = MajorCategory.all
   end
   
   
   # dashboard_category_path  PUT	 /dashboard/categories/:id   dashboard/categories#update
   def update
+    logger.debug("================= dashboard/categories controllers update #{category_params}")
     @category.update(category_params)
     @category.save
     redirect_to dashboard_categories_path
@@ -54,7 +57,6 @@ class Dashboard::CategoriesController < ApplicationController
     
     
     def category_params
-      params.require(:category).permit(:name, :description, :major_category_name)
-      # permit()のカラム名の間はスペース入れない?
+      params.require(:category).permit(:name, :description, :major_category_name, :major_category_id)
     end
 end
