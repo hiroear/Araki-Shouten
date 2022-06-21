@@ -40,11 +40,12 @@ Rails.application.routes.draw do
       #                         DELETE	/dashboard/categories/:id   dashboard/categories#destroy
     resources :products, except: [:show] #ダッシュボード/商品管理/商品一覧 (showアクション省く)
     resources :major_categories, except: [:new] #ダッシュボード/親カテゴリ管理 (newアクション省く)
+    resources :users, only: [:index, :destroy]  #ダッシュボード/顧客管理(index/destroyアクションのみ)
   end
   
   
   #users = mypage
-  resource :users, only: [:edit, :update] do
+  resources :users, only: [] do  # collectionを書く為 resourcesで囲ったが resourcesで生成される7つのルーティングは必要ない為 only: [] とした(URLをusers/〜にする為)
     collection do
       get "cart", :to => "shopping_carts#index"  #cart_users_path 	GET	 /users/cart  shopping_carts#index
       post "cart", :to => "shopping_carts#create"   #cart_create_users_path	POST	/users/cart/create  shopping_carts#create
@@ -56,6 +57,7 @@ Rails.application.routes.draw do
       get "mypage/edit_password", :to => "users#edit_password"   #mypage_edit_password_users_path	 GET	/users/mypage/edit_password   users#edit_password
       put "mypage/password", :to => "users#update_password"     #mypage_password_users_path 	PUT	 /users/mypage/password   users#update_password
       get "mypage/favorite", :to => "users#favorite"   #mypage_favorite_users_path 	GET	 /users/mypage/favorite  users#favorite
+      delete "mypage/delete", :to => "users#destroy"   #mypage_delete_users_path	DELETE	/users/mypage/delete   users#destroy
     end
   end
   

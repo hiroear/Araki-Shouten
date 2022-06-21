@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   end
 
 
-  # マイページ画面へ
+  # マイページ一覧画面へ
   # mypage_users_path	 GET	 /users/mypage	 users#mypage
   def mypage
   end
@@ -66,6 +66,13 @@ class UsersController < ApplicationController
     @favorites = @user.likees(Product)
     # likeesメソッド :socializationをインストールしたことで使えるようになったメソッド
     # likees(Product) :ログインユーザーがお気に入りに追加したすべての商品のデータを取得
+  end
+  
+  
+  def destroy
+    @user.deleted_flg = User.switch_flg(@user.deleted_flg)
+    @user.update(deleted_flg: @user.deleted_flg)
+    redirect_to mypage_users_url  # マイページ一覧画面へ
   end
   
   

@@ -69,7 +69,7 @@ class Product < ApplicationRecord
     where('name LIKE ?', "%#{keyword}%").or(where('id LIKE ?', "%#{keyword}%"))
     # LIKE :あいまい検索
     # ? :プレースホルダー("%#{keyword}%"" がここに入る)
-    # "%キーワード%" :キーワードの文字を部分一致で検索。必ずダブルクォートの中に入れる 
+    # "%#{変数}%" :#{変数}内の文字列を部分一致で検索。必ずダブルクォートの中に入れる
   }
   
 
