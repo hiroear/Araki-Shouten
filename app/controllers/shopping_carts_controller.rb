@@ -3,7 +3,9 @@ class ShoppingCartsController < ApplicationController
   
   # 現在カートに入っている商品一覧とこれまで購入した商品履歴(カートの履歴)を表示
   def index
-    @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)
+    logger.debug("============================== shopping_carts controllers index #{@user_cart}")
+    @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)  # ShoppingCartItem.where(owner_id: @user_cart)
+    # @user_cartにはまだ注文が確定していないカートのデータ全てが入っている(その中に owner_id含む)
     # user_cart_itemsメソッド :カートに入っている全ての商品のデータを返す(shopping_cart_itemモデルに定義)
   end
   
@@ -18,6 +20,7 @@ class ShoppingCartsController < ApplicationController
   # カートに商品を追加する
   def create
     @product = Product.find(product_params[:product_id])
+    logger.debug("============================== shopping_carts controllers create #{@product}")
     @user_cart.add(@product, product_params[:price].to_i, product_params[:quantity].to_i)
     # ⬆︎acts_as_shopping_cartの addメソッドで、送信されたデータを元にして商品をカートに追加
     redirect_to cart_users_path

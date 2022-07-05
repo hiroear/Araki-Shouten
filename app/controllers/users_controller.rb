@@ -86,6 +86,9 @@ class UsersController < ApplicationController
   
     def user_params
       params.permit(:name, :email, :address, :postal_code, :phone, :password, :password_confirmation)
+      # params.require(:モデル名).permit(:キー名)
+      # .requireメソッドがデータのオブジェクト名を定め、
+      # .permitメソッドで変更を加えられる（保存の処理ができる）キーを指定(paramsで取得したパラメータに保存の許可処理)
     end
     
     

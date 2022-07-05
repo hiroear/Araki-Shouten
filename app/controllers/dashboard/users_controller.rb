@@ -7,7 +7,7 @@ class Dashboard::UsersController < ApplicationController
   def index
     # @users = User.display_list(params[:pages])
     if params[:keyword].present?
-      @keyword = params[:keyword].strip
+      @keyword = params[:keyword].strip  #strip :文字列先頭と末尾の空白文字を全て取り除いた文字列を生成
       @users = User.search_information(@keyword).display_list(params[:pages])
     else
       @keyword = ""
@@ -20,6 +20,7 @@ class Dashboard::UsersController < ApplicationController
   def destroy
     user = User.find(params[:id])
     deleted_flag = User.switch_flg(user.deleted_flg)  #true/false ? false : true (trueだったらfalseに / falseだったらtrueにスイッチ)
+    # logger.debug("================= dashboard/users controllers destroy #{deleted_flag}")
     user.update(deleted_flg: deleted_flag)
     redirect_to dashboard_users_path
   end

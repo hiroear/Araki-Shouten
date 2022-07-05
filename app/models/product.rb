@@ -6,6 +6,7 @@ class Product < ApplicationRecord
   def reviews_new
     reviews.new  #reviewモデルの新しいインスタンスをnew(作成)するメソッド
   end
+  
   def reviews_with_id
     reviews.all.reviews_with_id  #reviews.all.where.not(product_id: nil)
   end
@@ -71,6 +72,9 @@ class Product < ApplicationRecord
     # ? :プレースホルダー("%#{keyword}%"" がここに入る)
     # "%#{変数}%" :#{変数}内の文字列を部分一致で検索。必ずダブルクォートの中に入れる
   }
+  
+  scope :recently_products, -> (number) { order(created_at: 'desc').take(number) }
+  # takeメソッド :オブジェクトの先頭から(number)までの要素を配列で返す(取得したい要素数を指定する)
   
 
   acts_as_likeable

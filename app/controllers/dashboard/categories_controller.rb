@@ -7,7 +7,7 @@ class Dashboard::CategoriesController < ApplicationController
   
   # dashboard_categories_path	 GET 	/dashboard/categories  dashboard/categories#index
   def index
-    @categories = Category.display_list(params[:page])
+    @categories = Category.display_list(params[:page])  #Category.all.page(params[:page]).per(15) ?
     logger.debug("================= dashboard/categories controllers index #{@categories}")
     @category = Category.new
     @major_categories = MajorCategory.all
