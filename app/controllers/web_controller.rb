@@ -1,6 +1,7 @@
 class WebController < ApplicationController
   
-  PRODUCTS_PER_PAGE = 4
+  RECENTLY_PRODUCTS_PER_PAGE = 4
+  RECOMMEND_PRODUCTS_PER_PAGE = 3
   
   def index
     if sort_params.present?
@@ -15,7 +16,8 @@ class WebController < ApplicationController
  
     @major_category_names = Category.major_categories
     @categories = Category.all
-    @recently_products = Product.recently_products(PRODUCTS_PER_PAGE)  #Product.order(created_at: 'desc').take(4) 
+    @recently_products = Product.recently_products(RECENTLY_PRODUCTS_PER_PAGE)  #Product.order(created_at: 'desc').take(4)
+    @recommend_products = Product.recommend_products(RECOMMEND_PRODUCTS_PER_PAGE)  #Product.where(recommended_flag: true).take(3) 
   end
   
   

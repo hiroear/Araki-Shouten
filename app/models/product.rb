@@ -76,6 +76,9 @@ class Product < ApplicationRecord
   scope :recently_products, -> (number) { order(created_at: 'desc').take(number) }
   # takeメソッド :オブジェクトの先頭から(number)までの要素を配列で返す(取得したい要素数を指定する)
   
+  scope :recommend_products, -> (number) { where(recommended_flag: true).take(number) }
+    
+  
 
   acts_as_likeable
   # gem 'socializationによって、以下のメソッドがProductモデルで使えるようになった(引数のuserは変数、Userはモデル名)

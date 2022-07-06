@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_20_093605) do
+ActiveRecord::Schema.define(version: 2022_07_05_082141) do
 
   create_table "admins", force: :cascade do |t|
     t.string "name", null: false
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 2022_06_20_093605) do
     t.integer "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "recommended_flag", default: false
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
