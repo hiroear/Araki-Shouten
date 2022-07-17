@@ -22,7 +22,8 @@ class UsersController < ApplicationController
     if result
       redirect_to request.referer, notice: '正しく更新されました。'
     else
-      redirect_to request.referer, notice: '正しく更新されませんでした。入力に不備があります。'
+      render 'users/edit'
+      # redirect_to request.referer, notice: '正しく更新されませんでした。入力に不備があります。'
     end
   end
 
@@ -70,9 +71,14 @@ class UsersController < ApplicationController
   
   
   def destroy
-    @user.deleted_flg = User.switch_flg(@user.deleted_flg)
+    @user.deleted_flg = User.switch_flg(@user.deleted_flg) # @user.deleted_flg ? false : true
     @user.update(deleted_flg: @user.deleted_flg)
-    redirect_to mypage_users_url  # マイページ一覧画面へ
+    
+    # ⬇︎以下 redirect_to mypage_users_url から変更
+    if @user.deleted_flg?  #@user.deleted_flg が true だったらログアウトして root画面へ遷移
+      reset_session
+      redirect_to root_path
+    end
   end
   
   
@@ -89,6 +95,9 @@ class UsersController < ApplicationController
       # params.require(:モデル名).permit(:キー名)
       # .requireメソッドがデータのオブジェクト名を定め、
       # .permitメソッドで変更を加えられる（保存の処理ができる）キーを指定(paramsで取得したパラメータに保存の許可処理)
+      
+      # require(:user)なら params[:user][:name]
+      # requireなしなら {params[:name] => "松下"}
     end
     
     

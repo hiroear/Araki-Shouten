@@ -19,9 +19,9 @@ class ShoppingCartsController < ApplicationController
   
   # カートに商品を追加する
   def create
-    @product = Product.find(product_params[:product_id])
+    @product = Product.find(shopping_cart_product_params[:product_id])
     logger.debug("============================== shopping_carts controllers create #{@product}")
-    @user_cart.add(@product, product_params[:price].to_i, product_params[:quantity].to_i)
+    @user_cart.add(@product, shopping_cart_product_params[:price].to_i, shopping_cart_product_params[:quantity].to_i)
     # ⬆︎acts_as_shopping_cartの addメソッドで、送信されたデータを元にして商品をカートに追加
     redirect_to cart_users_path
     # 商品をカートに追加したらカートの一覧ページ(カート中身を表示するページ)にリダイレクト
@@ -41,7 +41,7 @@ class ShoppingCartsController < ApplicationController
   
   
   private
-    def product_params
+    def shopping_cart_product_params
       params.permit(:product_id, :price, :quantity)
     end
     

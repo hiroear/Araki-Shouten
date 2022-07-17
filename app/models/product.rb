@@ -8,7 +8,7 @@ class Product < ApplicationRecord
   end
   
   def reviews_with_id
-    reviews.all.reviews_with_id  #reviews.all.where.not(product_id: nil)
+    reviews.all.reviews_with_id  #Reviewモデルに scopeを定義せず reviews.all.where.not(product_id: nil) と書いてもOK
   end
   
   

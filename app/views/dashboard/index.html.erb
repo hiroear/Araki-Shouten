@@ -1,0 +1,43 @@
+<!--ダッシュボード/売上一覧画面　　dashboard_path	GET	 /dashboard  dashboard#index-->
+
+<div class="w-75">
+  <% if @sort == "month" %>
+    <h1>月別売上</h1>
+  <% else %>
+    <h1>日別売上</h1>
+  <% end %>
+  
+  <%= form_with url: dashboard_path, method: :get, local: true, class: "form-inline" do |f| %>
+    切り替え
+    <% if @sort.present? %>
+      <%= f.select :sort, @sort_list, { selected: @sort}, { onChange: "submit(this.form)", class: "form-inline ml-2" } %>
+    <% else %>
+      <%= f.select :sort, @sort_list, {}, { onChange: "javascript: this.form.submit();", class: "form-inline ml-2" } %>
+    <% end %>
+  <% end %>
+  
+  <div class="container mt-4">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">年月日</th>
+          <th scope="col">金額</th>
+          <th scope="col">件数</th>
+          <th scope="col">平均単価</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sales.each do |sale| %>
+          <tr>
+            <td><%= sale[:period] %></td>
+            <td><%= sale[:total] %></td>
+            <td><%= sale[:count] %></td>
+            <td><%= sale[:average] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <%= paginate @sales %>
+  </div>
+</div>

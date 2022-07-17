@@ -1,6 +1,7 @@
 # ダッシュボード/カテゴリ管理　コントローラー
 class Dashboard::CategoriesController < ApplicationController
-  before_action :authenticate_admin!, except: :index  #ログイン管理者以外のアクセスを弾く(indexアクション以外)
+  before_action :authenticate_admin!
+  # , except: :index  #ログイン管理者以外のアクセスを弾く(indexアクション以外)
   before_action :set_category, only: %w[show edit update destroy]
   layout 'dashboard/dashboard'
   

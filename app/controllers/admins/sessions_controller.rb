@@ -20,11 +20,11 @@ class Admins::SessionsController < Devise::SessionsController
   end
   
   #管理者としてログインした後のリダイレクト先をdashboard_pathに設定
-  def after_sign_in_path_for(user)
+  def after_sign_in_path_for(admin)
     dashboard_path
   end
  
-  def after_sign_out_path_for(user)
+  def after_sign_out_path_for(admin)
     root_path
   end
   
