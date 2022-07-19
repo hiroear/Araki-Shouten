@@ -77,6 +77,9 @@ class Product < ApplicationRecord
   # takeメソッド :オブジェクトの先頭から(number)までの要素を配列で返す(取得したい要素数を指定する)
   
   scope :recommend_products, -> (number) { where(recommended_flag: true).take(number) }
+  
+  
+  scope :check_products_carriage_list, -> (product_ids) { where(id: product_ids).pluck(:carriage_flag)}
     
   
 

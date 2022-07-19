@@ -4,9 +4,10 @@ class ShoppingCartsController < ApplicationController
   # 現在カートに入っている商品一覧とこれまで購入した商品履歴(カートの履歴)を表示
   def index
     logger.debug("============================== shopping_carts controllers index #{@user_cart}")
-    @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)  # ShoppingCartItem.where(owner_id: @user_cart)
-    # @user_cartにはまだ注文が確定していないカートのデータ全てが入っている(その中に owner_id含む)
-    # user_cart_itemsメソッド :カートに入っている全ての商品のデータを返す(shopping_cart_itemモデルに定義)
+    # @user_cartにはまだ注文が確定していないカート自体のインスタンスが入っている
+    @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)
+    # ShoppingCartItem.where(owner_id: @user_cart)
+    # user_cart_itemsメソッド :そのカートに入っている全ての商品データを返す (shopping_cart_itemモデルに定義)
   end
   
   

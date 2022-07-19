@@ -118,4 +118,23 @@ class ShoppingCart < ApplicationRecord
     return array
   end
   
+  
+  CARRIAGE = 800      #送料金額
+  FREE_SHIPPING = 0
+  
+  def shipping_cost
+    product_ids = ShoppingCartItem.user_cart_item_ids(self.id)  #self省略可
+      # インスタンスメソッド内で selfをつけるとインスタンスが持つ情報(今回はShoppingCart.id)にアクセスできる
+      # ShoppingCartItem.where(owner_id: self.id).pluck(:item_id)
+      # ShoppingCartItemsテーブルから self.idと一致するカートを探し、その中の(複数の) item_idカラムの値のみ配列で取得
+    products_carriage_list = Product.check_products_carriage_list(product_ids)
+      # Product.where(id: product_ids).pluck(:carriage_flag)
+      # Productsテーブルから idカラムが product_idsと一致する(複数)データを探し その複数商品の carriage_flagカラムの値のみ配列で取得
+    products_carriage_list.include?(true) ? Money.new(CARRIAGE * 100)
+                                          : Money.new(FREE_SHIPPING)
+      # カート内商品の carriage_flagの値の中に 1つでもtrueの商品が含まれていれば合計金額に送料を加算する処理
+      # acts_as_shopping_cartは USDを想定した gemで、Money.newの引数はドルの100分の1であるセント単位で整数を渡すルール。今回は定数 CARRIAGEに日本円の金額を代入、その金額を100倍した値を引数として渡した。
+      # array.include?...配列要素に使うメソッド。boolean型。配列が(値)と == で等しい場合 trueを返す。
+  end
+  
 end
