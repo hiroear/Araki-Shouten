@@ -93,4 +93,9 @@ class Product < ApplicationRecord
   # end
   # product.likers_count
   
+  has_one_attached :image     # has_one_attached :ファイル名
+  # has_one_attached : 各レコードとファイルを1対1の関係で紐づけるメソッド。:ファイル名には、添付するファイルがわかる名前をつける。
+  # has_one_attachedメソッドを書いたモデルの各レコードは、それぞれ1つのファイルを添付できる。
+  # この記述で、モデル.ファイル名(@product.image)で、添付されたファイルにアクセスできるようになる。
+  # ファイル名(image)は、そのモデルが紐づいたフォームから送られるパラメーターのキーになる (dashboard/products_controller ストロングパラメータに , :image のキーを追加)。
 end
