@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     resources :products, except: [:show] #ダッシュボード/商品管理/商品一覧 (showアクション省く)
     resources :major_categories, except: [:new] #ダッシュボード/親カテゴリ管理 (newアクション省く)
     resources :users, only: [:index, :destroy]  #ダッシュボード/顧客管理(index/destroyアクションのみ)
+    resources :orders, only: [:index]  #ダッシュボード/受注一覧(indexアクションのみ)
   end
   
   

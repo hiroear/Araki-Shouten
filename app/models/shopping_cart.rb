@@ -50,6 +50,12 @@ class ShoppingCart < ApplicationRecord
     # shopping_cartsテーブル buy_flagカラムが true、かつ updated_atカラムが引数に指定した月の全データ(カート)を取得
     # all_month：その日を含む月の全範囲のデータを取得 (例：9月の1～30日)
     # all_day：今日の日付で、00:00:00から23:59:59までの全データを取得
+    
+  # ダッシュボード/受注一覧/検索機能
+  scope :search_carts_by_ids, -> (ids) { where("id LIKE ?", "%#{ids}%") }
+  scope :search_bought_carts_by_ids, -> (ids) { bought_carts.search_carts_by_ids(ids) }
+  # where(buy_flag: true).where("id LIKE ?", "%#{ids}%")
+  
   
   scope :sort_list, -> { {"日別": "daily", "月別": "month"} }
   
