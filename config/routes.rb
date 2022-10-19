@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  # root :to => "web#index"  #root_path	 GET	/	web#index (root(TOP画面)を web#indexに設定)
+  
   # Deviseはカスタマイズ可能。元々あるコントローラーを継承した子供のコントローラーを優先する
   devise_for :users, :controllers => {
     :registrations => 'users/registrations', #デフォルトのregistrationsコントローラを継承し'users/registrations'コントローラを使用
@@ -31,14 +33,14 @@ Rails.application.routes.draw do
   end
   
   namespace :dashboard do # controllers/dashboard/
-    resources :categories, except: [:new] #ダッシュボード/カテゴリ管理 (newアクション省く)
-      # dashboard_categories_path	 GET 	/dashboard/categories  dashboard/categories#index
-      #                            POST	/dashboard/categories  dashboard/categories#create
-      # edit_dashboard_category_path	GET	/dashboard/categories/:id/edit	dashboard/categories#edit
-      # dashboard_category_path	GET 	/dashboard/categories/:id   dashboard/categories#show
-      #                         PUT	 /dashboard/categories/:id   dashboard/categories#update
-      #                         DELETE	/dashboard/categories/:id   dashboard/categories#destroy
-    resources :products, except: [:show] #ダッシュボード/商品管理/商品一覧 (showアクション省く)
+    resources :categories, except: [:new] #ダッシュボード/カテゴリ管理 (newアクション省く) GET 	/dashboard/categories  dashboard/categories#index...
+    resources :products, except: [:show] do      #ダッシュボード/商品管理/商品一覧 (showアクション省く)
+      collection do
+        get "import/csv", :to => "products#import"  # GET 	/dashboard/products/import/csv   dashboard/products#import
+        post "import/csv", :to => "products#import_csv"  # POST	 /dashboard/products/import/csv   dashboard/products#import_csv
+        get "import/csv_download", :to => "products#download_csv"  # GET	 /dashboard/products/import/csv_download   dashboard/products#download_csv
+      end
+    end
     resources :major_categories, except: [:new] #ダッシュボード/親カテゴリ管理 (newアクション省く)
     resources :users, only: [:index, :destroy]  #ダッシュボード/顧客管理(index/destroyアクションのみ)
     resources :orders, only: [:index]  #ダッシュボード/受注一覧(indexアクションのみ)
@@ -49,7 +51,7 @@ Rails.application.routes.draw do
   resources :users, only: [] do  # collectionを書く為 resourcesで囲ったが resourcesで生成される7つのルーティングは必要ない為 only: [] とした(URLをusers/〜にする為)
     collection do
       get "cart", :to => "shopping_carts#index"  #cart_users_path 	GET	 /users/cart  shopping_carts#index
-      post "cart", :to => "shopping_carts#create"   #cart_create_users_path	POST	/users/cart/create  shopping_carts#create
+      post "cart", :to => "shopping_carts#create"   #cart_create_users_path 	POST	/users/cart/create  shopping_carts#create
       delete "cart", :to => "shopping_carts#destroy"  #cart_users_path 	DELETE	/users/cart 	shopping_carts#destroy
       get "mypage", :to => "users#mypage"   #mypage_users  GET  /users/mypage  users#mypage
       get "mypage/edit", :to => "users#edit"   #mypage_edit_users  GET  /users/mypage/edit  users#edit

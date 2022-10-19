@@ -52,7 +52,7 @@
           </td>
           <td><%= product.name %></td>
           <td><%= product.price %></td>
-          <td><%= product.category.name %></td>
+          <td><%= product.category.name %></td><!--Productモデルと Categoryモデルで関連付けがされているから categoryテーブルにカラムの情報を取得できる-->
           <td><%= product.category.major_category_name %></td>
           <td>
             <%= link_to '編集', edit_dashboard_product_path(product), class: "dashboard-edit-link" %>

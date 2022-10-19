@@ -1,4 +1,4 @@
-table_names = %w(major_categories)
+table_names = %w(products)
 
 table_names.each do |table_name|
   path = Rails.root.join("db", "seeds", Rails.env, "#{table_name}_seeder.rb")

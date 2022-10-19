@@ -1,4 +1,5 @@
 # helpersはある動作を処理する時にメソッド化して扱えるようにRailsにあらかじめ組み込まれた機能
+# ビューで使うメソッドは app/helpers 内でヘルパーメソッドとして定義しよう
 
 module ReviewsHelper
   def score_on_star(score)

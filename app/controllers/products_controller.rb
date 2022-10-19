@@ -40,7 +40,7 @@ class ProductsController < ApplicationController
   def show
     # ⬇︎変更 @reviews = @product.reviews.all  #該当の商品に関する全てのレビューを取得 (allは省略可)
     # @reviews = @product.reviews_with_id  #idを持っているReviewオブジェクトのみ取得 (@product.reviews.all.where.not(product_id: nil))
-    @reviews = @product.reviews.all.where.not(product_id: nil)
+    @reviews = @product.reviews.all.where.not(product_id: nil)  #SQL文の NOTは「〜以外」
     @review = @reviews.new              # @reviews の新しいインスタンスを生成し、レビューフォームに渡す
     @star_repeat_select = Review.star_repeat_select  # ★★★★★ 評価リスト Reviewモデルに定義
   end

@@ -80,7 +80,7 @@ class Product < ApplicationRecord
   
   
   scope :check_products_carriage_list, -> (product_ids) { where(id: product_ids).pluck(:carriage_flag)}
-    
+  # Productsテーブルから product_idsに入っている(複数の) item_idと一致する product_idを探し、その複数商品の carriage_flagカラムの値(boolean)のみ配列で取得
   
 
   acts_as_likeable
@@ -98,4 +98,52 @@ class Product < ApplicationRecord
   # has_one_attachedメソッドを書いたモデルの各レコードは、それぞれ1つのファイルを添付できる。
   # この記述で、モデル.ファイル名(@product.image)で、添付されたファイルにアクセスできるようになる。
   # ファイル名(image)は、そのモデルが紐づいたフォームから送られるパラメーターのキーになる (dashboard/products_controller ストロングパラメータに , :image のキーを追加)。
+
+
+  def self.import_csv(file)
+    new_products = []
+    update_products = []
+    CSV.foreach(file.path, headers: true, encoding: "Shift_JIS:UTF-8") do |row|
+      # file.pathでファイルのパスを指定 ▶︎ Shift_JIS形式の CSVを 1行ずつ UTF-8に変換しながら読み込み（メモリに優しい）
+      # CSV.foreach : CSVファイルの内容を 1行づつ取り出す　(例：["1", "milk", "200"],["2", "coke", "300"]...)
+      # headers: true : row[1] ではなく row[:name]のように扱うことが可能になる
+      
+      row_to_hash = row.to_hash   # CSVデータの一行をハッシュ {キー =>"値"} に整形 (例：{:milk => 200})
+      byebug
+      
+      #⬇︎ IDが見つかればレコードを呼び出し productの中身を更新する為の update_products[] を生成
+      # (別の書き方 : product = find(id: row_to_hash["id"]) || new)
+      if row_to_hash[:id].present?
+        update_product = find(id: row_to_hash[:id])  # row_to_hash[:id] と一致する product_idを探し update_productに代入
+        update_product.attributes = row.to_hash.slice!(csv_attributes)
+          # attributesメソッド : 特定の attribute(カラム)を変更(更新)する (オブジェクトの変更のみ。DBには保存されない)
+          # slice!メソッド : 配列や文字列から指定した要素[:name, :description, :price,・・・]を取り出す
+        update_products << update_product   # << = push  /  update_products.push(update_product)
+          # update_products[{ :id => 3, :name => "abc", :description => "abc説明", :price => 500, :recommended_flag => false, :carriage_flag => false }]
+      
+      #⬇︎ IDが見つからなければ新しくインスタンスを作成し指定の要素の new_products[] を生成
+      else
+        new_product = new   # Product.new
+        new_product.attributes = row.to_hash.slice!(csv_attributes)
+        new_products << new_product
+          # new_products[{ :name => "abc", :description => "abc説明", :price => 500,... }]
+      end
+    end
+    
+    if update_products.present?
+      import update_products, on_duplicate_key_update: csv_attributes
+      # on_duplicate_key_update: バルクインサート(あるテーブルに複数のレコードを一括保存)する際、新規レコードは作成、主キー/ユニークキー制約に引っかかったレコードは、そのレコードの指定したカラムの値だけ更新(Upsert)してくれる
+    elsif new_products.present?
+      import new_products
+      # import : activerecord-importを使って複数のレコードを一括保存する
+    end
+  end
+
+  
+  
+  private
+    def self.csv_attributes
+      [:name, :description, :price, :recommended_flag, :carriage_flag]
+    end
+
 end

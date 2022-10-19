@@ -3,7 +3,13 @@ class WebController < ApplicationController
   RECENTLY_PRODUCTS_PER_PAGE = 4
   RECOMMEND_PRODUCTS_PER_PAGE = 3
   
+  include ApplicationHelper
+  
   def index
+    
+    logger.debug("^^^^^^^^^^^^^^^^^^^^ resource_is_user? = #{resource_is_user?}")
+    
+    
     if sort_params.present?
       @category = Category.request_category(sort_params[:sort_category])
       @products = Product.sort_products(sort_params, params[:page])

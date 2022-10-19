@@ -50,8 +50,9 @@
           <%= f.submit 'ログイン', class: "mt-3 btn samazon-submit-button w-100" %>
         </div>
         
-        <!--if resource_is_user? :URLのパスに相当する部分が /loginであればtrue、dashboard/loginの場合はfalse-->
+        <!--if resource_is_user? :URLのパス末尾が /login 又は /users/sign_in であればtrue、/dashboard/login 又は /admins/sign_in であれば falseを返す-->
         <% if resource_is_user? %>
+          <%#= resource_is_user? %>
           <%= link_to 'パスワードをお忘れの場合', new_user_password_path, class: "btn btn-link mt-3 d-flex justify-content-center samazon-login-text" %>
         <% end %>
       <% end %>

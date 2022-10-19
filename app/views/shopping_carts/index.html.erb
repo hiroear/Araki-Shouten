@@ -3,7 +3,7 @@
     <h1>ショッピングカート</h1>
 
     <div class="offset-8 col-4">
-      <div class="row">
+      <div class="row"><%# rowの中の要素を横並びに %>
         <div class="col-6">
           <h2>数量</h2>
         </div>
@@ -17,8 +17,9 @@
 
     <div class="row">
       <% @user_cart_items.each do |user_cart_item| %>
-      <!--@user_cart_items :カートに入っている全ての商品のデータ-->
+      <%# @user_cart_items :カートに入っている全ての商品データ %>
         <% product = Product.find(user_cart_item.item_id) %>
+        <%# user_cart_item の item_idに該当する商品を Productモデルから取得、変数product代入 %>
         <div class="col-md-2 mt-2">
           <%= link_to product_path(product) do %>
             <% if product.image.attached? %>
@@ -30,6 +31,7 @@
         </div>
         <div class="col-md-6 mt-4">
           <h3 class="mt-4"><%= product.name %></h3>
+          <%# 21行目でProductモデルからデータを取得したのでproductsテーブルのカラム nameが使える %>
         </div>
         <div class="col-md-2">
           <h3 class="w-100 mt-4"><%= user_cart_item.quantity %></h3>
@@ -49,12 +51,12 @@
         </div>
         <div class="col-6">
           <h2>￥<%= (@user_cart.total - @user_cart.shipping_cost).fractional / 100 %></h2>
-          <%# 現在のカート合計金額 100円 - 送料 = 100円(米ドル表示：100.00) ➡︎ 小数点を消す(10000) ➡︎ 100割る(100) %>
+          <%# 現在のカート合計金額 100.00(ドル表示) - 送料 = 100.00 ➡︎ 小数点を消す(10000) ➡︎ 100割る → ￥100 %>
           <%# .totalメソッドは商品合計金額と送料を合わせた金額を表示するメソッドなので、送料をマイナスする処理をして小計を出している %>
           <%# .shipping_cost : ShoppingCartモデルのメソッド ⬇︎
             ① ShoppingCartItemsテーブルから カートidと一致するカートを探し、その中の(複数の) item_idカラムの値のみ配列で取得
             ② Productsテーブルから product_idが ①で取得した item_idと一致する(複数)データを探し、その商品達の carriage_flagカラムの値
-            を配列で取得 (true or false)
+            を配列で取得 (true / false)
             ③ carriage_flagの②の配列に 1つでもtrueの商品が含まれていれば送料を加算 %>
         </div>
       </div>
@@ -65,7 +67,7 @@
         </div>
         <div class="col-6">
           <h2>￥<%= @user_cart.shipping_cost.fractional / 100 %></h2>
-          <%# 送料 800円(米ドル表示：800.00) ➡︎ 小数点を消す(80000) ➡︎ 100割る(800) %>
+          <%# 送料 800.00(米ドル表示) ➡︎ 小数点を消す(80000) ➡︎ 100割る → ￥800 %>
         </div>
       </div>
       
@@ -75,7 +77,7 @@
         </div>
         <div class="col-6">
           <h2>￥<%= @user_cart.total.fractional / 100 %></h2>
-            <%# ⬆︎acts_as_shopping_cartの totalメソッドを使用し、現在のカート（@user_cart）の合計金額を表示 %>
+            <%# acts_as_shopping_cartの totalメソッドで現在のカート(@user_cart) の合計金額と送料を合わせた金額を表示 %>
             <%# そのままでは仕様上 150.00 のような米ドル表示になってしまう為 fractional / 100のように記述し小数点のない日本円表示にする %>
         </div>
         <div class="col-12 d-flex justify-content-end">
@@ -84,12 +86,12 @@
       </div>
     </div>
 
-    <%= form_with url: cart_users_path , method: :delete, class: "d-flex justify-content-end mt-3" do |f| %><!--shopping_carts#destroyへ-->
+    <%# shopping_carts#destroyへ %>
+    <%= form_with url: cart_users_path , method: :delete, class: "d-flex justify-content-end mt-3" do |f| %>
       <%= link_to "買い物を続ける", products_path, class: "btn samazon-favorite-button border-dark text-dark mr-3" %>
-        <!--⬆︎products_path :商品一覧へ(products#index)-->
       <div class="btn samazon-submit-button" data-toggle="modal" data-target="#buy-confirm-modal">購入を確定する</div>
-        <!--⬆︎購入を確定するボタンには data-toggle="modal"とdata-target="#buy-confirm-modal"という記述を追加しているが、これはモーダルを使用する宣言と、画面に表示するモーダルのIDを指定している。ここで指定されたIDを持つHTML要素をモーダルとして呼び出すことができる-->
-        <!--⬇︎以下呼び出されるモーダルのコード-->
+        <%# ⬆︎購入を確定するボタンには data-toggle="modal"とdata-target="#buy-confirm-modal"という記述を追加しているが、これはモーダルを使用する宣言と、画面に表示するモーダルのIDを指定している。ここで指定されたIDを持つHTML要素をモーダルとして呼び出すことができる %>
+        <%# ⬇︎以下呼び出されるモーダルのコード(#buy-confirm-modal) %>
       <div class="modal fade" id="buy-confirm-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -103,8 +105,8 @@
             
             <div class="modal-footer">
               <button type="button" class="btn samazon-favorite-button border-dark text-dark" data-dismiss="modal">閉じる</button>
+              <%# ⬇︎type="submit" とすることでカートの中身をコントローラへ送信(form_with内で type="submit"ボタンをクリックすると各データを送信する仕組みなので form_with内にモーダルと購入ボタンを配置 %>
               <button type="submit" class="btn samazon-submit-button">購入</button>
-              <!--⬆︎form_with内で type="submit"が設定されているボタン等をクリックすると、各データを送信する仕組みになっている為 form_with内にモーダルを配置し、購入ボタンを記述-->
             </div>
             
           </div>

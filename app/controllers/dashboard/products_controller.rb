@@ -62,6 +62,39 @@ class Dashboard::ProductsController < ApplicationController
   end
   
   
+  # CSV一括登録画面へ   GET  /dashboard/products/import/csv   dashboard/products#import
+  def import
+  end
+  
+  
+  # CSV一括登録ボタンを押したら POSTでここに飛ぶ   POST	 /dashboard/products/import/csv   dashboard/products#import_csv
+  def import_csv
+    #⬇︎ フォームから params[:file]が届き、末尾の拡張子が.csvだったら
+    if params[:file] && File.extname(params[:file].original_filename) == ".csv"
+      # File.extname("ファイルパス") : extnameメソッドは Fileクラスのメソッドで、引数で指定したファイル名の.拡張子のみを文字列として返す
+      # params[:パラメータ名].original_filename : フォームからアップロードされたファイル名を取得
+      Product.import_csv(params[:file])
+      flash[:success] = "CSVでの一括登録が成功しました!"
+      redirect_to import_csv_dashboard_products_url
+    else
+      flash[:danger] = "CSVが追加されていません。CSVを追加してください。"
+      redirect_to import_csv_dashboard_products_url
+    end
+  end
+  
+  
+  # 雛形ファイルダウンロードボタンを押したら GETでここに飛ぶ   GET  /dashboard/products/import/csv_download
+  def download_csv
+    send_file(
+      "#{Rails.root}/public/csv/products.csv",
+      filename: "products.csv",   # ダウンロードするときに使用するファイル名を指定
+      type: :csv                  # コンテントタイプを指定
+    )
+    # send_file(ファイルのパス, オプション={}) : 指定したパスに存在する画像やファイルを読み込みその内容をクライアントに送信
+  end
+  
+  
+  
   private
     def set_product
       @product = Product.find(params[:id])

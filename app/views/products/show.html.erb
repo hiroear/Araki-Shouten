@@ -67,7 +67,7 @@
             <p class="h3"><%= review.content %></p>
             <h6><%= review.user.name %></h6>
             <p><%= l review.created_at %></p>
-            <!--l（エル）メソッドを使ってレビューの投稿時間を表示。lメソッドは、アプリケーションのロケールに合わせて時間のフォーマットを指定できるメソッド-->
+            <!--l（エル）メソッドは、アプリケーションのロケールに合わせて時間のフォーマットを指定できるメソッド-->
             <!--lメソッドを使用するにはロケールファイルが必要(config/locales/ja.yml)-->
           </div>
         <% end %>
@@ -78,6 +78,7 @@
         <div class="row">
           <div class="offset-md-3 col-md-9">
             <%= form_with model: @review, url: product_reviews_path(@product) do |f| %>
+            <!--product_reviews_path 	POST 	/products/:product_id/reviews   reviews#create-->
               <hr>
               <div class="row ml-1">
                 <h5 class="review-h5">評価</h5>

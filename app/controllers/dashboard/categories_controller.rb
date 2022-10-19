@@ -1,15 +1,14 @@
 # ダッシュボード/カテゴリ管理　コントローラー
 class Dashboard::CategoriesController < ApplicationController
   before_action :authenticate_admin!
-  # , except: :index  #ログイン管理者以外のアクセスを弾く(indexアクション以外)
   before_action :set_category, only: %w[show edit update destroy]
   layout 'dashboard/dashboard'
   
   
   # dashboard_categories_path	 GET 	/dashboard/categories  dashboard/categories#index
   def index
-    @categories = Category.display_list(params[:page])  #Category.all.page(params[:page]).per(15) ?
-    logger.debug("================= dashboard/categories controllers index #{@categories}")
+    @categories = Category.display_list(params[:page])  #Category.all.page(params[:page]).per(15)
+    # logger.debug("================= dashboard/categories controllers index #{@categories}")
     @category = Category.new
     @major_categories = MajorCategory.all
   end

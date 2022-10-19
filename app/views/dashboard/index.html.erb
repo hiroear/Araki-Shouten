@@ -1,4 +1,7 @@
-<!--ダッシュボード/売上一覧画面　　dashboard_path	GET	 /dashboard  dashboard#index-->
+<!--ダッシュボード/売上一覧(日単位 / 月単位)　　dashboard_path	GET	 /dashboard  dashboard#index-->
+
+<h5>こんにちは　<%= current_admin.name %>　さん</h5>
+<br>
 
 <div class="w-75">
   <% if @sort == "month" %>
@@ -8,11 +11,10 @@
   <% end %>
   
   <%= form_with url: dashboard_path, method: :get, local: true, class: "form-inline" do |f| %>
-    切り替え
     <% if @sort.present? %>
-      <%= f.select :sort, @sort_list, { selected: @sort}, { onChange: "submit(this.form)", class: "form-inline ml-2" } %>
+      <%= f.select :sort, @sort_list, { selected: @sort}, { onChange: "submit(this.form)", class: "form-inline form-control ml-2" } %>
     <% else %>
-      <%= f.select :sort, @sort_list, {}, { onChange: "javascript: this.form.submit();", class: "form-inline ml-2" } %>
+      <%= f.select :sort, @sort_list, {}, { onChange: 'submit(this.form)', class: "form-inline form-control ml-2" } %>
     <% end %>
   <% end %>
   

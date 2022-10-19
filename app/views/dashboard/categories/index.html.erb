@@ -1,7 +1,7 @@
 <!--ダッシュボード/カテゴリ管理一覧画面-->
 <div class="w-75">
   <%= form_with(model: @category, url: dashboard_categories_path, local: true) do |f| %>
-  <!--POST  dashboard/categories#create-->
+  <!--dashboard_categories_path : POST  dashboard/categories#create-->
     <div class="form-group">
       <%= f.label :name, 'カテゴリ名' %>
       <%= f.text_field :name, class: "form-control" %>

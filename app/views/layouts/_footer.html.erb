@@ -1,7 +1,14 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-bottom mt-5">
+<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-bottom mt-5 d-inline">
   <!--<nav>タグにfixed-bottomクラス: ページの下部にフッターを固定-->
-  <%= link_to root_path, class: "navbar-brand mx-auto" do %>
-    <!--mx-autoクラス:「Samazon」のロゴを中央寄せ-->
-    <%= image_tag "/images/logo.jpg", class: "img-fuild" %>
-  <% end %>
+  <div class="row">
+    <div class="col"></div>
+    <%= link_to root_path, class: "navbar-brand col d-flex justify-content-center" do %>
+      <!--mx-autoクラス:「Samazon」のロゴを中央寄せ-->
+      <%= image_tag "/images/logo.jpg", class: "img-fuild" %>
+    <% end %>
+  
+    <label class="samazon-sidebar-category-label col d-flex justify-content-end">
+      <%= link_to "ダッシュボード", dashboard_path %>
+    </label>
+  </div>
 </nav>

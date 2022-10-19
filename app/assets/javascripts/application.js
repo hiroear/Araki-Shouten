@@ -18,3 +18,4 @@
 //= require activestorage
 //= require turbolinks
 // require_tree .
+// ⬆︎アセットパイプラインを無効にする為 //= のところを // だけにしてコメントアウトする
