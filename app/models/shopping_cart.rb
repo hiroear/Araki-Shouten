@@ -62,6 +62,7 @@ class ShoppingCart < ApplicationRecord
   # where(buy_flag: true).where("id LIKE ?", "%#{ids}%")
   
   
+  scope :search_bought_carts_by_user, -> (user) { bought_carts.where(user_id: user) }
   
   # ⬇︎月単位売上データ(カート)の [{配列}] を返すクラスメソッド (メソッド名の先頭に selfをつけることでクラスメソッドになる)
   def self.get_monthly_sales

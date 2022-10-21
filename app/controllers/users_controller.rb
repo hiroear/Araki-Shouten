@@ -82,6 +82,22 @@ class UsersController < ApplicationController
   end
   
   
+  # マイページ > 注文履歴を表示
+  def cart_history_index
+    # @orders = ShoppingCart.where(user_id: @user).where(buy_flag: true).page(params[:page]).per(15)
+    @orders = ShoppingCart.search_bought_carts_by_user(@user).page(params[:page]).per(15)
+      #⬆︎  ShoppingCart.where(buy_flag: true).where(user_id: user)
+  end
+  
+  
+  # マイページ > 注文履歴 > 注文履歴詳細 を表示
+  def cart_history_show
+    @cart = ShoppingCart.find(params[:num])
+    # @cart_items = ShoppingCartItem.where(owner_id: @cart)
+    @cart_items = ShoppingCartItem.user_cart_items(@cart.id)
+      # shoppingcartItem.where(owner_id: @cart.id)
+  end
+  
   
   private
     def set_user

@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <span>
+        <%= link_to 'マイページ', mypage_users_path %> > 注文履歴
+      </span>
+      
+      <div class="container mt-4">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">注文番号</th>
+              <th scope="col">購入日時</th>
+              <th scope="col">合計金額</th>
+              <th scope="col">注文詳細</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <% @orders.each do |order| %>
+              <tr>
+                <td><%= order.id %></td>
+                <td><%= order.updated_at.to_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
+                <td><%= order.total.fractional / 100 %></td>
+                <td>
+                  <%= link_to "#{ order.id }", mypage_cart_history_users_path(order) %>  <%# 注文詳細へ %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <%= paginate @orders %>
+    </div>
+  </div>
+</div>

@@ -62,6 +62,8 @@ Rails.application.routes.draw do
       put "mypage/password", :to => "users#update_password"     #mypage_password_users_path 	PUT	 /users/mypage/password   users#update_password
       get "mypage/favorite", :to => "users#favorite"   #mypage_favorite_users_path 	GET	 /users/mypage/favorite  users#favorite
       delete "mypage/delete", :to => "users#destroy"   #mypage_delete_users_path	DELETE	/users/mypage/delete   users#destroy
+      get "mypage/cart_history", :to => "users#cart_history_index", :as => "mypage_cart_histories"  # mypage_cart_histories_users_path	GET 	/users/mypage/cart_history  users#cart_history_index
+      get "mypage/cart_history/:num", :to => "users#cart_history_show", :as => "mypage_cart_history"  # mypage_cart_history_users_path	GET	  /users/mypage/cart_history/:num   users#cart_history_show
     end
   end
   
