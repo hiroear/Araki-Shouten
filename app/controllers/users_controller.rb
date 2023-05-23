@@ -1,3 +1,4 @@
+# マイページ関連
 class UsersController < ApplicationController
   before_action :set_user
   before_action :authenticate_user!
@@ -86,7 +87,7 @@ class UsersController < ApplicationController
   def cart_history_index
     # @orders = ShoppingCart.where(user_id: @user).where(buy_flag: true).page(params[:page]).per(15)
     @orders = ShoppingCart.search_bought_carts_by_user(@user).page(params[:page]).per(15)
-      #⬆︎  ShoppingCart.where(buy_flag: true).where(user_id: user)
+      #⬆︎  ShoppingCart.where(buy_flag: true).where(user_id: current_user)
   end
   
   
@@ -99,10 +100,50 @@ class UsersController < ApplicationController
   end
   
   
+  # クレジットカード登録画面　mypage_register_card_users_path  GET	/users/mypage/register_card   users#register_card
+  def register_card
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+    # @count = 0
+    card_info = {}
+    
+    if @user.token != ""  # @userの tokenが空でなければ
+      result = Payjp::Customer.retrieve(@user.token).cards.all(limit: 1).data[0]
+      @count = Payjp::Customer.retrieve(@user.token).cards.all.count  #1 確認
+      
+      card_info[:brand] = result.brand
+      card_info[:exp_month] = result.exp_month
+      card_info[:exp_year] = result.exp_year
+      card_info[:last4] = result.last4
+    end
+    
+    @card = card_info
+  end
+  
+  
+  # クレジットカード更新・登録  mypage_token_users_path  POST 	/users/mypage/token  users#token
+  def token
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+    customer = @user.token
+    
+    if @user.token != ""
+      cu = Payjp::Customer.retrieve(customer)  # あるuserテーブルの tokenカラムに該当する PayjpのCustomer情報を retrieveメソッドで取得?
+      delete_card = cu.cards.retrieve(cu.cards.data[0]["id"])
+      delete_card.delete
+      cu.cards.create(:card => params["payjp-token"])
+    else
+      cu = Payjp::Customer.create
+      cu.cards.create(:card => params["payjp-token"])
+      @user.token = cu.id
+      @user.save
+    end
+    redirect_to mypage_users_url
+  end
+  
+  
+  
   private
     def set_user
       @user = current_user
-      # current_userメソッドを使い、ユーザー自身の情報を@userに代入
     end
     
   

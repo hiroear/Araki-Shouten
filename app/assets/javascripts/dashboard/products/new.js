@@ -12,8 +12,8 @@ function handleImage(image) {
   };
     console.log("============")
   console.log(image);
-  reader.readAsDataURL(image[0]);  // この一行で、読み込み・入れ込み・送る の3つをしているイメージ
-    // 新しい readerオブジェクト(インスタンス)の中身に実際のデータを入れ込み、[新規登録]ボタンを押した際その readerオブジェクト自体をコントローラーへ送る
+  reader.readAsDataURL(image[0]);  // この一行で、読み込み・入れ込みの2つをしているイメージ
+    // 新しい readerオブジェクト(インスタンス)の中身に実際のデータを入れ込み、フォームによって[商品を登録]ボタンを押した際その readerオブジェクト自体をコントローラー(dashboard/products#createアクション)へ送る
     // readAsDataURL(): fileReaderでの読込方法(FileReaderのメソッド)。画像ファイルを DataURI(L)形式として読み込む。
-    // DataURL形式: 画像や音声データのURLなど(画像そのものではない)の情報。
+    // DataURL形式: 画像や音声データのURLなど(画像そのものではない)の情報
 }

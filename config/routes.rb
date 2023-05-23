@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   namespace :dashboard do # controllers/dashboard/
     resources :categories, except: [:new] #ダッシュボード/カテゴリ管理 (newアクション省く) GET 	/dashboard/categories  dashboard/categories#index...
     resources :products, except: [:show] do      #ダッシュボード/商品管理/商品一覧 (showアクション省く)
-      collection do
+      collection do      #ダッシュボード/商品管理/CSV一括登録
         get "import/csv", :to => "products#import"  # GET 	/dashboard/products/import/csv   dashboard/products#import
         post "import/csv", :to => "products#import_csv"  # POST	 /dashboard/products/import/csv   dashboard/products#import_csv
         get "import/csv_download", :to => "products#download_csv"  # GET	 /dashboard/products/import/csv_download   dashboard/products#download_csv
@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       get "cart", :to => "shopping_carts#index"  #cart_users_path 	GET	 /users/cart  shopping_carts#index
       post "cart", :to => "shopping_carts#create"   #cart_create_users_path 	POST	/users/cart/create  shopping_carts#create
       delete "cart", :to => "shopping_carts#destroy"  #cart_users_path 	DELETE	/users/cart 	shopping_carts#destroy
+      delete "cart/:id", :to => "shopping_carts#delete_item", as: 'cart_delete'  #cart_delete_users_path	DELETE	/users/cart/:id  shopping_carts#delete_item
       get "mypage", :to => "users#mypage"   #mypage_users  GET  /users/mypage  users#mypage
       get "mypage/edit", :to => "users#edit"   #mypage_edit_users  GET  /users/mypage/edit  users#edit
       get "mypage/address/edit", :to => "users#edit_address"   #mypage_address_edit_users  GET  /users/mypage/address/edit  users#edit_address
@@ -64,6 +65,8 @@ Rails.application.routes.draw do
       delete "mypage/delete", :to => "users#destroy"   #mypage_delete_users_path	DELETE	/users/mypage/delete   users#destroy
       get "mypage/cart_history", :to => "users#cart_history_index", :as => "mypage_cart_histories"  # mypage_cart_histories_users_path	GET 	/users/mypage/cart_history  users#cart_history_index
       get "mypage/cart_history/:num", :to => "users#cart_history_show", :as => "mypage_cart_history"  # mypage_cart_history_users_path	GET	  /users/mypage/cart_history/:num   users#cart_history_show
+      get "mypage/register_card", :to => "users#register_card"  # mypage_register_card_users_path	 GET	/users/mypage/register_card   users#register_card
+      post "mypage/token", :to => "users#token"  # mypage_token_users_path	POST	/users/mypage/token  users#token
     end
   end
   

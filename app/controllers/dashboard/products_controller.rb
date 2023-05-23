@@ -1,4 +1,4 @@
-# ダッシュボード/商品管理/商品一覧　コントローラー
+# ダッシュボード/商品管理/商品一覧　&  CSV一括登録画面  コントローラー
 class Dashboard::ProductsController < ApplicationController
   before_action :authenticate_admin!
   before_action :set_product, only: %w[edit update destroy]
@@ -73,9 +73,9 @@ class Dashboard::ProductsController < ApplicationController
     if params[:file] && File.extname(params[:file].original_filename) == ".csv"
       # File.extname("ファイルパス") : extnameメソッドは Fileクラスのメソッドで、引数で指定したファイル名の.拡張子のみを文字列として返す
       # params[:パラメータ名].original_filename : フォームからアップロードされたファイル名を取得
-      Product.import_csv(params[:file])
+      Product.import_csv(params[:file])   # activerecord-importで複数のレコードを一括保存 / 更新
       flash[:success] = "CSVでの一括登録が成功しました!"
-      redirect_to import_csv_dashboard_products_url
+      redirect_to import_csv_dashboard_products_url   #csv一括登録画面へ
     else
       flash[:danger] = "CSVが追加されていません。CSVを追加してください。"
       redirect_to import_csv_dashboard_products_url

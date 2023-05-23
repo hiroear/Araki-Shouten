@@ -1,3 +1,5 @@
+<%# 注文履歴詳細  mypage_cart_history_users_path	GET	  /users/mypage/cart_history/:num   users#cart_history_show %>
+
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
@@ -12,7 +14,7 @@
       
       <div class="row">
         <div class="col-5 mt-2">注文番号</div>
-        <div class="col-7 mt-2"><%= @cart.id %></div>
+        <div class="col-7 mt-2"><%= @cart.id %></div>  <%# @cart = ShoppingCart.find(params[:num]) %>
         
         <div class="col-5 mt-2">注文日時</div>
         <div class="col-7 mt-2"><%= @cart.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></div>
@@ -28,13 +30,13 @@
         
         <div class="col-5 mt-2">点数</div>
         <div class="col-7 mt-2"><%= ShoppingCartItem.user_cart_items(@cart.id).count %>点</div>
-        <%# ShoppingCartItem.where(owner_id:@cart.id).count %>
+        <%# ShoppingCartItem.where(owner_id: @cart.id).count %>
       </div>
       
       <hr>
       
-      <div class="row">
-        <% @cart_items.each do |cart_item| %>
+      <div class="row"> <%# rowクラスをつけることで div要素を横並びにする %>
+        <% @cart_items.each do |cart_item| %>  <%# @cart_items = shoppingcartItem.where(owner_id: @cart.id) %>
           <% product = Product.find(cart_item.item_id) %>
           <div class="col-md-5 mt-2">
             <%= link_to product_path(product), class: "ml-4" do %>
@@ -55,6 +57,7 @@
                 
                 <div class="col-2 mt-2">小計</div>
                 <div class="col-10 mt-2">￥<%= price = cart_item.price_cents * cart_item.quantity %></div>
+                <%# cart_item.price_cents だけで良いのでは？ %>
               </div>
             </div>
           </div>

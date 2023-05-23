@@ -9,6 +9,8 @@ function handleCSV(csv) {
   }
   
   console.log(csv);
-  reader.readAsDataURL(csv[0]);  // この一行で、読み込み・入れ込み・送る の3つをしているイメージ
-    // 新しい readerオブジェクト(インスタンス)の中身に実際のデータを入れ込み、[一括登録]ボタンを押した際その readerオブジェクト自体をコントローラーへ送る
+  reader.readAsDataURL(csv[0]);  // この一行で、読み込み・入れ込みの2つをしているイメージ
+    // 新しい readerオブジェクト(インスタンス)の中身に実際のデータを入れ込み、フォームによって[一括登録]ボタンを押した際その readerオブジェクト自体をコントローラー(import_csvアクション)へ送る
+    // readAsDataURL(): fileReaderでの読込方法(FileReaderのメソッド)。画像ファイルを DataURI(L)形式として読み込む
+    // DataURL形式: 画像や音声データのURLなど(画像そのものではない)の情報
 }

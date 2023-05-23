@@ -2,13 +2,15 @@
   <div class="w-75">
     <h1>ショッピングカート</h1>
 
-    <div class="offset-8 col-4">
+    <div class="offset-6 col-6">
       <div class="row"><%# rowの中の要素を横並びに %>
-        <div class="col-6">
+        <div class="col-4">
           <h2>数量</h2>
         </div>
-        <div class="col-6">
+        <div class="col-4">
           <h2>小計</h2>
+        </div>
+        <div class="col-4">
         </div>
       </div>
     </div>
@@ -29,7 +31,7 @@
             <% end %>
           <% end %>
         </div>
-        <div class="col-md-6 mt-4">
+        <div class="col-md-4 mt-4">
           <h3 class="mt-4"><%= product.name %></h3>
           <%# 21行目でProductモデルからデータを取得したのでproductsテーブルのカラム nameが使える %>
         </div>
@@ -38,6 +40,9 @@
         </div>
         <div class="col-md-2">
           <h3 class="w-100 mt-4">￥<%= user_cart_item.price_cents * user_cart_item.quantity %></h3>
+        </div>
+        <div class="col-md-2 mt-4">
+          <%= link_to "削除", cart_delete_users_path(user_cart_item.id), method: :delete, class: "btn btn-secondary px-2 py-1" %>
         </div>
       <% end %>
     </div>
@@ -88,7 +93,7 @@
 
     <%# shopping_carts#destroyへ %>
     <%= form_with url: cart_users_path , method: :delete, class: "d-flex justify-content-end mt-3" do |f| %>
-      <%= link_to "買い物を続ける", products_path, class: "btn samazon-favorite-button border-dark text-dark mr-3" %>
+      <%= link_to "買い物を続ける", products_path, class: "btn samazon-favorite-button text-favorite mr-3" %>
       <div class="btn samazon-submit-button" data-toggle="modal" data-target="#buy-confirm-modal">購入を確定する</div>
         <%# ⬆︎購入を確定するボタンには data-toggle="modal"とdata-target="#buy-confirm-modal"という記述を追加しているが、これはモーダルを使用する宣言と、画面に表示するモーダルのIDを指定している。ここで指定されたIDを持つHTML要素をモーダルとして呼び出すことができる %>
         <%# ⬇︎以下呼び出されるモーダルのコード(#buy-confirm-modal) %>
@@ -104,9 +109,13 @@
             </div>
             
             <div class="modal-footer">
-              <button type="button" class="btn samazon-favorite-button border-dark text-dark" data-dismiss="modal">閉じる</button>
+              <button type="button" class="btn samazon-favorite-button text-favorite" data-dismiss="modal">閉じる</button>
               <%# ⬇︎type="submit" とすることでカートの中身をコントローラへ送信(form_with内で type="submit"ボタンをクリックすると各データを送信する仕組みなので form_with内にモーダルと購入ボタンを配置 %>
-              <button type="submit" class="btn samazon-submit-button">購入</button>
+              <% if @card.present? %>
+                <button type="submit" class="btn samazon-submit-button">購入</button>
+              <% else %>
+                <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key=<%= ENV['PAYJP_PUBLIC_KEY'] %> data-on-created="onCreated" data-text="カードを登録・購入" data-submit-text="カードを登録・購入"></script>
+              <% end %>
             </div>
             
           </div>

@@ -1,4 +1,4 @@
-<!--ダッシュボード/商品一覧-->
+<%# ダッシュボード/商品一覧 %>
 <h1>商品管理</h1>
 <%= form_with url: dashboard_products_path, method: :get, local: true, class: "form-inline" do |f| %>
   並び替え
@@ -10,7 +10,7 @@
 <% end %>
 
 <div class="mt-2">
-  <div class="w-75"><!--キーワード検索-->
+  <div class="w-75"><%# キーワード検索 %>
     <%= form_with url: dashboard_products_path, method: :get, local: true do |f| %>
       <div class="d-flex flex-inline form-group">
         <div class="d-flex align-items-center">商品ID・商品名</div>
@@ -23,10 +23,10 @@
   <div class="d-flex justify-content-between w-75 mt-4">
     <h3>合計<%= @total_count %>件</h3>
     <%= link_to "+ 新規作成", new_dashboard_product_path, class: "btn samazon-submit-button" %>
-    <!--dashboard/products#new  新規作成画面へ-->
+    <%# dashboard/products#new  新規作成画面へ %>
   </div>
   
-  <table class="table table-responsive mt-5"> <!--.table-responsive：画面の横幅が狭くなるとスクロールバーを表示-->
+  <table class="table table-responsive mt-5"> <%# .table-responsive：画面の横幅が狭くなるとスクロールバーを表示 %>
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -52,7 +52,7 @@
           </td>
           <td><%= product.name %></td>
           <td><%= product.price %></td>
-          <td><%= product.category.name %></td><!--Productモデルと Categoryモデルで関連付けがされているから categoryテーブルにカラムの情報を取得できる-->
+          <td><%= product.category.name %></td><%# Productモデルと Categoryモデルで関連付けがされているから categoryテーブルにカラムの情報を取得できる %>
           <td><%= product.category.major_category_name %></td>
           <td>
             <%= link_to '編集', edit_dashboard_product_path(product), class: "dashboard-edit-link" %>

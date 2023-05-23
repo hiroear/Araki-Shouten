@@ -6,7 +6,7 @@
 
     <div class="row">
       <% @favorites.each do |favorite| %>
-      <div class="col-md-8 mt-2">
+      <div class="col-md-6 mt-2">
         <div class="d-inline-flex">
           <%= link_to product_path(favorite), class: "w-25" do %>
             <!--product_path(favorite) :products#show(@user.likees(Product)) 商品詳細ページへ-->
@@ -22,13 +22,13 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2 d-flex align-items-center justify-content-end">
-        <%= link_to product_path(favorite), class: "samazon-favorite-item-delete" do %>
+      <div class="col-md-3 d-flex align-items-center justify-content-end">
+        <%= link_to product_path(favorite), class: "btn samazon-favorite-button text-favorite" do %>
           <!--product_path(favorite) :products#show(@user.likees(Product)) 商品詳細ページへ-->
           削除
         <% end %>
       </div>
-      <div class="col-md-2 d-flex align-items-center justify-content-end">
+      <div class="col-md-3 d-flex align-items-center justify-content-end">
         <%= form_with url: cart_users_path, local: true do |f| %>
           <%= f.hidden_field :product_id, value: favorite.id %>
           <%= f.hidden_field :price, value: favorite.price %>

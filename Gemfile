@@ -42,23 +42,26 @@ gem 'devise'
 gem 'bootstrap', '~> 4.6.0'
 gem 'jquery-rails'
 
-# ⬇︎環境変数を使用できる
+# 環境変数を使用できる
 gem 'dotenv-rails'
 
-# socialiizatioinを使用できる
+# socialiizatioin
 gem 'socialization'
 
-# ページネーションを実装できる
+# ページネーション
 gem 'kaminari'
 
-# それらしい値を自動生成できる
+# それらしい値を自動生成
 gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
 
-# ショッピングカートを実装できる
+# ショッピングカート
 gem 'acts_as_shopping_cart'
 
-# 複数のレコードを一括で登録、更新できる
+# 複数のレコードを一括で登録
 gem 'activerecord-import'
+
+# クレジットカード決済機能を導入できる
+gem 'payjp'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

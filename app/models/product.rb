@@ -104,17 +104,18 @@ class Product < ApplicationRecord
     new_products = []
     update_products = []
     CSV.foreach(file.path, headers: true, encoding: "Shift_JIS:UTF-8") do |row|
-      # file.pathでファイルのパスを指定 ▶︎ Shift_JIS形式の CSVを 1行ずつ UTF-8に変換しながら読み込み（メモリに優しい）
-      # CSV.foreach : CSVファイルの内容を 1行づつ取り出す　(例：["1", "milk", "200"],["2", "coke", "300"]...)
-      # headers: true : row[1] ではなく row[:name]のように扱うことが可能になる
+      # CSV.foreach ▶︎ CSVファイルの内容を 1行(レコード)づつ取り出す　(例:[ "abc","abc説明", "200","false","true"],[ "def","def説明", "400","true","true"...)
+      # file.path ▶︎ ファイルのパスを指定 / headers: true ▶︎ row[1] でなく row[:name]のように扱うことが可能になる
+      # encoding ▶︎ Shift_JIS形式の CSVを1行ずつ UTF-8に変換しながら読み込み（メモリに優しい)
       
-      row_to_hash = row.to_hash   # CSVデータの一行をハッシュ {キー =>"値"} に整形 (例：{:milk => 200})
-      byebug
+      row_to_hash = row.to_hash   # CSVデータの一行をハッシュ {キー =>"値"} に整形?
+      # byebug
       
       #⬇︎ IDが見つかればレコードを呼び出し productの中身を更新する為の update_products[] を生成
       # (別の書き方 : product = find(id: row_to_hash["id"]) || new)
-      if row_to_hash[:id].present?
+      if row_to_hash[:id].present?  # if exists?(id: row_to_hash["id"])
         update_product = find(id: row_to_hash[:id])  # row_to_hash[:id] と一致する product_idを探し update_productに代入
+          #update_product = find(row_to_hash["id"]) row_to_hash配列のキーが文字列のため "id"として取り出す必要がある?
         update_product.attributes = row.to_hash.slice!(csv_attributes)
           # attributesメソッド : 特定の attribute(カラム)を変更(更新)する (オブジェクトの変更のみ。DBには保存されない)
           # slice!メソッド : 配列や文字列から指定した要素[:name, :description, :price,・・・]を取り出す
