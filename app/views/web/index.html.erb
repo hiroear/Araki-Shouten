@@ -1,47 +1,58 @@
-<!--root / トップページ-->
+<%# root / トップページ %>
 <div class="row">
-  <div class="col-2">
+  <div class="col-2 pc-only">
     <%= render partial: "layouts/sidebar", locals: { categories: @categories, major_category_names: @major_category_names } %>
   </div>
-    <div class="col-9">
-      <h1>おすすめ商品</h1>
-      <div class="row">
-        <% @recommend_products.each do |recommend_product| %>
-          <div class="col-4">
-            <%= link_to product_path(recommend_product) do %>  <!--おすすめ商品のそれぞれの個別ページへ-->
-              <% if recommend_product.image.attached? %>
-                <%= image_tag recommend_product.image, class: "img-thumbnail" %>
-              <% else %>
-                <%= image_tag "/images/dummy.png", class: "img-thumbnail" %>
-              <% end %>
-            <% end %>
-            <div class="row">
-              <div class="col-12">
-                <p class="samazon-product-label mt-2" >
-                  <%= recommend_product.name %>
-                  <label>￥<%= recommend_product.price %></label>
-                </p>
+  <div class="container col-9">
+    <h1 class='title-text'>おすすめ商品</h1>
+    <div class="row">
+      <% @recommend_products.each do |recommend_product| %>
+        <div class="col-sm-4 col-12 p-0">
+          <%= link_to product_path(recommend_product) do %>
+            <% if recommend_product.image.attached? %>
+              <div class='image-pc-only'>
+                <%= image_tag recommend_product.image.variant(resize: "300x200^", gravity: "center"), class: "rounded img-thumbnail image-margin" %>
               </div>
+              <div class='image-sp-only'>
+                <div class='d-flex'>
+                  <%= image_tag recommend_product.image.variant(resize: "180x100^", gravity: "center"), class: "rounded img-thumbnail mb-2" %>
+                  <p class="sp-product-name mt-3" >
+                    <%= recommend_product.name %>
+                    <label>￥<%= recommend_product.price %></label>
+                  </p>
+                </div>
+              </div>
+            <% else %>
+              <%= image_tag "/images/dummy.png", class: "rounded img-thumbnail" %>
+            <% end %>
+          <% end %>
+          <div class="row pc-product-name">
+            <div class="col-12">
+              <p class="mt-1" >
+                <%= recommend_product.name %>
+                <label>￥<%= recommend_product.price %></label>
+              </p>
             </div>
           </div>
-        <% end %>
-      </div><!--.row-->
+        </div>
+      <% end %>
+    </div><!--.row-->
       
       
-    <h1>新着商品</h1>
+    <h1 class='title-text'>新着商品</h1>
     <div class="row">
       <% @recently_products.each do |recently_product| %>
         <div class="col-3">
           <%= link_to product_path(recently_product) do %>
             <% if recently_product.image.attached? %>
-              <%= image_tag recently_product.image, class: "img-thumbnail" %>
+              <%= image_tag recently_product.image, class: "rounded img-thumbnail" %>
             <% else %>
-              <%= image_tag "/images/dummy.png", class: "img-thumbnail" %>
+              <%= image_tag "/images/dummy.png", class: "rounded img-thumbnail" %>
             <% end %>
           <% end %>
           <div class="row">
             <div class="col-12">
-              <p class="samazon-product-level mt-2">
+              <p class="mt-2">
                 <%= recently_product.name %>
                 <label>￥<%= recently_product.price %></label>
               </p>

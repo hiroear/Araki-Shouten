@@ -1,16 +1,14 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);
-
 @import 'bootstrap';
 
 body {
+  font-family: "Noto Sans JP";
   margin: 0;
-  font-family: Nunito, sans-serif;
   font-size: .9rem;
   font-weight: 400;
   line-height: 1.6;
-  color: #212529;
+  color: #4b6f7d;
   text-align: left;
-  background-color: #f8fafc
+  background-color: #f8fafc;
 }
 
 h3, .h3 {
@@ -27,6 +25,17 @@ h3, .h3 {
   white-space: nowrap
 }
 
+.nav-item label {
+  color: #4b6f7d;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 18px;
+}
+
+.form-group {
+  margin: 0;
+}
+
 .form-control {
   display: block;
   width: 100%;
@@ -40,4 +49,26 @@ h3, .h3 {
   border: 1px solid #ced4da;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+.form-inline {
+  flex-flow: nowrap;
+  height: 50px;
+}
+
+.table {
+  font-family: "Noto Sans JP";
+  margin-top: 35px;
+  font-size: .9rem;
+  font-weight: 400;
+  color: #4b6f7d;
+  line-height: 1.5;
+}
+.table a {
+  color: #4b6f7d;
+  text-decoration: none;
+}
+
+.w-80 {
+  width: 80% !important;
 }

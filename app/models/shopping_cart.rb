@@ -1,4 +1,4 @@
-# カートを1つのデータとしてカウント、DBに保存するモデル
+# カートを1つのデータとしてカウントし、DBに保存するモデル
 
 class ShoppingCart < ApplicationRecord
   acts_as_shopping_cart
@@ -8,15 +8,15 @@ class ShoppingCart < ApplicationRecord
                               user_cart.nil? ? ShoppingCart.create(user_id: user.id)
                                              : user_cart }
   
-  # tax_pctメソッドは、acts_as_shopping_cartで用意されている消費税を計算するメソッド
-  # 本アプリは税込表示になっていて 0としたほうが都合がよいため、オーバーライドしている
+  # tax_pctメソッド: acts_as_shopping_cartで用意されている消費税を計算するメソッド
+  # 本アプリは税込表示とするので 0としたほうが都合が良いためオーバーライド
   def tax_pct
     0
   end
   
   
   scope :sort_list, -> {{ '切り替え': '', '月別': 'month', '日別': 'daily'}}   #セレクトボックスの内容。パラメータ
-  scope :bought_carts, -> { where(buy_flag: true) }   #購入済みのカート情報
+  scope :bought_carts, -> { where(buy_flag: true) }     #購入済みのカート情報
   
   #⬇︎ sqlite用  月単位 /日単位の売上の重複データを除いたカート一覧を降順・配列で取得
   scope :bought_months_sqlite, -> {
@@ -97,7 +97,7 @@ class ShoppingCart < ApplicationRecord
     end
     
     return array    #最後に、上で生成した配列を返す
-    #例 ▶︎ [{:period=>"2022-07", :total=>9, :count=>1, :average=>9}, {:period=>"2022-06", :total=>10, :count=>2, :average=>5}, {:period=>"2022-04", :total=>41, :count=>1, :average=>41}...]
+    #︎ [{:period=>"2022-07", :total=>9, :count=>1, :average=>9}, {:period=>"2022-06", :total=>10, :count=>2, :average=>5}, {:period=>"2022-04", :total=>41, :count=>1, :average=>41}...]
   end
   
   

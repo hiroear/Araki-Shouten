@@ -2,29 +2,30 @@
 <div class="container d-flex justify-content-center mt-3">
   <div class="w-50">
     
-    <h1>マイページ</h1>
-    
+    <h2 class="title-text">マイページ</h2>
     <hr>
     
     <div class="container">
       <div class="d-flex justify-content-between">
-        <div class="row">
-          <div class="col-2 d-flex align-items-center">
-            <i class="fas fa-user fa-3x"></i>
+        <div class="row col-11">
+          <div class="col-1 d-flex align-items-center p-0">
+            <i class="fas fa-user fa-2x"></i>
           </div>
           <div class="col-9 d-flex align-items-center ml-2 mt-3">
             <div class="d-flex flex-column">
-              <label for="user-name">会員情報の編集</label>
-              <p>アカウント情報の編集</p>
+              <%= link_to mypage_edit_users_path do %>
+                <label class="mypage-text">会員情報の編集</label>
+                <p class="mypage-text">アカウント情報の編集</p>
+              <% end %>
             </div>
           </div>
         </div>
-        <div class="d-flex align-items-center">
-          <!-- mypage_edit_users_path	 GET	 /users/mypage/edit  users#edit  会員情報の編集画面へ-->
-          <%= link_to mypage_edit_users_path do %>
-            <i class="fas fa-chevron-right fa-2x"></i>
-          <% end %>
-        </div>
+          <div class="col-1 d-flex align-items-center pr-0">
+            <!-- mypage_edit_users_path	 GET	 /users/mypage/edit  users#edit  会員情報の編集画面へ-->
+            <%= link_to mypage_edit_users_path do %>
+              <i class="fas fa-chevron-right fa-2x mypage-text"></i>
+            <% end %>
+          </div>
       </div>
     </div>
     
@@ -32,21 +33,24 @@
     
     <div class="container">
       <div class="d-flex justify-content-between">
-        <div class="row">
-          <div class="col-2 d-flex align-items-center">
-            <i class="fas fa-credit-card fa-3x"></i>
+        <div class="row col-11">
+          <div class="col-1 d-flex align-items-center p-0">
+            <i class="fas fa-credit-card fa-2x"></i>
           </div>
           <div class="col-9 d-flex align-items-center ml-2 mt-3">
             <div class="d-flex flex-column">
-              <label for="user-name">クレジットカードの登録</label>
-              <p>クレジットカードの登録</p>
+              <%= link_to mypage_register_card_users_path do %>
+                <label  class="mypage-text">クレジットカードの登録</label>
+                <p class="mypage-text">クレジットカードの登録・更新</p>
+              <% end %>
             </div>
           </div>
         </div>
-        <div class="d-flex align-items-center">
+      
+        <div class="col-1 d-flex align-items-center pr-0">
           <%# mypage_register_card_users_path	 GET	/users/mypage/register_card   users#register_card %>
           <%= link_to mypage_register_card_users_path do %>
-            <i class="fas fa-chevron-right fa-2x"></i>
+            <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>
         </div>
       </div>
@@ -56,21 +60,23 @@
     
     <div class="container">
       <div class="d-flex justify-content-between">
-        <div class="row">
-          <div class="col-2 d-flex align-items-center">
-            <i class="fas fa-archive fa-3x"></i>
+        <div class="row col-11">
+          <div class="col-1 d-flex align-items-center p-0">
+            <i class="fas fa-archive fa-2x"></i>
           </div>
           <div class="col-9 d-flex align-items-center ml-2 mt-3">
             <div class="d-flex flex-column">
-              <label for="user-name">注文履歴</label>
-              <p>注文履歴を確認できます</p>
+              <%= link_to mypage_cart_histories_users_path do %>
+                <label class="mypage-text">注文履歴</label>
+                <p class="mypage-text">注文履歴を確認できます</p>
+              <% end %>
             </div>
           </div>
         </div>
-        <div class="d-flex align-items-center">
+        <div class="col-1 d-flex align-items-center pr-0">
           <!--mypage_users_path	 GET	/users/mypage  users#mypage  マイページ画面へ-->
           <%= link_to mypage_cart_histories_users_path do %>
-            <i class="fas fa-chevron-right fa-2x"></i>
+            <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>
         </div>
       </div>
@@ -80,21 +86,23 @@
     
     <div class="container">
       <div class="d-flex justify-content-between">
-        <div class="row">
-          <div class="col-2 d-flex align-items-center">
-            <i class="fas fa-map-marked fa-3x"></i>
+        <div class="row col-11">
+          <div class="col-1 d-flex align-items-center p-0">
+            <i class="fas fa-map-marked fa-2x"></i>
           </div>
-          <div class="col-9 d-flex align-items-center ml-3 mt-3">
+          <div class="col-9 d-flex align-items-center ml-2 mt-3">
             <div class="d-flex flex-column">
-              <label for="user-name">お届け先の変更</label>
-              <p>登録住所の変更</p>
+              <%= link_to mypage_address_edit_users_path do %>
+                <label class="mypage-text">お届け先の変更</label>
+                <p class="mypage-text">登録住所の変更</p>
+              <% end %>
             </div>
           </div>
         </div>
-        <div class="d-flex align-items-center">
+        <div class="col-1 d-flex align-items-center pr-0">
           <!--mypage_address_edit_users_path	GET  /users/mypage/address/edit   users#edit_address  登録住所変更画面へ-->
           <%= link_to mypage_address_edit_users_path do %>
-            <i class="fas fa-chevron-right fa-2x"></i>
+            <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>
         </div>
       </div>
@@ -104,21 +112,23 @@
     
     <div class="container">
       <div class="d-flex justify-content-between">
-        <div class="row">
-          <div class="col-2 d-flex align-items-center">
-            <i class="fas fa-lock fa-3x"></i>
+        <div class="row col-11">
+          <div class="col-1 d-flex align-items-center p-0">
+            <i class="fas fa-lock fa-2x"></i>
           </div>
-          <div class="col-9 d-flex align-items-center ml-3 mt-3">
+          <div class="col-9 d-flex align-items-center ml-2 mt-3">
             <div class="d-flex flex-column">
-              <label for="user-name">パスワード変更</label>
-              <p>パスワードを変更します</p>
+              <%= link_to mypage_edit_password_users_path do %>
+                <label class="mypage-text">パスワード変更</label>
+                <p class="mypage-text">パスワードを変更します</p>
+              <% end %>
             </div>
           </div>
         </div>
-        <div class="d-flex align-items-center">
+        <div class="col-1 d-flex align-items-center pr-0">
           <!--mypage_edit_password_users_path	 GET  /users/mypage/edit_password  users#edit_password  パスワード変更画面へ-->
           <%= link_to mypage_edit_password_users_path do %>
-            <i class="fas fa-chevron-right fa-2x"></i>
+            <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>
         </div>
       </div>
@@ -128,21 +138,23 @@
 
     <div class="container">
       <div class="d-flex justify-content-between">
-        <div class="row">
-          <div class="col-2 d-flex align-items-center">
-            <i class="fas fa-sign-out-alt fa-3x"></i>
+        <div class="row col-11">
+          <div class="col-1 d-flex align-items-center p-0">
+            <i class="fas fa-sign-out-alt fa-2x"></i>
           </div>
           <div class="col-9 d-flex align-items-center ml-2 mt-3">
             <div class="d-flex flex-column">
-              <label for="user-name">ログアウト</label>
-              <p>ログアウトします</p>
+              <%= link_to logout_path, method: :delete do %>
+                <label class="mypage-text">ログアウト</label>
+                <p class="mypage-text">ログアウトします</p>
+              <% end %>
             </div>
           </div>
         </div>
-        <div class="d-flex align-items-center">
+        <div class="col-1 d-flex align-items-center pr-0">
           <!--logout_path	 DELETE	 /logout   users/sessions#destroy-->
           <%= link_to logout_path, method: :delete do %>
-            <i class="fas fa-chevron-right fa-2x"></i>
+            <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>          
         </div>
       </div>

@@ -6,5 +6,5 @@ class ShoppingCartItem < ApplicationRecord
   scope :user_cart_items, -> (user_shoppingcart) { where(owner_id: user_shoppingcart) }
   
   scope :user_cart_item_ids, -> (user_shoppingcart) { where(owner_id: user_shoppingcart).pluck(:item_id) }
-    #ShoppingCartsテーブルのid から owner_idが一致するカートを探し、そのカート内の(複数の) item_idカラムの値のみ配列で取得
+    #ShoppingCartsテーブルの idから owner_idが一致するカートを探し、そのカート内の(複数の) item_idカラムの値のみ配列で取得
 end

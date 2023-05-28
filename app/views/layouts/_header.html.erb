@@ -1,17 +1,18 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm samazon-header-container">
-    <!--<a class="navbar-brand" href="/"><%= ENV["APP_NAME"] %></a>-->
+  <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm header-container">
     <%= link_to root_path do %>
-      <%= image_tag "/images/logo.jpg" %> <!--image_tagメソッドでロゴ画像表示-->
+      <%= image_tag "/images/logo.png" %>
     <% end %>
-    <form class="form-inline">
-      <div class="form-group">
-        <input class="form-control samazon-header-search-input">
+    
+    <%= form_with url: products_path, method: :get, local: true, class: 'form-inline' do |f| %>
+      <div class="form-group header-search-input">
+        <%= f.text_field :keyword, class: "form-control", placeholder: 'キーワードを入力' %>
       </div>
-      <div class="input-group">
-        <button type="submit" class="btn samazon-header-search-button"><i class="fas fa-search samazon-header-search-icon"></i></button>
+      <div class="input-group header-search-button">
+        <button type="submit" class="btn"><i class="fas fa-search header-search-icon"></i></button>
       </div>
-    </form>
+    <% end %>
+    
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -19,21 +20,20 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Right Side Of Navbar -->
       <ul class="navbar-nav ml-auto mr-5 mt-2">
-      <!-- user_signed_in? はユーザがログインしているか調べるdeviseのHelperメソッド -->
       <% if user_signed_in? %>
-        <li class="nav-item mr-5">
-          <%= link_to mypage_users_path, class: "nav-link" do %>
-            <i class="fas fa-user mr-1"></i><label>マイページ</label>
+        <li class="nav-item">
+          <%= link_to mypage_users_path, class: "nav-link mr-2" do %>
+            <label><span class="user"></span>マイページ</label>
           <% end %>
         </li>
-        <li class="nav-item mr-5"><!--お気に入り♡アイコン-->
+        <li class="nav-item">
           <%= link_to mypage_favorite_users_path, class: "nav-link" do %>
-            <i class="far fa-heart"></i>
+            <label><span class="heart"></span></label>
           <% end %>
         </li>
-        <li class="nav-item mr-5"><!--ショッピングカートアイコン-->
+        <li class="nav-item">
           <%= link_to cart_users_path, class: "nav-link" do %>
-            <i class="fas fa-shopping-cart"></i>
+            <label><span class="cart"></span></label>
           <% end %>
         </li>
       <% else %>
@@ -49,10 +49,10 @@
         </li>
         <hr>
         <li class="nav-item mr-5">
-          <%= link_to login_path, class: "nav-link" do %><i class="far fa-heart"></i><% end %>
+          <%= link_to login_path, class: "nav-link" do %><span class="heart"></span><% end %>
         </li>
         <li class="nav-item mr-5">
-          <%= link_to login_path, class: "nav-link" do %><i class="fas fa-shopping-cart"></i><% end %>
+          <%= link_to login_path, class: "nav-link" do %><span class="cart"></span><% end %>
         </li>
       <% end %>
     </div>

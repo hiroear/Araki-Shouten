@@ -1,84 +1,80 @@
 Rails.application.routes.draw do
   
-  # root :to => "web#index"  #root_path	 GET	/	web#index (root(TOP画面)を web#indexに設定)
-  
   # Deviseはカスタマイズ可能。元々あるコントローラーを継承した子供のコントローラーを優先する
   devise_for :users, :controllers => {
-    :registrations => 'users/registrations', #デフォルトのregistrationsコントローラを継承し'users/registrations'コントローラを使用
-    :sessions => 'users/sessions', #デフォルトのsessionsコントローラを継承し'users/sessions'コントローラを使用
-    :passwords => 'users/passwords', #デフォルトのpasswordsコントローラを継承し'users/passwords'コントローラを使用
-    :confirmations => 'users/confirmations', #デフォルトのconfirmationsコントローラを継承し'users/confirmations'コントローラを使用
-    :unlocks => 'users/unlocks', #デフォルトのunlocksコントローラを継承し'users/unlocks'コントローラを使用
+    :registrations => 'users/registrations',   #デフォルトのregistrationsコントローラを継承し'users/registrations'コントローラを使用
+    :sessions => 'users/sessions',
+    :passwords => 'users/passwords',
+    :confirmations => 'users/confirmations',
+    :unlocks => 'users/unlocks',
   }
 
   devise_scope :user do
-    # root :to => "users/sessions#new" #rootをusers/sessionsコントローラのnewアクション(ログイン画面)に設定
-    root :to => "web#index"  #root_path	 GET	/	web#index (root(TOP画面)を web#indexに設定)
-    get "signup", :to => "users/registrations#new" #signup...URL(アクセスする時)
-    get "verify", :to => "users/registrations#verify" #アカウント作成後、メールの送信完了を知らせる画面にリダイレクトされるよう画面のルーティングを設定
+    root :to => "web#index"                            #root_path	 GET	/	web#index (root(TOP画面)を web#indexに設定)
+    get "signup", :to => "users/registrations#new"     #signup...URL(アクセスする時)
+    get "verify", :to => "users/registrations#verify"  #アカウント作成後、メールの送信完了を知らせる画面にリダイレクトされるよう画面のルーティングを設定
     get "login", :to => "users/sessions#new"
     delete "logout", :to => "users/sessions#destroy"
   end
   
   
   devise_for :admins, :controllers => {
-    :sessions => 'admins/sessions'  #デフォルトのsessionsコントローラを継承し'admins/sessions'コントローラを使用
+    :sessions => 'admins/sessions'                     #デフォルトのsessionsコントローラを継承し'admins/sessions'コントローラを使用
   }
   
   devise_scope :admin do
     get 'dashboard', to: 'dashboard#index'
-    get 'dashboard/login', to: 'admins/sessions#new'  #  GET/ URL: dashboard/login で admins/sessionsコントローラのnewアクションを実行
+    get 'dashboard/login', to: 'admins/sessions#new'
     post 'dashboard/login', to: 'admins/sessions#create'
     delete 'dashboard/logout', to: 'admins/sessions#destroy'
   end
   
   namespace :dashboard do # controllers/dashboard/
-    resources :categories, except: [:new] #ダッシュボード/カテゴリ管理 (newアクション省く) GET 	/dashboard/categories  dashboard/categories#index...
-    resources :products, except: [:show] do      #ダッシュボード/商品管理/商品一覧 (showアクション省く)
-      collection do      #ダッシュボード/商品管理/CSV一括登録
-        get "import/csv", :to => "products#import"  # GET 	/dashboard/products/import/csv   dashboard/products#import
+    resources :categories, except: [:new]            #ダッシュボード/カテゴリ管理 (newアクション省く)
+    resources :products, except: [:show] do          #ダッシュボード/商品管理/商品一覧 (showアクション省く)
+      collection do                                  #ダッシュボード/商品管理/CSV一括登録
+        get "import/csv", :to => "products#import"   # GET 	/dashboard/products/import/csv   dashboard/products#import
         post "import/csv", :to => "products#import_csv"  # POST	 /dashboard/products/import/csv   dashboard/products#import_csv
         get "import/csv_download", :to => "products#download_csv"  # GET	 /dashboard/products/import/csv_download   dashboard/products#download_csv
       end
     end
-    resources :major_categories, except: [:new] #ダッシュボード/親カテゴリ管理 (newアクション省く)
-    resources :users, only: [:index, :destroy]  #ダッシュボード/顧客管理(index/destroyアクションのみ)
-    resources :orders, only: [:index]  #ダッシュボード/受注一覧(indexアクションのみ)
+    resources :major_categories, except: [:new]    #ダッシュボード/親カテゴリ管理 (newアクション省く)
+    resources :users, only: [:index, :destroy]     #ダッシュボード/顧客管理(index/destroyアクションのみ)
+    resources :orders, only: [:index]              #ダッシュボード/受注一覧(indexアクションのみ)
   end
   
   
   #users = mypage
   resources :users, only: [] do  # collectionを書く為 resourcesで囲ったが resourcesで生成される7つのルーティングは必要ない為 only: [] とした(URLをusers/〜にする為)
     collection do
-      get "cart", :to => "shopping_carts#index"  #cart_users_path 	GET	 /users/cart  shopping_carts#index
-      post "cart", :to => "shopping_carts#create"   #cart_create_users_path 	POST	/users/cart/create  shopping_carts#create
-      delete "cart", :to => "shopping_carts#destroy"  #cart_users_path 	DELETE	/users/cart 	shopping_carts#destroy
-      delete "cart/:id", :to => "shopping_carts#delete_item", as: 'cart_delete'  #cart_delete_users_path	DELETE	/users/cart/:id  shopping_carts#delete_item
-      get "mypage", :to => "users#mypage"   #mypage_users  GET  /users/mypage  users#mypage
-      get "mypage/edit", :to => "users#edit"   #mypage_edit_users  GET  /users/mypage/edit  users#edit
-      get "mypage/address/edit", :to => "users#edit_address"   #mypage_address_edit_users  GET  /users/mypage/address/edit  users#edit_address
-      put "mypage", :to => "users#update"   #mypage_address_edit_users  PUT  /users/mypage  users#update
-      get "mypage/edit_password", :to => "users#edit_password"   #mypage_edit_password_users_path	 GET	/users/mypage/edit_password   users#edit_password
+      get "cart", :to => "shopping_carts#index"
+      post "cart", :to => "shopping_carts#create"
+      delete "cart", :to => "shopping_carts#destroy"
+      delete "cart/:id", :to => "shopping_carts#delete_item", as: 'cart_delete'
+      get "mypage", :to => "users#mypage"
+      get "mypage/edit", :to => "users#edit"
+      get "mypage/address/edit", :to => "users#edit_address"
+      put "mypage", :to => "users#update"
+      get "mypage/edit_password", :to => "users#edit_password"
       get "mypage/password", :to => "users#update_password"
-      put "mypage/password", :to => "users#update_password"     #mypage_password_users_path 	PUT	 /users/mypage/password   users#update_password
-      get "mypage/favorite", :to => "users#favorite"   #mypage_favorite_users_path 	GET	 /users/mypage/favorite  users#favorite
-      delete "mypage/delete", :to => "users#destroy"   #mypage_delete_users_path	DELETE	/users/mypage/delete   users#destroy
-      get "mypage/cart_history", :to => "users#cart_history_index", :as => "mypage_cart_histories"  # mypage_cart_histories_users_path	GET 	/users/mypage/cart_history  users#cart_history_index
-      get "mypage/cart_history/:num", :to => "users#cart_history_show", :as => "mypage_cart_history"  # mypage_cart_history_users_path	GET	  /users/mypage/cart_history/:num   users#cart_history_show
-      get "mypage/register_card", :to => "users#register_card"  # mypage_register_card_users_path	 GET	/users/mypage/register_card   users#register_card
-      post "mypage/token", :to => "users#token"  # mypage_token_users_path	POST	/users/mypage/token  users#token
+      put "mypage/password", :to => "users#update_password"
+      get "mypage/favorite", :to => "users#favorite"
+      delete "mypage/delete", :to => "users#destroy"
+      get "mypage/cart_history", :to => "users#cart_history_index", :as => "mypage_cart_histories"
+      get "mypage/cart_history/:num", :to => "users#cart_history_show", :as => "mypage_cart_history"
+      get "mypage/register_card", :to => "users#register_card"
+      post "mypage/token", :to => "users#token"
     end
   end
   
-  # アクションを追加する場合resourcesブロック内に member又はcollection を記述する
+  # アクションを追加する場合resourcesブロック内に member又はcollection を記述
   # member :idをパラメータで渡したい場合
   # collection :全てのデータを対象としたアクションの場合(idをパラメータで渡さなくて良い場合)
   
   
   
   resources :products, only: [:index, :show, :favorite]  do
-    resources :reviews, only: [:create]  #product_reviews  POST  /products/:product_id/reviews   reviews#create
-    # post '/products/:product_id/reviews' => 'reviews#create'  でもOK
+    resources :reviews, only: [:create]
     
     member do
       get :favorite   #favorite_product  GET  /products/:id/favorite  products#favorite

@@ -4,17 +4,17 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <span>
-        <%= link_to 'マイページ', mypage_users_path %> > 注文履歴
+        <%= link_to 'マイページ', mypage_users_path, class: 'item-text text-decoration-none' %> > 注文履歴
       </span>
       
       <div class="container mt-4">
-        <table class="table">
+        <table class="table table-hover">
           <thead>
-            <tr>
+            <tr class="title-text">
               <th scope="col">注文番号</th>
               <th scope="col">購入日時</th>
               <th scope="col">合計金額</th>
-              <th scope="col">注文詳細</th>
+              <!--<th scope="col">注文詳細</th>-->
             </tr>
           </thead>
           
@@ -22,12 +22,10 @@
             <% @orders.each do |order| %>
             <%# @orders = ShoppingCart.where(buy_flag: true).where(user_id: current_user) %>
               <tr>
-                <td><%= order.id %></td>
-                <td><%= order.updated_at.to_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-                <td><%= order.total.fractional / 100 %></td>
-                <td>
-                  <%= link_to "#{ order.id }", mypage_cart_history_users_path(order) %>  <%# 注文詳細画面へ GET	/users/mypage/cart_history/:num   users#cart_history_show %>
-                </td>
+                <%# 注文詳細画面へ GET	/users/mypage/cart_history/:num   users#cart_history_show %>
+                <td><%= link_to "#{ order.id }", mypage_cart_history_users_path(order) %></td>
+                <td><%= link_to "#{ order.updated_at.to_datetime.strftime("%Y年 %m月 %d日　%H:%M") }", mypage_cart_history_users_path(order) %></td>
+                <td><%= link_to "￥#{ order.total.fractional / 100 }", mypage_cart_history_users_path(order) %></td>
               </tr>
             <% end %>
           </tbody>

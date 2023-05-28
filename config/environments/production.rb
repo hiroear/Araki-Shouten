@@ -23,7 +23,8 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  # config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = :terser
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -93,23 +94,22 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   
   
-  # # default url
-  # config.action_mailer.default_url_options = {
-  #   protocol: 'https',
-  #   host: "httts://www.araki_offical_hp.com"
-  # }
-  # # mail setting
-  # config.action_mailer.raise_delivery_errors = true
-  # config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = {
-  #   :address => "smtp.gmail.com",
-  #   :port => 587,
-  #   :user_name => ENV["PROD_MAIL_ADDRESS"],
-  #   :password => ENV["GMAIL_2FACTOR_PASSWORD"],
-  #   :authentication => :plain, #認証方式:普通
-  #   :enable_starttls_auto => true #自動配信の設定
-  # } 
-  
+  # default url
+  config.action_mailer.default_url_options = {
+    protocol: 'https',
+    host:ENV["CLOUD9_APP_ROOT_URL"]
+  }
+  # mail setting
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address => "smtp.gmail.com",
+    :port => 587,
+    :user_name => ENV["GMAIL_ADDRESS"],
+    :password => ENV["GMAIL_2FACTOR_PASSWORD"],
+    :authentication => :plain,        #認証方式:普通
+    :enable_starttls_auto => true     #自動配信の設定
+  }
   
   
 end

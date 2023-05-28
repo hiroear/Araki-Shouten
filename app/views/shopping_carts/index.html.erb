@@ -1,61 +1,58 @@
 <div class="container d-flex justify-content-center mt-3">
   <div class="w-75">
-    <h1>ショッピングカート</h1>
+    <h2 class="title-text mt-3 mb-3">ショッピングカート</h2>
 
     <div class="offset-6 col-6">
-      <div class="row"><%# rowの中の要素を横並びに %>
+      <div class="row">
         <div class="col-4">
-          <h2>数量</h2>
+          <h6 class="title-text text-nowrap">数 量</h6>
         </div>
         <div class="col-4">
-          <h2>小計</h2>
+          <h6 class="title-text text-nowrap">小 計</h6>
         </div>
         <div class="col-4">
         </div>
       </div>
     </div>
-
     <hr>
-
+  
     <div class="row">
       <% @user_cart_items.each do |user_cart_item| %>
       <%# @user_cart_items :カートに入っている全ての商品データ %>
         <% product = Product.find(user_cart_item.item_id) %>
-        <%# user_cart_item の item_idに該当する商品を Productモデルから取得、変数product代入 %>
-        <div class="col-md-2 mt-2">
+        <%# user_cart_item の item_idに該当する商品を Productモデルから取得、変数productに代入 %>
+        <div class="col-2 mb-3">
           <%= link_to product_path(product) do %>
             <% if product.image.attached? %>
-              <%= image_tag product.image, class: "img-fuild w-100" %>
+              <%= image_tag product.image.variant(resize: "200x100^", gravity: "center"), class: "img-fluid rounded" %>
             <% else %>
-              <%= image_tag "/images/dummy.png", class: "img-fuild w-100" %>
+              <%= image_tag "/images/dummy.png", class: "img-fuild w-100 rounded" %>
             <% end %>
           <% end %>
         </div>
-        <div class="col-md-4 mt-4">
-          <h3 class="mt-4"><%= product.name %></h3>
-          <%# 21行目でProductモデルからデータを取得したのでproductsテーブルのカラム nameが使える %>
+        <div class="col-4 pt-3 pb-0">
+          <h6 class=""><%= product.name %></h6>
         </div>
-        <div class="col-md-2">
-          <h3 class="w-100 mt-4"><%= user_cart_item.quantity %></h3>
+        <div class="col-2 py-3">
+          <h6 class="text-nowrap"><%= user_cart_item.quantity %> 点</h6>
         </div>
-        <div class="col-md-2">
-          <h3 class="w-100 mt-4">￥<%= user_cart_item.price_cents * user_cart_item.quantity %></h3>
+        <div class="col-2 py-3">
+          <h6 class="text-nowrap">￥<%= user_cart_item.price_cents * user_cart_item.quantity %></h6>
         </div>
-        <div class="col-md-2 mt-4">
-          <%= link_to "削除", cart_delete_users_path(user_cart_item.id), method: :delete, class: "btn btn-secondary px-2 py-1" %>
+        <div class="col-2 py-3">
+          <%= link_to "削除", cart_delete_users_path(user_cart_item.id), method: :delete, class: "delete-link" %>
         </div>
       <% end %>
     </div>
-
     <hr>
 
     <div class="offset-8 col-4">
       <div class="row">
         <div class="col-6">
-          <h2>小計</h2>
+          <h6 class="text-right text-nowrap">小計</h6>
         </div>
         <div class="col-6">
-          <h2>￥<%= (@user_cart.total - @user_cart.shipping_cost).fractional / 100 %></h2>
+          <h6>￥<%= (@user_cart.total - @user_cart.shipping_cost).fractional / 100 %></h6>
           <%# 現在のカート合計金額 100.00(ドル表示) - 送料 = 100.00 ➡︎ 小数点を消す(10000) ➡︎ 100割る → ￥100 %>
           <%# .totalメソッドは商品合計金額と送料を合わせた金額を表示するメソッドなので、送料をマイナスする処理をして小計を出している %>
           <%# .shipping_cost : ShoppingCartモデルのメソッド ⬇︎
@@ -68,24 +65,24 @@
       
       <div class="row">
         <div class="col-6">
-          <h2>送料</h2>
+          <h6 class="text-right text-nowrap">送料</h6>
         </div>
         <div class="col-6">
-          <h2>￥<%= @user_cart.shipping_cost.fractional / 100 %></h2>
+          <h6>￥<%= @user_cart.shipping_cost.fractional / 100 %></h6>
           <%# 送料 800.00(米ドル表示) ➡︎ 小数点を消す(80000) ➡︎ 100割る → ￥800 %>
         </div>
       </div>
       
       <div class="row">
         <div class="col-6">
-          <h2>合計</h2>
+          <h6 class="text-right text-nowrap">合計</h6>
         </div>
         <div class="col-6">
-          <h2>￥<%= @user_cart.total.fractional / 100 %></h2>
+          <h6>￥<%= @user_cart.total.fractional / 100 %></h6>
             <%# acts_as_shopping_cartの totalメソッドで現在のカート(@user_cart) の合計金額と送料を合わせた金額を表示 %>
             <%# そのままでは仕様上 150.00 のような米ドル表示になってしまう為 fractional / 100のように記述し小数点のない日本円表示にする %>
         </div>
-        <div class="col-12 d-flex justify-content-end">
+        <div class="col-10 item-text text-right text-nowrap">
           表示価格は税込みです
         </div>
       </div>
@@ -93,8 +90,8 @@
 
     <%# shopping_carts#destroyへ %>
     <%= form_with url: cart_users_path , method: :delete, class: "d-flex justify-content-end mt-3" do |f| %>
-      <%= link_to "買い物を続ける", products_path, class: "btn samazon-favorite-button text-favorite mr-3" %>
-      <div class="btn samazon-submit-button" data-toggle="modal" data-target="#buy-confirm-modal">購入を確定する</div>
+      <%= link_to "買い物を続ける", products_path, class: "btn favorite-button mr-3" %>
+      <div class="btn submit-button" data-toggle="modal" data-target="#buy-confirm-modal">購入を確定する</div>
         <%# ⬆︎購入を確定するボタンには data-toggle="modal"とdata-target="#buy-confirm-modal"という記述を追加しているが、これはモーダルを使用する宣言と、画面に表示するモーダルのIDを指定している。ここで指定されたIDを持つHTML要素をモーダルとして呼び出すことができる %>
         <%# ⬇︎以下呼び出されるモーダルのコード(#buy-confirm-modal) %>
       <div class="modal fade" id="buy-confirm-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -109,10 +106,10 @@
             </div>
             
             <div class="modal-footer">
-              <button type="button" class="btn samazon-favorite-button text-favorite" data-dismiss="modal">閉じる</button>
+              <button type="button" class="btn favorite-button" data-dismiss="modal">閉じる</button>
               <%# ⬇︎type="submit" とすることでカートの中身をコントローラへ送信(form_with内で type="submit"ボタンをクリックすると各データを送信する仕組みなので form_with内にモーダルと購入ボタンを配置 %>
               <% if @card.present? %>
-                <button type="submit" class="btn samazon-submit-button">購入</button>
+                <button type="submit" class="btn submit-button">購入</button>
               <% else %>
                 <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key=<%= ENV['PAYJP_PUBLIC_KEY'] %> data-on-created="onCreated" data-text="カードを登録・購入" data-submit-text="カードを登録・購入"></script>
               <% end %>

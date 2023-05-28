@@ -85,9 +85,8 @@ class UsersController < ApplicationController
   
   # マイページ > 注文履歴を表示
   def cart_history_index
-    # @orders = ShoppingCart.where(user_id: @user).where(buy_flag: true).page(params[:page]).per(15)
-    @orders = ShoppingCart.search_bought_carts_by_user(@user).page(params[:page]).per(15)
-      #⬆︎  ShoppingCart.where(buy_flag: true).where(user_id: current_user)
+    @orders = ShoppingCart.search_bought_carts_by_user(@user).page(params[:page]).per(13)
+      # ShoppingCart.where(buy_flag: true).where(user_id: current_user)
   end
   
   

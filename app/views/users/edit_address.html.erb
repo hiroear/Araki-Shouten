@@ -4,33 +4,30 @@
   <div class="row justify-content-center">
     <div class="col-md-5">
       <span>
-        <%= link_to "マイページ", mypage_users_path  %> > お届け先変更
+        <%= link_to "マイページ", mypage_users_path, class: 'item-text text-decoration-none' %> > お届け先変更
       </span>
-      <h3 class="mt-3 mb-3">お届け先変更</h3>
+      <h2 class="title-text mt-5 mb-3">お届け先変更</h2>
         <hr>
-        <!--⬇︎form_with model: @userを入れるとフォームに@userの情報は入る。今回はf.text_fieldの中にvalue: @user.name,を記述-->
+        <%# ⬇︎form_with model: @userを入れるとフォームに@userの情報入る。今回はf.text_fieldの中にvalue: @user.name,を記述 %>
         <%= form_with url: mypage_users_path, local: true, method: :put do |f| %>
         <div class="form-group row">
           <%= f.label :name, "", class: "col-md-5 col-form-label text-md-left" do %><!--.col-form-label :フォームコントロールの中央垂直に配置-->
-            氏名
-            <span class="ml-1 samazon-require-input-label">
-              <span class="samazon-require-input-label-text">必須</span>
-            </span>
+            氏名<span class="badge badge-danger ml-1">必須</span>
           <% end %>
 
           <div class="col-md-7">
             <%=
               f.text_field :name,
-              class: "form-control #{"is-invalid" if @user.errors.messages[:name].present? } samazon-login-input",
+              class: "form-control login-input #{"is-invalid" if @user.errors.messages[:name].present? }",
               value: @user.name,
               autofocus: "true",
               required: "",
               autocomplete: "name",
-              placeholder: "侍 太郎"
+              placeholder: "山田 太郎"
             %>
 
             <% if @user.errors.messages[:name].present? %>
-              <span class="samazon-error-message">
+              <span class="error-message">
                 <strong><%= @user.errors.full_messages_for(:name).first %></strong>
               </span>
             <% end %>
@@ -39,73 +36,61 @@
 
         <div class="form-group row">
           <%= f.label :postal_code, "", class: "col-md-5 col-form-label text-md-left" do %>
-          郵便番号
-            <span class="ml-1 samazon-require-input-label">
-              <span class="samazon-require-input-label-text">必須</span>
-            </span>
+            郵便番号<span class="badge badge-danger ml-1">必須</span>
           <% end %>
 
           <div class="col-md-7">
             <%=
               f.text_field :postal_code,
-              class: "form-control #{"is-invalid" if @user.errors.messages[:postal_code].present? } samazon-login-input",
+              class: "form-control login-input #{"is-invalid" if @user.errors.messages[:postal_code].present? }",
               value: @user.postal_code,
               required: "",
-              placeholder: "150-0043"
+              placeholder: "150-XXXX"
             %>
           </div>
         </div>
 
         <div class="form-group row">
           <%= f.label :address, "", class: "col-md-5 col-form-label text-md-left" do %>
-          住所
-            <span class="ml-1 samazon-require-input-label">
-              <span class="samazon-require-input-label-text">必須</span>
-            </span>
+            住所<span class="badge badge-danger ml-1">必須</span>
           <% end %>
 
           <div class="col-md-7">
             <%=
               f.text_field :address,
-              class: "form-control #{"is-invalid" if @user.errors.messages[:address].present? } samazon-login-input",
+              class: "form-control login-input #{"is-invalid" if @user.errors.messages[:address].present? }",
               value: @user.address,
               required: "",
-              placeholder: "東京都渋谷区道玄坂２丁目１１−１"
+              placeholder: "東京都渋谷区XXXXXXXX"
             %>
           </div>
         </div>
 
         <div class="form-group row">
           <%= f.label :phone, "", class: "col-md-5 col-form-label text-md-left" do %>
-          電話番号
-            <span class="ml-1 samazon-require-input-label">
-              <span class="samazon-require-input-label-text">必須</span>
-            </span>
+            電話番号<span class="badge badge-danger ml-1">必須</span>
           <% end %>
 
           <div class="col-md-7">
             <%=
               f.text_field :phone,
-              class: "form-control #{"is-invalid" if @user.errors.messages[:phone].present? } samazon-login-input",
+              class: "form-control login-input #{"is-invalid" if @user.errors.messages[:phone].present? }",
               value: @user.phone,
               required: "",
-              placeholder: "03-5790-9039"
+              placeholder: "03-XXXX-XXXX"
             %>
           </div>
         </div>
 
         <div class="form-group row">
           <%= f.label :email, "", class: "col-md-5 col-form-label text-md-left" do %>
-          メールアドレス
-            <span class="ml-1 samazon-require-input-label">
-              <span class="samazon-require-input-label-text">必須</span>
-            </span>
+            メールアドレス<span class="badge badge-danger ml-1">必須</span>
           <% end %>
 
           <div class="col-md-7">
             <%=
               f.email_field :email,
-              class: "form-control #{"is-invalid" if @user.errors.messages[:email].present? } samazon-login-input",
+              class: "form-control login-input #{"is-invalid" if @user.errors.messages[:email].present? }",
               value: @user.email,
               autofocus: "true",
               required: "",
@@ -114,7 +99,7 @@
             %>
 
             <% if @user.errors.messages[:email].present? %>
-              <span class="samazon-error-message">
+              <span class="error-message">
                 <strong><%= @user.errors.full_messages_for(:email).first %></strong>
               </span>
             <% end %>
@@ -124,7 +109,7 @@
         <hr>
 
         <div class="form-group d-flex justify-content-end">
-          <%= f.submit "保存する", class: "btn samazon-submit-button w-25" %>
+          <%= f.submit "保存する", class: "btn submit-button" %>
         </div>
       </form>
     </div>

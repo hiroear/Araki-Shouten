@@ -30,11 +30,7 @@
     </label>
   </div>
   
-  <h2>その他</h2>
-  <div class="d-flex flex-column">
-    <label class="samazon-sidebar-category-label">新着情報管理</label>
-    <label class="samazon-sidebar-category-label">管理ユーザー管理</label>
-  </div>
+  <hr/>
   <% if admin_signed_in? %>
    <div class="d-flex flex-column">
       <label class="samazon-sidebar-category-label"><%= link_to "ログアウト", destroy_admin_session_path, method: :delete %></label>

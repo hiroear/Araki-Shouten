@@ -4,60 +4,58 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <span>
-        <%= link_to 'マイページ', mypage_users_path %> > <%= link_to '注文履歴', mypage_cart_histories_users_path %> > 注文履歴詳細
+        <%= link_to 'マイページ', mypage_users_path, class: 'item-text text-decoration-none' %> > <%= link_to '注文履歴', mypage_cart_histories_users_path, class: 'item-text text-decoration-none' %> > 注文履歴詳細
       </span>
       
-      <h1 class="mt-3">注文履歴詳細</h1>
-      
-      <h4 class="mt-3">ご注文情報</h4>
+      <h1 class="title-text mt-4 mb-3">注文履歴詳細</h1>
       <hr>
       
       <div class="row">
-        <div class="col-5 mt-2">注文番号</div>
+        <div class="col-5 mt-2 title-text text-right">注文番号：</div>
         <div class="col-7 mt-2"><%= @cart.id %></div>  <%# @cart = ShoppingCart.find(params[:num]) %>
         
-        <div class="col-5 mt-2">注文日時</div>
-        <div class="col-7 mt-2"><%= @cart.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></div>
+        <div class="col-5 mt-2 title-text text-right">注文日時：</div>
+        <div class="col-7 mt-2"><%= @cart.updated_at.strftime("%Y年%m月%d日 %H:%M") %></div>
         
-        <div class="col-5 mt-2">商品の小計</div>
-        <div class="col-7 mt-2"><%= (@cart.total - @cart.shipping_cost).fractional / 100 %></div>
+        <div class="col-5 mt-2 title-text text-right">商品の小計：</div>
+        <div class="col-7 mt-2">￥ <%= (@cart.total - @cart.shipping_cost).fractional / 100 %></div>
         
-        <div class="col-5 mt-2">送料</div>
-        <div class="col-7 mt-2"><%= @cart.shipping_cost.fractional / 100 %></div>
+        <div class="col-5 mt-2 title-text text-right">送料：</div>
+        <div class="col-7 mt-2">￥ <%= @cart.shipping_cost.fractional / 100 %></div>
         
-        <div class="col-5 mt-2">合計金額</div>
-        <div class="col-7 mt-2"><%= @cart.total.fractional / 100 %></div>
+        <div class="col-5 mt-2 title-text text-right">合計金額：</div>
+        <div class="col-7 mt-2">￥ <%= @cart.total.fractional / 100 %></div>
         
-        <div class="col-5 mt-2">点数</div>
+        <div class="col-5 mt-2 title-text text-right">点数：</div>
         <div class="col-7 mt-2"><%= ShoppingCartItem.user_cart_items(@cart.id).count %>点</div>
         <%# ShoppingCartItem.where(owner_id: @cart.id).count %>
       </div>
       
       <hr>
       
-      <div class="row"> <%# rowクラスをつけることで div要素を横並びにする %>
+      <div class="row">
         <% @cart_items.each do |cart_item| %>  <%# @cart_items = shoppingcartItem.where(owner_id: @cart.id) %>
           <% product = Product.find(cart_item.item_id) %>
           <div class="col-md-5 mt-2">
             <%= link_to product_path(product), class: "ml-4" do %>
               <% if product.image.attached? %>
-                <%= image_tag product.image, class: "img-fluid w-75" %>
+                <%= image_tag product.image, class: "img-fluid w-75 rounded" %>
+                <%#= image_tag product.image.variant(resize: "180x100^", gravity: "center"), class: "img-fluid rounded w-75" %>
               <% else %>
-                <%= image_tag "/images/dummy.png", class: "img-fluid w-75" %>
+                <%= image_tag "/images/dummy.png", class: "img-fluid w-75 rounded" %>
               <% end %>
             <% end %>
           </div>
           
           <div class="col-md-7 mt-2">
             <div class="flex-column">
-              <p class="mt-4"><%= product.name %></p>
+              <p class="mt-4 title-text font-weight-bolder"><%= product.name %></p>
               <div class="row">
-                <div class="col-2 mt-2">数量</div>
-                <div class="col-10 mt-2"><%= cart_item.quantity %></div>
+                <div class="col-2 mt-2 text-right text-nowrap">数量：</div>
+                <div class="col-10 mt-2"><%= cart_item.quantity %> 点</div>
                 
-                <div class="col-2 mt-2">小計</div>
+                <div class="col-2 mt-2 text-right text-nowrap">小計：</div>
                 <div class="col-10 mt-2">￥<%= price = cart_item.price_cents * cart_item.quantity %></div>
-                <%# cart_item.price_cents だけで良いのでは？ %>
               </div>
             </div>
           </div>
