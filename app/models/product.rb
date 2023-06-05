@@ -52,8 +52,8 @@ class Product < ApplicationRecord
   scope :recommend_products, -> (number) { where(recommended_flag: true).take(number) }
   
   
-  scope :check_products_carriage_list, -> (product_ids) { where(id: product_ids).pluck(:carriage_flag)}
-  # Productsテーブルから product_idsに入っている(複数の) item_idと一致する product_idを探し、その複数商品の carriage_flagカラムの値(boolean)のみ配列で取得
+  # Productsテーブルから product_idsに入っている(複数商品の) item_idと一致する product_idを探し、それぞれの商品の carriage_flagカラムの値(boolean)のみを配列で取得
+  scope :check_products_carriage_list, -> (product_item_ids) { where(id: product_item_ids).pluck(:carriage_flag)}
   
 
   #該当のProductモデルに紐づくReviewモデルが必要なので Productモデルにメソッドを記述

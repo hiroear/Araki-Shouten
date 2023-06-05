@@ -46,12 +46,12 @@ class ShoppingCart < ApplicationRecord
   }
   
   
-  # それぞれの月/日に購入された全てのカートデータの一覧を取得
-  scope :search_bought_carts_by_month, -> (month) { bought_carts.where(updated_at: month.all_month) }
-    # 全ての売上カートデータの内 updated_atカラムが、引数に含まれているカート情報の月の全カートデータを取得
-    # all_month メソッド...その月の期間の全範囲のデータを取得 (例：9月の1～30日)
-  scope :search_bought_carts_by_day, -> (day) { bought_carts.where(updated_at: day.all_day) }
-    # all_dayメソッド...現時刻を含むその日1日の全範囲のデータを取得 (00:00:00から23:59:59までの全データ)
+  # それぞれの月/日に購入された全てのカートデータ一覧
+  scope :bought_carts_by_month, -> (month) { bought_carts.where(updated_at: month.all_month) }
+    # 全ての売上カートデータの内それぞれの月毎の全カートを取得 (引数にupdated_atカラムが含まれているカートのみ)
+    # all_month: その月の期間の全範囲のデータを取得 (例：9月の1～30日)
+  scope :bought_carts_by_day, -> (day) { bought_carts.where(updated_at: day.all_day) }
+    # all_day: 現時刻を含むその日1日の全範囲のデータを取得 (00:00:00から23:59:59までの全データ)
   
   
   # ダッシュボード  受注一覧  注文番号検索
@@ -76,7 +76,7 @@ class ShoppingCart < ApplicationRecord
 
     months.each_with_index do |month, i|
       #↓︎ monthに入っているそれぞれの月毎の売上カートデータ全一覧を取得
-      monthly_sales = search_bought_carts_by_month(month)
+      monthly_sales = bought_carts_by_month(month)
       
       #↓ 月毎のカートの売上合計
       total = 0
@@ -95,7 +95,7 @@ class ShoppingCart < ApplicationRecord
     end
     
     return array    #最後に上で生成した配列を明示的に返す
-    #︎ [{:period=>"2022-07", :total=>9, :count=>1, :average=>9}, {:period=>...]
+    #︎ [{:period=>"2023-05", :total=>9, :count=>1, :average=>9}, {:period=>...]
   end
   
   
@@ -110,7 +110,7 @@ class ShoppingCart < ApplicationRecord
     array = Array.new(days.count) { Hash.new }
     
     days.each_with_index do |day, i|
-      daily_sales = search_bought_carts_by_day(day)
+      daily_sales = bought_carts_by_day(day)
       
       total = 0
       daily_sales.each do |daily_sale|
@@ -128,24 +128,23 @@ class ShoppingCart < ApplicationRecord
   
   
   
-  CARRIAGE = 80000     #送料金額
+  CARRIAGE = 800     #送料金額
   FREE_SHIPPING = 0
   
   # 送料の有無を判定
+  # カート内の商品の carriage_flagに1つでも trueの商品が含まれていれば合計金額に送料を加算する処理
   def shipping_cost
-    product_ids = ShoppingCartItem.user_cart_item_ids(self.id)  #self省略可
-      # ShoppingCartItem.where(owner_id: self.id).pluck(:item_id)
-      # ShoppingCartItemsテーブルの owner_idと ShoppingCart_id が一致するカートを探し、そのカート内の(複数の) item_idカラムの値のみ配列で取得
-      # インスタンスメソッド内で selfをつけるとインスタンスが持つ情報(今回は ShoppingCart_id) にアクセスする。※self省略可
-    products_carriage_list = Product.check_products_carriage_list(product_ids)
-      # Product.where(id: product_ids).pluck(:carriage_flag)
-      # Productsテーブルから product_ids内の(複数の) item_idと一致する product_idを探し、その(複数)商品の carriage_flagカラムの値(boolean)のみ配列で取得
-    products_carriage_list.include?(true) ? Money.new(CARRIAGE)
+    product_item_ids = ShoppingCartItem.user_cart_item_ids(self.id)
+      # ShoppingCartItem.where(owner_id: ShoppingCart.id).pluck(:item_id)
+      # ShoppingCartItemsテーブルのowner_idと ShoppingCart.id が一致するカートを探し、そのカート内の item_idカラムの値のみ配列で取得(商品が複数の場合の為)
+    products_carriage_list = Product.check_products_carriage_list(product_item_ids)
+      # Product.where(id: product_item_ids).pluck(:carriage_flag)
+      # Productsテーブルから product_item_idsに入っている(複数商品の)item_idと一致する product_idを探し、それぞれの商品の carriage_flagカラムの値(boolean)のみを配列で取得
+    products_carriage_list.include?(true) ? Money.new(CARRIAGE * 100)
                                           : Money.new(FREE_SHIPPING)
-      # カート内の商品の carriage_flagの値に 1つでもtrueの商品が含まれていれば合計金額に送料を加算する処理
-      # acts_as_shopping_cartでは shipping_costメソッドにMoneyオブジェクトの値を定義すれば送料を設定する機能がついている
-      # acts_as_shopping_cartのメソッド Money.newの引数にはセント単位(ドルの100分の1) で整数を渡すルールがある。今回は定数 CARRIAGEに日本円の金額を代入後その金額を100倍した値を引数として渡した
-      # array.include?...配列要素に使うメソッド。boolean型。配列が引数の (値) と == で等しい要素を持つ時 trueを返す
+      # array.include?...配列に使うメソッド boolean型。配列が引数の (値) と == で等しい要素を持つ時 trueを返す
+      # acts_as_shopping_cartのルールで shipping_costメソッドに Moneyオブジェクトの値を定義すれば送料を設定する機能が予めついている
+      # ↑元々 USDを想定して作られているgemで、Money.newの引数にはドルの 1/100を渡すルールになっている為、日本円 800円に 100倍した値を引数として渡す
   end
   
 end

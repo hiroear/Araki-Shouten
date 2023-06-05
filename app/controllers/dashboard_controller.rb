@@ -8,11 +8,11 @@ class DashboardController < ApplicationController
   
   def index
     @sort = params[:sort]
-    @sort_list = ShoppingCart.sort_list
+    @sort_list = ShoppingCart.sort_list         # { '日別': 'daily', '月別': 'month'}
     
     if @sort == "month"
       sales = ShoppingCart.get_monthly_sales    # 月単位の売上カートデータの [{配列}] を返す
-      #sales = [{:period=>"2022-07", :total=>9, :count=>1, :average=>9}, {:period...]
+      #sales = [{:period=>"2023-05", :total=>9, :count=>1, :average=>9}, {:period...]
     else
       sales = ShoppingCart.get_daily_sales      # 日単位の売上データの [{配列}] を返すクラスメソッド
     end
