@@ -22,7 +22,7 @@ class ShoppingCart < ApplicationRecord
     .order(updated_at: :desc)                           # 更新日の降順に並び替え
     .group("strftime('%Y-%m', updated_at, '+09:00')")   # 更新日時(UTCから9時間足した日本時間)を strftimeメソッドで'20○○年○月'に書式化・文字列に変換 ▶ それを groupで重複を除く
     .pluck(:updated_at)                                 # pluck：引数の値を配列で返す
-    # ["2022-5","2022-10"]
+    # ["2023-5","2023-6"]
   }
   scope :bought_days_sqlite, -> {
     bought_carts
