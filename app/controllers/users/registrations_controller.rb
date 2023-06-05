@@ -4,7 +4,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
-  # ⬆︎devise用のストロングパラメータを読み込ませるため、コールバックを設定
+  # devise用のストロングパラメータを読み込ませるため、コールバックを設定
 
 
   # GET /resource/sign_up

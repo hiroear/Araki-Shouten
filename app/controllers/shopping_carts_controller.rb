@@ -10,9 +10,9 @@ class ShoppingCartsController < ApplicationController
     # @user_cartにはまだ注文が確定していないカート自体のインスタンスが入っている
     @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)
     # ShoppingCartItem.where(owner_id: @user_cart)
-    # user_cart_itemsメソッド :そのカートに入っている全ての商品データを返す (shopping_cart_itemモデルに定義)
+    # user_cart_itemsメソッド: そのカートに入っている全ての商品データを返す (shopping_cart_itemモデルに定義)
     
-    #⬇︎確認
+    #︎確認
     if @user.token != ""
       @card = Payjp::Customer.retrieve(@user.token).cards.all(limit: 1).data[0]
     end
@@ -33,9 +33,9 @@ class ShoppingCartsController < ApplicationController
     @product = Product.find(shopping_cart_product_params[:product_id])
     logger.debug("============================== shopping_carts controllers create #{@product}")
     @user_cart.add(@product, shopping_cart_product_params[:price].to_i, shopping_cart_product_params[:quantity].to_i)
-    # ⬆︎acts_as_shopping_cartの addメソッドで、送信されたデータを元にして商品をカートに追加
+    # ↑︎acts_as_shopping_cartの addメソッドで、送信されたデータを元に商品をカートに追加
     redirect_to cart_users_path
-    # 商品をカートに追加したらカートの一覧ページ(カート中身を表示するページ)にリダイレクト
+    # 商品をカートに追加後カート一覧ページへリダイレクト
   end
   
   
@@ -55,7 +55,7 @@ class ShoppingCartsController < ApplicationController
   def destroy
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
     
-    if @user.token != ""  # tokenが空でなければ PAY.JPに顧客id・購入価格・通過の種類を渡し、単発決済？
+    if @user.token != ""  # tokenが空でなければ PAY.JPに顧客id・購入価格・通貨の種類を渡し、単発決済
       Payjp::Charge.create(
         :customer => @user.token,
         :amount => @user_cart.total.to_i,
@@ -63,10 +63,10 @@ class ShoppingCartsController < ApplicationController
       )
     else  # tokenが空の場合 Customerのカード情報を新規登録・tokenを生成・保存 → 単発決済
       cu = Payjp::Customer.create
-      cu.cards.create(:card => params["payjp-token"])
-      @user.token = cu.id  # cu=新規customer。customer.id = Payjp側では"customer"の値
+      cu.cards.create(:card => params["payjp-token"])  # cu = 新規customer
+      @user.token = cu.id                              # customer.id = Payjp側では"customer"の値
       @user.save
-      #⬇︎ここから単発決済
+      #ここから単発決済
       Payjp::Charge.create(
         :customer => @user.token,
         :amount => @user_cart.total.to_i,
@@ -74,10 +74,10 @@ class ShoppingCartsController < ApplicationController
       )
     end
     
-    @user_cart.buy_flag = true   #カートの注文済みフラグをtrueにして注文処理
-    @user_cart.save              #DBに保存
+    @user_cart.buy_flag = true     #カートの注文済みフラグをtrueにして注文処理
+    @user_cart.save                #DBに保存
     
-    redirect_to cart_users_url   #カート一覧ページにリダイレクト(空のカートになる)
+    redirect_to cart_users_url     #カート一覧ページにリダイレクト(空のカートになる)
   end
   
   
@@ -92,6 +92,6 @@ class ShoppingCartsController < ApplicationController
     
     def set_cart
       @user_cart = ShoppingCart.set_user_cart(current_user)
-      # set_user_cartメソッド :まだ注文が確定していないカートのデータを返し、データがなければ新しく作る(ShoppingCartモデルに定義)
+      # set_user_cart :まだ注文が確定していないカートのデータを返し、データがなければ新しく作る(ShoppingCartモデルに作成される)
     end
 end

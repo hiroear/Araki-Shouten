@@ -1,5 +1,5 @@
 module DisplayList
-  PER = 15  #マジックナンバー対策
+  PER = 15
   
   def display_list(page)
     page(page).per(PER)

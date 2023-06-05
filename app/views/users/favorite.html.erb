@@ -1,42 +1,45 @@
-<div class="container  d-flex justify-content-center mt-3">
-  <div class="w-80">
-    <h2><span class="big-heart"></span>お気に入り</h2>
+<div class="container d-flex justify-content-center mt-3 favorite-container">
+  <div class="favorite-area">
+    <h2 class='favorite-title'><span class="big-heart"></span>お気に入り</h2>
 
     <hr>
 
     <div class="row">
       <% @favorites.each do |favorite| %>
-        <div class="col-md-8 mt-2">
+        <div class="mt-2 mb-3 favorite-image-area">
           <div class="d-inline-flex">
             <%= link_to product_path(favorite), class: "row text-decoration-none" do %>
               <%# product_path(favorite) :products#show(@user.likees(Product)) 商品詳細ページへ %>
-              <div class="w-25">
+              <div>
                 <% if favorite.image.attached? %>
-                  <%= image_tag favorite.image.variant(resize: "500x300^", gravity: "center"), class: "img-fuild w-100 rounded" %>
+                  <%#= image_tag favorite.image.variant(resize: "140x80^", gravity: "center"), class: "img-fluid rounded favorite-resize" %>
+                  <%= image_tag favorite.image, class: "img-fluid rounded favorite-resize" %>
                 <% else %>
-                  <%= image_tag "/images/dummy.png", class: "img-fuild w-100 rounded" %>
+                  <%= image_tag "/images/dummy.png", class: "img-fluid rounded favorite-resize-dummy" %>
                 <% end %>
               </div>
               <div class="favorite-text">
-                <h5 class="w-100"><%= favorite.name %></h5>
-                <h6 class="w-100">￥<%= favorite.price %></h6>
+                <h5><%= favorite.name %></h5>
+                <h6>￥<%= favorite.price %></h6>
               </div>
             <% end %>
           </div>
         </div>
         
-        <div class="col-md-2 d-flex align-items-center justify-content-end">
-          <%= link_to favorite_product_path(favorite), class: "btn favorite-button w-75" do %>
-            <span class="heart"></span><%= current_user.likes?(favorite) ? "解除" : "お気に入り" %>
-          <% end %>
-        </div>
-        <div class="col-md-2 d-flex align-items-center justify-content-end">
-          <%= form_with url: cart_users_path, local: true do |f| %>
-            <%= f.hidden_field :product_id, value: favorite.id %>
-            <%= f.hidden_field :price, value: favorite.price %>
-            <%= f.hidden_field :quantity, value: 1 %>
-            <%= f.submit "カートに入れる", class: "btn favorite-add-cart w-100" %>
-          <% end %>
+        <div class='favorite-buttons mb-3'>
+          <div class="text-center">
+            <%= link_to favorite_product_path(favorite), class: "btn favorite-button" do %>
+              <span class="heart"></span><%= current_user.likes?(favorite) ? "解除" : "お気に入り" %>
+            <% end %>
+          </div>
+          <div class="">
+            <%= form_with url: cart_users_path, local: true do |f| %>
+              <%= f.hidden_field :product_id, value: favorite.id %>
+              <%= f.hidden_field :price, value: favorite.price %>
+              <%= f.hidden_field :quantity, value: 1 %>
+              <%= f.submit "カートに入れる", class: "btn favorite-add-cart" %>
+            <% end %>
+          </div>
         </div>
       <% end %>
     </div>

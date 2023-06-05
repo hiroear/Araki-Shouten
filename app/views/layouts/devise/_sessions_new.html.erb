@@ -1,4 +1,4 @@
-<!--ユーザー・管理者共通のログイン画面-->
+<%# ユーザー・管理者共通のログイン画面 %>
 
 <div class="container">
   <div class="row justify-content-center">
@@ -7,33 +7,33 @@
       <hr>
       
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <!--<= form_for(@user, as: :user, url: session_path(:user)) do |f| %>-->
+      <%#= form_for(@user, as: :user, url: session_path(:user)) do |f| %>
         <%= render 'devise/shared/error_messages', resource: resource %>
-        <div class="form-group">
+        <div class="form-group mb-2">
           <%= f.email_field :email,
-            class: "form-control #{"is-invalid" if alert } samazon-login-input",
+            class: "form-control #{"is-invalid" if alert }",
             autofocus: "true",
             required: "required",
             autocomplete: "email",
             placeholder: "メールアドレス"
           %>
           <% if alert %>
-            <span class="samazon-error-message">
+            <span class="error-message">
               <strong>メールアドレスが正しくない可能性があります。</strong>
             </span>
           <% end %>
         </div>
         
-        <div class="form-group">
+        <div class="form-group mb-2">
           <%= f.password_field :password,
-            class: "form-control #{"is-invalid" if alert } samazon-login-input",
+            class: "form-control #{"is-invalid" if alert }",
             autofocus: "true",
             autocomplete: "current-password",
             placeholder: "パスワード"
           %>
 
           <% if alert %>
-          <span class="samazon-error-message">
+          <span class="error-message">
             <strong>パスワードが正しくない可能性があります。</strong>
           </span>
           <% end %>
@@ -42,18 +42,17 @@
         <div class="form-group">
           <div class="form-check">
             <%= f.check_box :remember_me, class: "form-check-input" %>
-            <%= f.label :remember_me, '次回から自動的にログインする', class: "form-check-label samazon-check-label w-100" %>
+            <%= f.label :remember_me, '次回から自動的にログインする', class: "form-check-label check-label w-100" %>
           </div>
         </div>
         
         <div class="form-group">
-          <%= f.submit 'ログイン', class: "mt-3 btn samazon-submit-button w-100" %>
+          <%= f.submit 'ログイン', class: "mt-3 btn submit-button w-100" %>
         </div>
         
-        <!--if resource_is_user? :URLのパス末尾が /login 又は /users/sign_in であればtrue、/dashboard/login 又は /admins/sign_in であれば falseを返す-->
+        <%# if resource_is_user? :URLのパス末尾が /login 又は /users/sign_inなら true、/dashboard/login 又は /admins/sign_inなら falseを返す %>
         <% if resource_is_user? %>
-          <%#= resource_is_user? %>
-          <%= link_to 'パスワードをお忘れの場合', new_user_password_path, class: "btn btn-link mt-3 d-flex justify-content-center samazon-login-text" %>
+          <%= link_to 'パスワードをお忘れの場合', new_user_password_path, class: "btn btn-link mt-3 d-flex justify-content-center login-text" %>
         <% end %>
       <% end %>
       
@@ -61,7 +60,7 @@
       
       <% if resource_is_user? %>
         <div class="form-group">
-          <%= link_to "新規登録", new_user_registration_path, class: "btn btn-link mt-3 d-flex justify-content-center samazon-login-text" %>
+          <%= link_to "新規登録", new_user_registration_path, class: "btn btn-link mt-3 d-flex justify-content-center login-text" %>
         </div>
       <% end %>
     </div>

@@ -1,15 +1,15 @@
-<!--ダッシュボード/カテゴリ管理一覧画面-->
+<%# ダッシュボード/カテゴリ管理一覧画面 %>
 <div class="w-75">
   <%= form_with(model: @category, url: dashboard_categories_path, local: true) do |f| %>
-  <!--dashboard_categories_path : POST  dashboard/categories#create-->
+  <%# dashboard_categories_path : POST  dashboard/categories#create %>
     <div class="form-group">
       <%= f.label :name, 'カテゴリ名' %>
-      <%= f.text_field :name, class: "form-control" %>
+      <%= f.text_field :name, class: "form-control", required: "" %>
     </div>
     
     <div class="form-group">
       <%= f.label :description, 'カテゴリの説明' %>
-      <%= f.text_field :description, class: "form-control" %>
+      <%= f.text_field :description, class: "form-control", required: "" %>
     </div>
     
     <div class="form-group">
@@ -18,7 +18,7 @@
     </div>
     
     <div class="form-group">
-      <%= f.submit '＋新規作成', class: "btn samazon-submit-button" %>
+      <%= f.submit '＋新規作成', class: "btn submit-button" %>
     </div>
   <% end %>
   
@@ -34,15 +34,15 @@
     <tbody>
       <% @categories.each do |category| %>
         <tr>
-          <td scope="row"><%= category.id %></td>
+          <th scope="row"><%= category.id %></th>
           <td><%= category.name %></td>
-          <td>
-            <%= link_to "編集", edit_dashboard_category_path(category), class: "dashboard-edit-link" %>
-            <!--GET  dashboard/categories#edit-->
+          <td class="dashboard-edit-delete">
+            <%= link_to "編集", edit_dashboard_category_path(category) %>
+            <%# GET  dashboard/categories#edit %>
           </td>
-          <td>
-            <%= link_to "削除", dashboard_category_path(category), method: :delete, class: "dashboard-delete-link" %>
-            <!--DELETE  dashboard/categories#destroy-->
+          <td class="dashboard-edit-delete">
+            <%= link_to "削除", dashboard_category_path(category), method: :delete, data: {confirm: "本当に削除しますか？"} %>
+            <%# DELETE  dashboard/categories#destroy %>
           </td>
         </tr>
       <% end %>

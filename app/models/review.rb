@@ -20,7 +20,7 @@ class Review < ApplicationRecord
       }
     }
     
-    # idを持っているReviewオブジェクトのみ取得するスコープを定義 (product_idが nilじゃないものだけを取得)
+    # idを持っているReviewオブジェクトのみ取得 (product_idが nil以外を取得)
     scope :reviews_with_id, -> { where.not(product_id: nil) }
 end
 

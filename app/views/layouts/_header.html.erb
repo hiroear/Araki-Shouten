@@ -1,15 +1,15 @@
 <header>
   <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm header-container">
-    <%= link_to root_path do %>
-      <%= image_tag "/images/logo.png" %>
+    <%= link_to root_path, class: 'logo' do %>
+      <%= image_tag "/images/logo.png", class: 'logo-image' %>
     <% end %>
     
-    <%= form_with url: products_path, method: :get, local: true, class: 'form-inline' do |f| %>
-      <div class="form-group header-search-input">
-        <%= f.text_field :keyword, class: "form-control", placeholder: 'キーワードを入力' %>
+    <%= form_with url: products_path, method: :get, local: true, class: 'form-inline header-search' do |f| %>
+      <div class="form-group header-search-input-area">
+        <%= f.text_field :keyword, class: "form-control header-search-input", placeholder: 'キーワードを入力' %>
       </div>
-      <div class="input-group header-search-button">
-        <button type="submit" class="btn"><i class="fas fa-search header-search-icon"></i></button>
+      <div class="input-group header-search-button-area">
+        <button type="submit" class="btn header-search-button"><i class="fas fa-search header-search-icon"></i></button>
       </div>
     <% end %>
     
@@ -19,42 +19,43 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Right Side Of Navbar -->
-      <ul class="navbar-nav ml-auto mr-5 mt-2">
-      <% if user_signed_in? %>
-        <li class="nav-item">
-          <%= link_to mypage_users_path, class: "nav-link mr-2" do %>
-            <label><span class="user"></span>マイページ</label>
-          <% end %>
-        </li>
-        <li class="nav-item">
-          <%= link_to mypage_favorite_users_path, class: "nav-link" do %>
-            <label><span class="heart"></span></label>
-          <% end %>
-        </li>
-        <li class="nav-item">
-          <%= link_to cart_users_path, class: "nav-link" do %>
-            <label><span class="cart"></span></label>
-          <% end %>
-        </li>
-      <% else %>
-        <li class="nav-item mr-5">
-          <%= link_to new_user_registration_path, class: "nav-link" do %>
-            <label>新規登録</label>
-          <% end %>
-        </li>
-        <li class="nav-item mr-5">
-          <%= link_to login_path, class: "nav-link" do %>
-            <label>ログイン</label>
-          <% end %>
-        </li>
-        <hr>
-        <li class="nav-item mr-5">
-          <%= link_to login_path, class: "nav-link" do %><span class="heart"></span><% end %>
-        </li>
-        <li class="nav-item mr-5">
-          <%= link_to login_path, class: "nav-link" do %><span class="cart"></span><% end %>
-        </li>
-      <% end %>
+      <ul class="navbar-nav ml-auto mt-2">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to mypage_users_path, class: "nav-link mr-2" do %>
+              <label><span class="user"></span>マイページ</label>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to mypage_favorite_users_path, class: "nav-link" do %>
+              <label><span class="header-heart"></span></label>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to cart_users_path, class: "nav-link" do %>
+              <label><span class="cart"></span></label>
+            <% end %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to new_user_registration_path, class: "nav-link" do %>
+              <label>新規登録</label>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to login_path, class: "nav-link" do %>
+              <label>ログイン</label>
+            <% end %>
+          </li>
+          <hr>
+          <li class="nav-item">
+            <%= link_to login_path, class: "nav-link" do %><span class="header-heart"></span><% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to login_path, class: "nav-link" do %><span class="cart"></span><% end %>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </nav>
 </header>

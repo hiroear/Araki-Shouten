@@ -1,4 +1,4 @@
-# 商品が入っているカートの内容を1つ1つのデータとしてカウント、DBに保存するモデル?
+# 商品が入っているカートの内容をDBに保存するモデル
 
 class ShoppingCartItem < ApplicationRecord
   acts_as_shopping_cart_item

@@ -1,19 +1,19 @@
-<!--ダッシュボード/商品管理/親カテゴリ管理(一覧)-->
+<%# ダッシュボード/商品管理/親カテゴリ管理(一覧) %>
 <div class="w-75">
   <%= form_with(model: @major_category, url: dashboard_major_categories_path, local: true) do |f| %>
-  <!--POST	dashboard/major_categories#create-->
+  <%# POST	dashboard/major_categories#create %>
     <div class="form-group">
       <%= f.label :name, '親カテゴリ名' %>
-      <%= f.text_field :name, class: "form-control" %>
+      <%= f.text_field :name, class: "form-control", required: "" %>
     </div>
     
     <div class="form-group">
       <%= f.label :description, '親カテゴリの説明' %>
-      <%= f.text_field :description, class: "form-control" %>
+      <%= f.text_field :description, class: "form-control", required: "" %>
     </div>
     
     <div class="form-group">
-      <%= f.submit '＋新規作成', class: "btn samazon-submit-button" %>
+      <%= f.submit '＋新規作成', class: "btn submit-button" %>
     </div>
   <% end %>
   
@@ -32,11 +32,11 @@
           <tr>
             <th scope="row"><%= major_category.id %></th>
             <td><%= major_category.name %></td>
-            <td>
-              <%= link_to '編集', edit_dashboard_major_category_path(major_category), class: "dashboard-edit-link" %>
+            <td class="dashboard-edit-delete">
+              <%= link_to '編集', edit_dashboard_major_category_path(major_category) %>
             </td>
-            <td>
-              <%= link_to '削除', dashboard_major_category_path(major_category), method: :delete, class: "dashboard-delete-link" %>
+            <td class="dashboard-edit-delete">
+              <%= link_to '削除', dashboard_major_category_path(major_category), method: :delete, data: {confirm: "本当に削除しますか？"} %>
             </td>
           </tr>
         <% end %>

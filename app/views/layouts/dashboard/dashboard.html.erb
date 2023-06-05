@@ -1,4 +1,4 @@
-<!--layouts/application.htmlに代わるdashboard専用のlayoutsファイル(layouts/dashboard/dashboard.html)-->
+<%# layouts/application.htmlに代わるdashboard専用のlayoutsファイル(layouts/dashboard/dashboard.html) %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,13 +9,12 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <script src="https://kit.fontawesome.com/2d6f3622dc.js" crossorigin="anonymous"></script>
-    <!--<script src="https://kit.fontawesome.com/8aeca36c69.js" crossorigin="anonymous"></script>-->
   </head>
   
   <body>
     <%= render partial: 'layouts/dashboard/header' %>
     <div class="row">
-      <div class="col-3 mt-3"><!--サイドバー-->
+      <div class="col-3 mt-3"><%# サイドバー %>
         <%= render partial: 'layouts/dashboard/sidebar' %>
       </div>
       

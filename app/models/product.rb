@@ -1,15 +1,11 @@
 class Product < ApplicationRecord
   belongs_to :category
   has_many :reviews
-  
-  #該当のProductモデルに紐づくReviewモデルが必要なので Productモデルにメソッドを記述
-  def reviews_new
-    reviews.new
-  end
-  
-  def reviews_with_id
-    reviews.all.reviews_with_id  #Reviewモデルに scopeを定義せず reviews.all.where.not(product_id: nil) と書いてもOK
-  end
+  acts_as_likeable
+  has_one_attached :image
+  # has_one_attached : 各レコードとファイルを1対1の関係で紐づけるメソッド。:ファイル名には添付するファイルがわかる名前をつける
+  # この記述で @product.imageのようにして添付されたファイルにアクセスできる
+  # ファイル名(:image)はそのモデルが紐づいたフォームから送られるパラメーターのキーになる為 dashboard/products_controller ストロングパラメータに :imageを追加)
   
   
   extend DisplayList
@@ -33,14 +29,13 @@ class Product < ApplicationRecord
     display_list(page)
   }
 
-  #sort_listで生成されるハッシュがProductクラスにpriceカラムやupdate_atカラムがあるという事を知っているのでProductクラスのscopeとして定義
   scope :sort_list, -> { 
      {
        "並び替え" => "", 
        "価格の安い順" => "price asc",
        "価格の高い順" => "price desc", 
-       "出品の古い順" => "updated_at asc", 
-       "出品の新しい順" => "updated_at desc"
+       "出品の古い順" => "created_at asc", 
+       "出品の新しい順" => "created_at desc"
      }
    }
    
@@ -53,7 +48,6 @@ class Product < ApplicationRecord
   }
   
   scope :recently_products, -> (number) { order(created_at: 'desc').take(number) }
-  # takeメソッド :オブジェクトの先頭から(number)までの要素を配列で返す(取得したい要素数を指定する)
   
   scope :recommend_products, -> (number) { where(recommended_flag: true).take(number) }
   
@@ -62,48 +56,27 @@ class Product < ApplicationRecord
   # Productsテーブルから product_idsに入っている(複数の) item_idと一致する product_idを探し、その複数商品の carriage_flagカラムの値(boolean)のみ配列で取得
   
 
-  acts_as_likeable
+  #該当のProductモデルに紐づくReviewモデルが必要なので Productモデルにメソッドを記述
+  def reviews_new
+    reviews.new
+  end
   
-  has_one_attached :image     # has_one_attached :ファイル名
-  # has_one_attached : 各レコードとファイルを1対1の関係で紐づけるメソッド。:ファイル名には、添付するファイルがわかる名前をつける。
-  # has_one_attachedメソッドを書いたモデルの各レコードは、それぞれ1つのファイルを添付できる。
-  # この記述で、モデル.ファイル名(@product.image)で、添付されたファイルにアクセスできるようになる。
-  # ファイル名(image)は、そのモデルが紐づいたフォームから送られるパラメーターのキーになる (dashboard/products_controller ストロングパラメータに , :image のキーを追加)。
+  def reviews_with_id
+    reviews.all.reviews_with_id  #Reviewモデルに reviews_with_idを定義。 reviews.all.where.not(product_id: nil)
+  end
 
 
   def self.import_csv(file)
     new_products = []
-    update_products = []
     CSV.foreach(file.path, headers: true, encoding: "Shift_JIS:UTF-8") do |row|
-      # CSV.foreach ▶︎ CSVファイルの内容を 1行(レコード)づつ取り出す　(例:[ "abc","abc説明", "200","false","true"],[ "def","def説明", "400","true","true"...)
-      # file.path ▶︎ ファイルのパスを指定 / headers: true ▶︎ row[1] でなく row[:name]のように扱うことが可能になる
-      # encoding ▶︎ Shift_JIS形式の CSVを1行ずつ UTF-8に変換しながら読み込み（メモリに優しい)
-      
-      row_to_hash = row.to_hash   # CSVデータの一行をハッシュ {キー =>"値"} に整形
-      
-      #⬇︎ IDが見つかればレコードを呼び出し productの中身を更新する為の update_products[] を生成
-      if row_to_hash[:id].present?
-        update_product = find(id: row_to_hash[:id])  # row_to_hash[:id] と一致する product_idを探し update_productに代入
-        update_product.attributes = row.to_hash.slice!(csv_attributes)
-          # attributesメソッド : 特定の attribute(カラム)を変更(更新)する (オブジェクトの変更のみ。DBには保存されない)
-          # slice!メソッド : 配列や文字列から指定した要素[:name, :description, :price,・・・]を取り出す
-        update_products << update_product   # << = push  /  update_products.push(update_product)
-          # update_products[{ :id => 3, :name => "abc", :description => "abc説明", :price => 500, :recommended_flag => false, :carriage_flag => false }]
-      
-      #⬇︎ IDが見つからなければ新しくインスタンスを作成し指定の要素の new_products[] を生成
-      else
-        new_product = new   # Product.new
-        new_product.attributes = row.to_hash.slice!(csv_attributes)
-        new_products << new_product
-      end
+      new_product = new   # Product.new
+      new_product.attributes = row.to_hash.slice!(csv_attributes)
+      new_products << new_product
     end
     
-    if update_products.present?
-      import update_products, on_duplicate_key_update: csv_attributes
-      # on_duplicate_key_update: バルクインサート(あるテーブルに複数のレコードを一括保存)する際、新規レコードは作成、主キー/ユニークキー制約に引っかかったレコードは、そのレコードの指定したカラムの値だけ更新(Upsert)してくれる
-    elsif new_products.present?
+    if new_products.present?
       import new_products
-      # import : activerecord-importを使って複数のレコードを一括保存する
+      # import : activerecord-importを使って複数のレコードを一括保存
     end
   end
 
@@ -111,7 +84,7 @@ class Product < ApplicationRecord
   
   private
     def self.csv_attributes
-      [:name, :description, :price, :recommended_flag, :carriage_flag]
+      [:name, :description, :price, :category_id, :recommended_flag, :carriage_flag]
     end
 
 end

@@ -2,8 +2,9 @@
 # ダッシュボードTOP(売上一覧) コントローラー
 
 class DashboardController < ApplicationController
-  before_action :authenticate_admin!  #管理者としてログインしていなければ何も処理せず root_pathに遷移する deviseのメソッド
-  layout 'dashboard/dashboard'  #dashboard専用のlayoutsファイル(layouts/dashboard/dashboard.html)を読込み
+  before_action :authenticate_admin!
+  layout 'dashboard/dashboard'  #dashboard専用layoutsファイル
+  PER = 15
   
   def index
     @sort = params[:sort]
@@ -11,17 +12,14 @@ class DashboardController < ApplicationController
     
     if @sort == "month"
       sales = ShoppingCart.get_monthly_sales    # 月単位の売上カートデータの [{配列}] を返す
-      #sales = [{:period=>"2022-07", :total=>9, :count=>1, :average=>9}, {:period=>"2022-06", :total=>10, :count=>2, :average=>5}, {:period=>"2022-04", :total=>41, :count=>1, :average=>41}...]
+      #sales = [{:period=>"2022-07", :total=>9, :count=>1, :average=>9}, {:period...]
     else
       sales = ShoppingCart.get_daily_sales      # 日単位の売上データの [{配列}] を返すクラスメソッド
     end
-    #クラスメソッドは ShoppingCart.get_monthly_salesのようにクラスに対して直接使う
     
-    #⬇︎ 売上一覧とページネーション
-    @sales = Kaminari.paginate_array(sales).page(params[:page]).per(15)
+    @sales = Kaminari.paginate_array(sales).page(params[:page]).per(PER)
     # 通常 Kaminariの pageメソッドや perメソッドはモデルに対してしか使えない(例：Product.page(params[:page]).per(15))
-    # 変数 salesには配列が入っている為 配列に対して Kaminariのメソッドを使うには⬇︎
-    # Kaminari.paginate_array(配列).page(params[:page]).per(15)  と書かなくてはならない。
+    # 変数 salesには配列が入っている為 配列に対して Kaminariのメソッドを使うには Kaminari.paginate_array(配列).page(params[:page]).per(15)とする
 
   end
 end

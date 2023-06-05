@@ -3,24 +3,24 @@
   <h1>受注一覧</h1>
   <div class="w-75">
     <%= form_with url: dashboard_orders_path, method: :get, local: true do |f| %>
-      <div class="d-flex flex-inline form-group">
-        <div class="d-flex align-items-center">注文番号</div>
-        <%= f.text_field :code, class: "form-control ml-2 w-50", placeholder: "12345678" %>
+      <div class="d-flex form-group">
+        <div class="col-2 d-flex align-items-center text-nowrap">注文番号</div>
+        <%= f.text_field :code, class: "form-control ml-2 mb-2 w-50", placeholder: "12345678" %>
       </div>
-      <div class="d-flex flex-inline form-group">
-        <div class="d-flex align-items-center">注文日</div>
+      <div class="d-flex form-group">
+        <div class="col-2 d-flex align-items-center text-nowrap">注文日</div>
         <%= f.date_field :from_date, value: @from_date, class: 'form-control ml-2 w-25' %>&nbsp;〜
-        <%= f.date_field :to_date, value: @to_date, class: 'form-control ml-2 w-25' %>
+        <%= f.date_field :to_date, value: @to_date, class: 'form-control ml-2 mb-2 w-25' %>
       </div>
-      <div class="d-flex flex-inline form-group">
-        <div class="d-flex align-items-center">注文者名</div>
+      <div class="d-flex form-group">
+        <div class="col-2 d-flex align-items-center text-nowrap">注文者名</div>
         <%= f.text_field :customer_name, value: @customer_name, class: "form-control ml-2 w-50", placeholder: "山田" %>
       </div>
-      <%= f.submit '検索', class: "btn samazon-submit-button" %>
+      <%= f.submit '検索', class: "btn submit-button ml-3" %>
     <% end %>
   </div>
   
-  <table class="table mt-5">
+  <table class="table mt-5 table-hover">
     <thead>
       <tr>
         <th scope="col" class="w-25">注文番号</th>
@@ -29,15 +29,17 @@
         <th scope="col">購入金額</th>
       </tr>
     </thead>
+    
     <tbody>
       <% @orders.each do |order| %>
-      <%# @orders = ShoppingCartsテーブルの buy_flagが true もしくは(かつ) 注文番号検索結果が入っている %>
+      <%# @orders = ShoppingCartsテーブルの buy_flagが trueの検索結果 or 一覧が降順で入っている %>
+      <% order_user_name = User.find(order.user_id).name %>
+      <% order_updated_at = order.updated_at.to_datetime.strftime("%Y-%m-%d %H:%M:%S") %><%# to_datetime: datetime型に変換 %>
         <tr>
-          <td class="align-middle" scope="row"><%= order.id %></td>
-          <td class="align-middle"><%= User.find(order.user_id).name %></td>
-          <td class="align-middle"><%= order.updated_at.to_datetime.strftime("%Y-%m-%d %H:%M:%S") %></td>
-            <%# .to_datetime : datetime型に変換 %>
-          <td class="align-middle"><%= order.total.fractional / 100 %></td>
+          <td><%= link_to "#{ order.id }", dashboard_order_path(order) %></td>
+          <td><%= link_to "#{ order_user_name }", dashboard_order_path(order) %></td>
+          <td><%= link_to "#{ order_updated_at }", dashboard_order_path(order) %></td>
+          <td><%= link_to "#{ order.total.fractional / 100 }", dashboard_order_path(order) %></td>
         </tr>
       <% end %>
     </tbody>

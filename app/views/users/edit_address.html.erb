@@ -1,17 +1,17 @@
-<!--お届け先編集画面 /users/mypage/address/edit -->
+<%# お届け先編集画面 /users/mypage/address/edit %>
 
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-5">
+    <div class="edit-address-area">
       <span>
         <%= link_to "マイページ", mypage_users_path, class: 'item-text text-decoration-none' %> > お届け先変更
       </span>
       <h2 class="title-text mt-5 mb-3">お届け先変更</h2>
         <hr>
-        <%# ⬇︎form_with model: @userを入れるとフォームに@userの情報入る。今回はf.text_fieldの中にvalue: @user.name,を記述 %>
+        <%# form_with model: @userを入れるとフォームに@userの情報入るが今回はf.text_fieldの中にvalue: @user.name,を記述 %>
         <%= form_with url: mypage_users_path, local: true, method: :put do |f| %>
         <div class="form-group row">
-          <%= f.label :name, "", class: "col-md-5 col-form-label text-md-left" do %><!--.col-form-label :フォームコントロールの中央垂直に配置-->
+          <%= f.label :name, "", class: "col-md-5 col-form-label text-md-left" do %><%#.col-form-label :フォームコントロールの中央垂直に配置 %>
             氏名<span class="badge badge-danger ml-1">必須</span>
           <% end %>
 

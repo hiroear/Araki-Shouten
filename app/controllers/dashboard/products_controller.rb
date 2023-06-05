@@ -10,15 +10,15 @@ class Dashboard::ProductsController < ApplicationController
     @sort_list = Product.sort_list
     
     if params[:sort].present?
-      @sorted = params[:sort] #選択された sort_listの内容(例：'price desc')
+      @sorted = params[:sort] #選択されパラメータで届いた sort_listの内容(例：'price desc')
     end
     
     if params[:keyword].present?
-      keyword = params[:keyword].strip  #strip :文字列先頭と末尾の空白文字を全て取り除いた文字列を生成して返す(全角スペースは削除されない)
+      keyword = params[:keyword].strip
+        #strip :文字列先頭と末尾の空白文字を全て取り除いた文字列を生成して返す(全角スペースは削除されない)
       @total_count = Product.search_for_id_and_name(keyword).count
         # Product.where('name LIKE ?', '%#{keyword}%').or(where('id LIKE ?', '%#{keyword}%')).count
       @products = Product.search_for_id_and_name(keyword).display_list(params[:pages])
-        # Product.where('name LIKE ?', '%#{keyword}%').or(where('id LIKE ?', '%#{keyword}%')).page(page).per(15)
     else
       @total_count = Product.count
       @products = Product.sort_order(@sorted).display_list(params[:page])
@@ -57,25 +57,28 @@ class Dashboard::ProductsController < ApplicationController
   
   # dashboard_product_path	DELETE	/dashboard/products/:id   dashboard/products#destroy
   def destroy
-    @product.destroy
-    redirect_to dashboard_products_path
+    if @product.destroy
+      redirect_to dashboard_products_path, notice: '削除しました'
+    else
+      redirect_to dashboard_products_path, notice: '削除に失敗しました'
+    end
   end
   
   
-  # CSV一括登録画面へ   GET  /dashboard/products/import/csv   dashboard/products#import
+  # CSV一括登録画面へ   GET  /dashboard/products/import/csv
   def import
   end
   
   
-  # CSV一括登録ボタンを押したら POSTでここに飛ぶ   POST	 /dashboard/products/import/csv   dashboard/products#import_csv
+  # CSV一括登録ボタンを押したら POSTでここに飛ぶ   POST	 /dashboard/products/import/csv
   def import_csv
-    #⬇︎ フォームから params[:file]が届き、末尾の拡張子が.csvだったら
+    # フォームから params[:file]が届き、かつ末尾の拡張子が.csvだったら
     if params[:file] && File.extname(params[:file].original_filename) == ".csv"
-      # File.extname("ファイルパス") : extnameメソッドは Fileクラスのメソッドで、引数で指定したファイル名の.拡張子のみを文字列として返す
-      # params[:パラメータ名].original_filename : フォームからアップロードされたファイル名を取得
-      Product.import_csv(params[:file])   # activerecord-importで複数のレコードを一括保存 / 更新
+      # extname: Fileクラスのメソッド。引数で指定したファイル名の拡張子のみを文字列で返す
+      # params[:パラメータ名].original_filename: フォームからアップロードされたファイル名を取得
+      Product.import_csv(params[:file])   # activerecord-importで複数のレコードを一括保存
       flash[:success] = "CSVでの一括登録が成功しました!"
-      redirect_to import_csv_dashboard_products_url   #csv一括登録画面へ
+      redirect_to import_csv_dashboard_products_url   #csv一括登録画面
     else
       flash[:danger] = "CSVが追加されていません。CSVを追加してください。"
       redirect_to import_csv_dashboard_products_url
@@ -87,8 +90,8 @@ class Dashboard::ProductsController < ApplicationController
   def download_csv
     send_file(
       "#{Rails.root}/public/csv/products.csv",
-      filename: "products.csv",   # ダウンロードするときに使用するファイル名を指定
-      type: :csv                  # コンテントタイプを指定
+      filename: "products.csv",   # ダウンロードされる際のファイル名
+      type: :csv                  # コンテントタイプ
     )
     # send_file(ファイルのパス, オプション={}) : 指定したパスに存在する画像やファイルを読み込みその内容をクライアントに送信
   end

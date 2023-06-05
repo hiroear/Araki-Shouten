@@ -7,8 +7,8 @@ class Dashboard::CategoriesController < ApplicationController
   
   # dashboard_categories_path	 GET 	/dashboard/categories  dashboard/categories#index
   def index
-    @categories = Category.display_list(params[:page])  #Category.all.page(params[:page]).per(15)
-    # logger.debug("================= dashboard/categories controllers index #{@categories}")
+    @categories = Category.display_list(params[:page])
+      # logger.debug("================= dashboard/categories controllers index #{@categories}")
     @category = Category.new
     @major_categories = MajorCategory.all
   end
@@ -35,7 +35,7 @@ class Dashboard::CategoriesController < ApplicationController
   
   # dashboard_category_path  PUT	 /dashboard/categories/:id   dashboard/categories#update
   def update
-    logger.debug("================= dashboard/categories controllers update #{category_params}")
+    # logger.debug("================= dashboard/categories controllers update #{category_params}")
     @category.update(category_params)
     @category.save
     redirect_to dashboard_categories_path

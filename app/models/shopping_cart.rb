@@ -8,22 +8,20 @@ class ShoppingCart < ApplicationRecord
                               user_cart.nil? ? ShoppingCart.create(user_id: user.id)
                                              : user_cart }
   
-  # tax_pctメソッド: acts_as_shopping_cartで用意されている消費税を計算するメソッド
-  # 本アプリは税込表示とするので 0としたほうが都合が良いためオーバーライド
   def tax_pct
     0
   end
   
   
-  scope :sort_list, -> {{ '切り替え': '', '月別': 'month', '日別': 'daily'}}   #セレクトボックスの内容。パラメータ
+  scope :sort_list, -> {{ '日別': 'daily', '月別': 'month'}}
   scope :bought_carts, -> { where(buy_flag: true) }     #購入済みのカート情報
   
-  #⬇︎ sqlite用  月単位 /日単位の売上の重複データを除いたカート一覧を降順・配列で取得
+  # sqlite用  月単位 /日単位の売上の重複データを除いたカート一覧を降順・配列で取得
   scope :bought_months_sqlite, -> {
     bought_carts                                        # 購入済みのカート情報を
     .order(updated_at: :desc)                           # 更新日の降順に並び替え
     .group("strftime('%Y-%m', updated_at, '+09:00')")   # 更新日時(UTCから9時間足した日本時間)を strftimeメソッドで'20○○年○月'に書式化・文字列に変換 ▶ それを groupで重複を除く
-    .pluck(:updated_at)                                 # pluck：引数に指定したカラムの値を配列で返す (特定のカラムの値だけ取得したい場合に使う)
+    .pluck(:updated_at)                                 # pluck：引数の値を配列で返す
     # ["2022-5","2022-10"]
   }
   scope :bought_days_sqlite, -> {
@@ -33,13 +31,13 @@ class ShoppingCart < ApplicationRecord
     .pluck(:updated_at)
   }
   
-  #⬇︎ pg用  月単位 /日単位の売上の重複データを除いたカート一覧を降順・配列で取得
+  # pg用  月単位 /日単位の売上の重複データを除いたカート一覧を降順・配列で取得
   scope :bought_months_pg, -> {
-    bought_carts    # 購入済みのカート情報を
+    bought_carts
     .pluck("distinct(date_trunc('month', updated_at + '9 hours'))").map{ |m| m.in_time_zone('Asia/Tokyo') }.reverse
-      # 更新日時(UTCから9時間足した日本時間)を月単位で切り捨て ▶︎ それをdistinctで重複レコードを1つにまとめる ▶pluckで囲って指定した値を配列に
-      # 上で作った配列をさらに mapで新しい配列にする(in_time_zone：|m|を日本時間に変換)
-      # .reverse：これまでの要素を逆順(降順)に並べた新しい配列を生成して返す
+      # 更新日時(UTCから9時間足した日本時間)を月単位で切り捨て(date_trunc) ▶︎ それをdistinctで重複を防ぎ ▶ それを pluckで囲って配列に。
+      # 作った配列をさらに in_time_zoneで Railsのタイムゾーンに直し mapで新しい配列に。
+      # reverse：要素を逆順(降順)に並べた新しい配列を生成して返す
   }
   scope :bought_days_pg, -> {
     bought_carts
@@ -48,7 +46,7 @@ class ShoppingCart < ApplicationRecord
   }
   
   
-  # ⬇︎それぞれの月/日に購入された全てのカートデータの一覧を取得
+  # それぞれの月/日に購入された全てのカートデータの一覧を取得
   scope :search_bought_carts_by_month, -> (month) { bought_carts.where(updated_at: month.all_month) }
     # 全ての売上カートデータの内 updated_atカラムが、引数に含まれているカート情報の月の全カートデータを取得
     # all_month メソッド...その月の期間の全範囲のデータを取得 (例：9月の1～30日)
@@ -64,44 +62,44 @@ class ShoppingCart < ApplicationRecord
   
   scope :search_bought_carts_by_user, -> (user) { bought_carts.where(user_id: user) }
   
-  # ⬇︎月単位売上データ(カート)の [{配列}] を返すクラスメソッド (メソッド名の先頭に selfをつけることでクラスメソッドになる)
+  #︎ 月単位売上データ(カート)の [{配列}] を返すクラスメソッド (メソッド名の先頭に selfをつけることでクラスメソッドになる)
   def self.get_monthly_sales
-    if Rails.env.production?         # 本番環境の場合
+    if Rails.env.production?         # 本番環境
       months = bought_months_pg      # pg用  月単位の重複データを除いた売上カート一覧を降順・配列で取得
-    else                             # 開発環境の場合
+    else                             # 開発環境
       months = bought_months_sqlite  # sqlite用  月単位の重複データを除いた売上カート一覧を降順・配列で取得
     end
     
     array = Array.new(months.count) { Hash.new }
-    # [{キー：値, キー：値, キー：値...}] のような中がハッシュの新しい空の配列を monthsの数だけ生成
+      # [{キー：値, キー...}] のような中が連想配列の空の配列を monthsの数だけ生成
       # Array.new：(要素数)分の [配列] を定義   /   {Hash.new}：{連想配列} を定義
 
     months.each_with_index do |month, i|
-      #⬇︎ monthに入っているそれぞれの月毎の全ての売上カートデータ一覧を取得
+      #↓︎ monthに入っているそれぞれの月毎の売上カートデータ全一覧を取得
       monthly_sales = search_bought_carts_by_month(month)
       
+      #↓ 月毎のカートの売上合計
       total = 0
       monthly_sales.each do |monthly_sale|
-        #⬇︎ monthly_saleに入っているカートの売上合計を出す
         total += monthly_sale.total.fractional / 100
-        # monthly_sale.total : 例) 売上100円 のカートの場合  出力結果 ▶︎ 100.00 (acts_as_shopping_cartの仕様上米ドル表示になる)
-        # monthly_sale.total.fractional : 小数点部分を無くす為 fractional を実行   結果 ▶︎ 10000
-        # monthly_sale.total.fractional / 100 : 小数点を無くしただけでは金額が合わないので /100   結果 ▶︎ 100
+        # monthly_sale.total : 例) 売上100円のカートの場合  出力結果 ▶︎ 100.00 (acts_as_shopping_cartの仕様上米ドル表示になる)
+        # monthly_sale.total.fractional : 小数点を無くす為 fractionalをつけると   結果 ▶︎ 10000
+        # monthly_sale.total.fractional / 100 : 小数点を無くしただけでは金額が合わないので100で割る   結果 ▶︎ 100
       end
       
-      # array[i]番目に [:period] というキーを作って = 以降の値をキーに代入
+      # array[i]番目に [:period]というキーを作り値をキーに代入
       array[i][:period] = month.strftime("%Y-%m")          # 年月
       array[i][:total] = total                             # 金額
       array[i][:count] = monthly_sales.count               # 件数
       array[i][:average] = total / monthly_sales.count     # 平均単価
     end
     
-    return array    #最後に、上で生成した配列を返す
-    #︎ [{:period=>"2022-07", :total=>9, :count=>1, :average=>9}, {:period=>"2022-06", :total=>10, :count=>2, :average=>5}, {:period=>"2022-04", :total=>41, :count=>1, :average=>41}...]
+    return array    #最後に上で生成した配列を明示的に返す
+    #︎ [{:period=>"2022-07", :total=>9, :count=>1, :average=>9}, {:period=>...]
   end
   
   
-  # ⬇︎︎日単位売上データ(カート)の [{配列}] を返すクラスメソッド
+  # ︎日単位売上データ(カート)の [{配列}] を返すクラスメソッド
   def self.get_daily_sales
     if Rails.env.production?
       days = bought_days_pg

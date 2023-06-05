@@ -1,9 +1,9 @@
-<!--会員情報編集画面 /users/mypage/edit -->
+<%# 会員情報編集画面 /users/mypage/edit %>
 
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-5">
-      <span>
+    <div class="col-md-5 col-sm-6 col-10">
+      <span class='pankuzu'>
         <%= link_to "マイページ", mypage_users_path, class: 'item-text text-decoration-none' %> > 会員情報の編集
       </span>
       
@@ -18,9 +18,8 @@
               編集
             </span>
           </div>
-          <%#↓ collapse :ボタンなどをトリガーにしてコンテンツの折り畳みができるBootstrap。href属性をもつリンクや data-target属性をもつボタンで使用可能。どちらも data-toggle="collapse"が必要 %>
           <div class="collapse show userName">
-            <h2><%= @user.name %></h2>
+            <h3><%= @user.name %></h3>
           </div>
           
           
@@ -55,7 +54,7 @@
             </span>
           </div>
           <div class="collapse show userMail">
-            <h2><%= @user.email %></h2>
+            <h3><%= @user.email %></h3>
           </div>
           <div class="collapse editUserMail">
             <%=
@@ -88,7 +87,7 @@
             </span>
           </div>
           <div class="collapse show userPhone">
-            <h2><%= @user.phone %></h2>
+            <h3><%= @user.phone %></h3>
           </div>
 
           
@@ -149,7 +148,7 @@
 
 <script type="text/javascript">
   let switchEditUserInfo = (textClass, inputClass, labelClass) => {
-    if ($(textClass).css('display') == 'block') {   // .userNameというclass がblock要素なら
+    if ($(textClass).css('display') == 'block') {   // .textClassが block要素なら
         $(labelClass).text("キャンセル");           // ボタンを[キャンセル]に変更
         $(textClass).collapse('hide');              // 氏名表示エリアを非表示
         $(inputClass).collapse('show');             // 氏名編集フォームエリアを表示

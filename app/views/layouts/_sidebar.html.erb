@@ -1,20 +1,19 @@
-<!--サイドバー。入れ子にして親カテゴリ毎に各カテゴリ（子カテゴリ）を並べて表示-->
+<%# サイドバー %>
 
 <div class="container">
   <% major_category_names.each do |major_category_name| %>
     <% if major_category_name == "本" %>
-      <h3 class="sidebar-label-1"><span class="book"></span><%= major_category_name %></h3>
+      <h3 class="sidebar-line1"><span class="book"></span><%= major_category_name %></h3>
     <% elsif major_category_name == "コンピュータ" %>
-      <h3 class="sp-sidebar-text sidebar-label-2 mt-3"><span class="computer"></span><%= major_category_name %></h3>
+      <h3 class="sp-sidebar-text sidebar-line2 mt-3"><span class="computer"></span><%= major_category_name %></h3>
     <% elsif major_category_name == "ディスプレイ" %>
-      <h3 class="sp-sidebar-text sidebar-label-2 mt-3"><span class="display"></span><%= major_category_name %></h3>
+      <h3 class="sp-sidebar-text sidebar-line3 mt-3"><span class="display"></span><%= major_category_name %></h3>
     <% end %>
     
     <% categories.each do |category| %>
       <% if category.major_category_name == major_category_name %>
         <label class="sidebar-category-label">
           <%= link_to category.name, products_path(category: category.id) %>
-          <%# products_path(category: category.id): リンク先パス(キー:値)で、categoryというキーで(パラメータ名) category.idを渡す %>
         </label>
       <% end %>
     <% end %>

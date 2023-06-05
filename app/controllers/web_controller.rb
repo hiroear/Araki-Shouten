@@ -1,35 +1,14 @@
 class WebController < ApplicationController
   
-  RECENTLY_PRODUCTS_PER_PAGE = 4
-  RECOMMEND_PRODUCTS_PER_PAGE = 3
-  
-  include ApplicationHelper
+  RECENTLY_PRODUCTS_PER_PAGE = 6
+  RECOMMEND_PRODUCTS_PER_PAGE = 6
   
   def index
-    
-    logger.debug("^^^^^^^^^^^^^^^^^^^^ resource_is_user? = #{resource_is_user?}")
-    
-    
-    if sort_params.present?
-      @category = Category.request_category(sort_params[:sort_category])
-      @products = Product.sort_products(sort_params, params[:page])
-    elsif params[:category].present?
-      @category = Category.request_category(params[:category])
-      @products = Product.category_products(@category, params[:page])
-    else
-      @products = Product.display_list(params[:page])
-    end
- 
     @major_category_names = Category.major_categories
     @categories = Category.all
-    @recently_products = Product.recently_products(RECENTLY_PRODUCTS_PER_PAGE)  #Product.order(created_at: 'desc').take(4)
-    @recommend_products = Product.recommend_products(RECOMMEND_PRODUCTS_PER_PAGE)  #Product.where(recommended_flag: true).take(3) 
+    @recently_products = Product.recently_products(RECENTLY_PRODUCTS_PER_PAGE)  #Product.order(created_at: 'desc').take(6)
+    @recommend_products = Product.recommend_products(RECOMMEND_PRODUCTS_PER_PAGE)  #Product.where(recommended_flag: true).take(6)
   end
   
-  
-  private
-    def sort_params
-      params.permit(:sort, :sort_category)
-    end
     
 end

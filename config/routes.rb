@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   
   
   devise_for :admins, :controllers => {
-    :sessions => 'admins/sessions'                     #デフォルトのsessionsコントローラを継承し'admins/sessions'コントローラを使用
+    :sessions => 'admins/sessions'
   }
   
   devise_scope :admin do
@@ -29,18 +29,18 @@ Rails.application.routes.draw do
     delete 'dashboard/logout', to: 'admins/sessions#destroy'
   end
   
-  namespace :dashboard do # controllers/dashboard/
+  namespace :dashboard do                            # controllers/dashboard/
     resources :categories, except: [:new]            #ダッシュボード/カテゴリ管理 (newアクション省く)
-    resources :products, except: [:show] do          #ダッシュボード/商品管理/商品一覧 (showアクション省く)
-      collection do                                  #ダッシュボード/商品管理/CSV一括登録
-        get "import/csv", :to => "products#import"   # GET 	/dashboard/products/import/csv   dashboard/products#import
-        post "import/csv", :to => "products#import_csv"  # POST	 /dashboard/products/import/csv   dashboard/products#import_csv
-        get "import/csv_download", :to => "products#download_csv"  # GET	 /dashboard/products/import/csv_download   dashboard/products#download_csv
+    resources :products, except: [:show] do                        #/商品管理/商品一覧
+      collection do                                                       #  /CSV一括登録
+        get "import/csv", :to => "products#import"                 # GET 	/dashboard/products/import/csv
+        post "import/csv", :to => "products#import_csv"            # POST	 /dashboard/products/import/csv
+        get "import/csv_download", :to => "products#download_csv"  # GET	 /dashboard/products/import/csv_download
       end
     end
-    resources :major_categories, except: [:new]    #ダッシュボード/親カテゴリ管理 (newアクション省く)
+    resources :major_categories, except: [:new]    #ダッシュボード/親カテゴリ管理
     resources :users, only: [:index, :destroy]     #ダッシュボード/顧客管理(index/destroyアクションのみ)
-    resources :orders, only: [:index]              #ダッシュボード/受注一覧(indexアクションのみ)
+    resources :orders, only: [:index, :show]       #ダッシュボード/受注一覧 & 詳細
   end
   
   

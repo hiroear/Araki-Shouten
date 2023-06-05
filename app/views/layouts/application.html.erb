@@ -2,11 +2,16 @@
 <html>
   <head>
     <title><%= ENV["APP_NAME"] %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     
     <script src="https://kit.fontawesome.com/2d6f3622dc.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
@@ -24,4 +29,11 @@
     
     <%= render partial: 'layouts/footer' %>
   </body>
+  
 </html>
+  <script>
+    document.addEventListener("turbolinks:before-cache", function(){
+    	$('.slider.slick-initialized').slick('unslick');
+    	$('.slider_recently.slick-initialized').slick('unslick');
+    });
+  </script>

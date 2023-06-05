@@ -1,8 +1,8 @@
 <%# マイページ/クレジットカード登録画面　mypage_register_card_users_path  GET	/users/mypage/register_card   users#register_card %>
 <main>
   <div class="d-flex justify-content-center">
-    <div class="container w-50">
-      <span>
+    <div class="container register_card-area">
+      <span class='pankuzu'>
         <%= link_to "マイページ", mypage_users_path, class: 'item-text text-decoration-none' %> > クレジットカードの登録・更新
       </span>
       
@@ -12,19 +12,14 @@
       <h5><%= @card[:brand] %></h5>
       <p>有効期限: <%= "#{ @card[:exp_year] } / #{ @card[:exp_month] }" %></p>
       <p>カード番号: ************<%= @card[:last4] %></p>
-      <% logger.debug("~~~~~~~~~~~~~~~~~~~~~~~~ カード更新 present?  #{@card.present?}") %>
+      <%# logger.debug("~~~~~~~~~~~~~~~~~~~~~~~~ カード更新 present?  #{@card.present?}") %>
 
       <%= form_with url: mypage_token_users_path, method: :post do |f| %><%# POSTで users#token へ %>
         <% if @card.present? %>
           <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key=<%= ENV['PAYJP_PUBLIC_KEY'] %> data-on-created="onCreated" data-text="カードを更新する" data-submit-text="カードを更新する"></script>
         <% else %>
           <script type="text/javascript" src="https://checkout.pay.jp/" class="payjp-button" data-key=<%= ENV['PAYJP_PUBLIC_KEY'] %> data-on-created="onCreated" data-text="カードを登録する" data-submit-text="カードを登録する"></script>
-        <% end %><%#　
-        クリック後クレカ情報入力フォームと submitボタンが現れる。それぞれのパラメータ名⬇︎
-          カード番号: name="cardnumber"
-          有効期限(月): name="ccmonth"  /  有効期限(年): name="ccyear"
-          CVC番号: name="cvc"
-          名前: name="ccname"  %>
+        <% end %>
       <% end %>
     </div>
   </div>

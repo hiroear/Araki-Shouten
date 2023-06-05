@@ -10,7 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 
-//= require jquery3
+//= require jquery
 //= require popper
 //= require bootstrap
 
@@ -18,4 +18,6 @@
 //= require activestorage
 //= require turbolinks
 // require_tree .
-// ⬆︎アセットパイプラインを無効にする為 //= のところを // だけにしてコメントアウトする
+/* ↑アセットパイプラインを無効にする為 //= を // にしてコメントアウト。
+    config/initializers/assets.rbの Rails.application.config.assets.precompile += %w( admin.js admin.css )をコメントアウトし
+    Rails.application.config.assets.precompile += %w( *.js ) と記述 */

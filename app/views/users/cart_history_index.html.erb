@@ -3,22 +3,21 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <span>
+      <span class='pankuzu'>
         <%= link_to 'マイページ', mypage_users_path, class: 'item-text text-decoration-none' %> > 注文履歴
       </span>
       
-      <div class="container mt-4">
+      <div class="cart_history-area mt-4">
         <table class="table table-hover">
           <thead>
-            <tr class="title-text">
+            <tr class="title-text cart_history-th">
               <th scope="col">注文番号</th>
               <th scope="col">購入日時</th>
               <th scope="col">合計金額</th>
-              <!--<th scope="col">注文詳細</th>-->
             </tr>
           </thead>
           
-          <tbody>
+          <tbody class='cart_history-td'>
             <% @orders.each do |order| %>
             <%# @orders = ShoppingCart.where(buy_flag: true).where(user_id: current_user) %>
               <tr>

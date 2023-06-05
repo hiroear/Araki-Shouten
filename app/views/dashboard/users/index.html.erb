@@ -1,24 +1,21 @@
-<!--ダッシュボード/顧客管理/顧客一覧-->
+<%# ダッシュボード/顧客管理/顧客一覧 %>
 <div class="w-75">
   <h1>顧客一覧</h1>
   
-  <div class="w-75">
+  <div class="w-75 mt-4">
     <%= form_with url: dashboard_users_path, method: :get, local: true do |f| %>
       <div class="d-flex flex-inline form-group">
-        <div class="d-flex align-items-center">
-          ID・氏名など
-        </div>
-        <%= f.text_area :keyword, value: @keyword, class: "form-control ml-2 w-50" %>
+        <%= f.text_field :keyword, value: @keyword, class: "form-control ml-2 w-50", placeholder: 'ID・氏名など' %>
+        <%= f.submit '検索', class: "btn submit-button mt-0 ml-2" %>
       </div>
-      <%= f.submit '検索', class: "btn samazon-submit-button" %>
     <% end %>
   </div>
   
   
-  <table class="table mt-5">
+  <table class="table mt-5 table-hover">
     <thead>
       <tr>
-        <th scope="col" class="w-25">ID</th>
+        <th scope="col">ID</th>
         <th scope="col">名前</th>
         <th scope="col">メールアドレス</th>
         <th scope="col">電話番号</th>
@@ -29,15 +26,15 @@
       <% @users.each do |user| %>
         <tr>
           <th scope="row"><%= user.id %></th>
-          <td><%= user.name %></td>
+          <td class='text-nowrap'><%= user.name %></td>
           <td><%= user.email %></td>
           <td><%= user.phone %></td>
           <td>
             <%= form_with model: user, url: dashboard_user_path(user), local: true, method: :delete do |f| %>
-              <% if user.deleted_flg %><!--true-->
-                <%= f.submit '復帰', class: "btn dashboard-delete-link" %>
-              <% else %><!--false-->
-                <%= f.submit '削除', class: "btn dashboard-delete-link" %>
+              <% if user.deleted_flg %><%# true %>
+                <%= f.submit '復帰', class: "btn delete-link" %>
+              <% else %><%# false %>
+                <%= f.submit '削除', class: "btn delete-link" %>
               <% end %>
             <% end %>
           </td>

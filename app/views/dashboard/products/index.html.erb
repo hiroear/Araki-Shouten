@@ -16,17 +16,16 @@
         <div class="d-flex align-items-center">商品ID・商品名</div>
         <%= f.text_area :keyword, class: "form-control ml-2 w-50" %>
       </div>
-      <%= f.submit "検索", class: "btn samazon-submit-button" %>
+      <%= f.submit "検索", class: "btn submit-button" %>
     <% end %>
   </div>
   
   <div class="d-flex justify-content-between w-75 mt-4">
     <h3>合計<%= @total_count %>件</h3>
-    <%= link_to "+ 新規作成", new_dashboard_product_path, class: "btn samazon-submit-button" %>
-    <%# dashboard/products#new  新規作成画面へ %>
+    <%= link_to "+ 新規作成", new_dashboard_product_path, class: "btn submit-button" %>
   </div>
   
-  <table class="table table-responsive mt-5"> <%# .table-responsive：画面の横幅が狭くなるとスクロールバーを表示 %>
+  <table class="table mt-5">
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -54,11 +53,11 @@
           <td><%= product.price %></td>
           <td><%= product.category.name %></td><%# Productモデルと Categoryモデルで関連付けがされているから categoryテーブルにカラムの情報を取得できる %>
           <td><%= product.category.major_category_name %></td>
-          <td>
-            <%= link_to '編集', edit_dashboard_product_path(product), class: "dashboard-edit-link" %>
+          <td class="dashboard-edit-delete">
+            <%= link_to '編集', edit_dashboard_product_path(product) %>
           </td>
-          <td>
-            <%= link_to '削除', dashboard_product_path(product), method: :delete, class: "dashboard-delete-link" %>
+          <td class="dashboard-edit-delete">
+            <%= link_to '削除', dashboard_product_path(product), method: :delete, data: {confirm: "本当に削除しますか？"} %>
           </td>
         </tr>
       <% end %>

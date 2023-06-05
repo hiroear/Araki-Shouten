@@ -1,6 +1,6 @@
-<!--マイページ画面 /users/mypage-->
+<%# マイページ画面 /users/mypage %>
 <div class="container d-flex justify-content-center mt-3">
-  <div class="w-50">
+  <div class="mypage-area">
     
     <h2 class="title-text">マイページ</h2>
     <hr>
@@ -21,7 +21,7 @@
           </div>
         </div>
           <div class="col-1 d-flex align-items-center pr-0">
-            <!-- mypage_edit_users_path	 GET	 /users/mypage/edit  users#edit  会員情報の編集画面へ-->
+            <%# mypage_edit_users_path	 GET	 /users/mypage/edit  users#edit  会員情報の編集画面へ %>
             <%= link_to mypage_edit_users_path do %>
               <i class="fas fa-chevron-right fa-2x mypage-text"></i>
             <% end %>
@@ -74,7 +74,7 @@
           </div>
         </div>
         <div class="col-1 d-flex align-items-center pr-0">
-          <!--mypage_users_path	 GET	/users/mypage  users#mypage  マイページ画面へ-->
+          <%# mypage_users_path	 GET	/users/mypage  users#mypage  マイページ画面へ %>
           <%= link_to mypage_cart_histories_users_path do %>
             <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>
@@ -100,7 +100,7 @@
           </div>
         </div>
         <div class="col-1 d-flex align-items-center pr-0">
-          <!--mypage_address_edit_users_path	GET  /users/mypage/address/edit   users#edit_address  登録住所変更画面へ-->
+          <%# mypage_address_edit_users_path	GET  /users/mypage/address/edit   users#edit_address  登録住所変更画面へ %>
           <%= link_to mypage_address_edit_users_path do %>
             <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>
@@ -126,7 +126,7 @@
           </div>
         </div>
         <div class="col-1 d-flex align-items-center pr-0">
-          <!--mypage_edit_password_users_path	 GET  /users/mypage/edit_password  users#edit_password  パスワード変更画面へ-->
+          <%# mypage_edit_password_users_path	 GET  /users/mypage/edit_password  users#edit_password  パスワード変更画面へ %>
           <%= link_to mypage_edit_password_users_path do %>
             <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>
@@ -152,7 +152,7 @@
           </div>
         </div>
         <div class="col-1 d-flex align-items-center pr-0">
-          <!--logout_path	 DELETE	 /logout   users/sessions#destroy-->
+          <%# logout_path	 DELETE	 /logout   users/sessions#destroy %>
           <%= link_to logout_path, method: :delete do %>
             <i class="fas fa-chevron-right fa-2x mypage-text"></i>
           <% end %>          

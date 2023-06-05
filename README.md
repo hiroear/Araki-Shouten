@@ -1,24 +1,48 @@
-# README
+### アプリケーション概要
+「Araki Shouten」
+ECサイトです。ユーザーサイトと管理者側のダッシュボードを実装しました。
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### URL
 
-Things you may want to cover:
+### 機能・使用技術　一覧
+* インフラ
+    * Heroku
+* バックエンド
+    * PostgreSQL
+    * Ruby 2.6.5
+    * Ruby on Rails 5.2.4.2
+* フロントエンド
+    * HTML
+    * SCSS
+    * Bootstrap
+    * Javascript・JQuery
+* ユーザーサイト
+    * ログイン・ログアウト・パスワード再設定（devise）
+    * ページネーション（kaminari）
+    * 商品一覧・キーワード検索・カテゴリ検索・ソート機能
+    * 商品のレビュー・評価投稿
+    * お気に入り機能（socialiizatioin）
+    * ショッピングカート（acts_as_shopping_cart）
+    * クレジットカード登録・更新・決済: PAY.JP API
+    * ユーザー注文履歴・情報登録・編集・退会（論理削除）
+* ダッシュボード（管理画面） 
+    * 日別 / 月別合計売上・件数・平均単価算出
+    * 全受注データ一覧・詳細画面
+    * 商品データ一覧・検索・ソート・新規登録・編集
+    * 商品画像アップロード（Active Storage / MiniMagick）
+    * 商品データCSV一括登録
+    * カテゴリ一覧・新規登録・編集
+    * ユーザーデータ一覧・検索・論理削除
 
-* Ruby version
+### 苦労したところ
 
-* System dependencies
 
-* Configuration
+### ゲスト用アカウント
+ユーザーサイト・ダッシュボード共通
+Mail: a@example.com
+PW: aaaaaa
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### 利用方法
+ユーザーサイトはログインなしでも基本的には閲覧可能です。
+お気に入り機能・カート機能・レビュー投稿・マイページはログインが必要です。
+ダッシュボードはフッターの右下にリンクがあります。ログインが必要です。

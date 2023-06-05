@@ -3,64 +3,123 @@
   <div class="col-2 pc-only">
     <%= render partial: "layouts/sidebar", locals: { categories: @categories, major_category_names: @major_category_names } %>
   </div>
+  
+  <div class="header-category sp-only">
+    <p class='sidebar-label-3 m-0'>カテゴリーで探す</p>
+    <% @categories.each do |category| %>
+      <%= link_to category.name, products_path(category: category.id),  class: 'btn category-button' %>
+    <% end %>
+  </div>
+    
   <div class="container col-9">
     <h1 class='title-text'>おすすめ商品</h1>
-    <div class="row">
+    <div class="slider">
       <% @recommend_products.each do |recommend_product| %>
-        <div class="col-sm-4 col-12 p-0">
-          <%= link_to product_path(recommend_product) do %>
-            <% if recommend_product.image.attached? %>
-              <div class='image-pc-only'>
-                <%= image_tag recommend_product.image.variant(resize: "300x200^", gravity: "center"), class: "rounded img-thumbnail image-margin" %>
-              </div>
-              <div class='image-sp-only'>
-                <div class='d-flex'>
-                  <%= image_tag recommend_product.image.variant(resize: "180x100^", gravity: "center"), class: "rounded img-thumbnail mb-2" %>
-                  <p class="sp-product-name mt-3" >
-                    <%= recommend_product.name %>
-                    <label>￥<%= recommend_product.price %></label>
-                  </p>
-                </div>
-              </div>
-            <% else %>
-              <%= image_tag "/images/dummy.png", class: "rounded img-thumbnail" %>
-            <% end %>
-          <% end %>
-          <div class="row pc-product-name">
-            <div class="col-12">
-              <p class="mt-1" >
+        <%= link_to product_path(recommend_product), class: 'text-decoration-none' do %>
+          <% if recommend_product.image.attached? %>
+            <div class='mr-2'>
+              <%#= image_tag recommend_product.image.variant(resize: "354x295^", gravity: "center"), class: "rounded img-thumbnail" %>
+              <%= image_tag recommend_product.image, class: "rounded img-thumbnail" %>
+              <p class="product-name mt-1 ml-2" >
                 <%= recommend_product.name %>
-                <label>￥<%= recommend_product.price %></label>
+                <label class='ml-1'>￥<%= recommend_product.price %></label>
               </p>
             </div>
-          </div>
-        </div>
-      <% end %>
-    </div><!--.row-->
-      
-      
-    <h1 class='title-text'>新着商品</h1>
-    <div class="row">
-      <% @recently_products.each do |recently_product| %>
-        <div class="col-3">
-          <%= link_to product_path(recently_product) do %>
-            <% if recently_product.image.attached? %>
-              <%= image_tag recently_product.image, class: "rounded img-thumbnail" %>
-            <% else %>
+          <% else %>
+            <div class='mr-2'>
               <%= image_tag "/images/dummy.png", class: "rounded img-thumbnail" %>
-            <% end %>
+              <p class="product-name mt-1 ml-2" >
+                <%= recommend_product.name %>
+                <label class='ml-1'>￥<%= recommend_product.price %></label>
+              </p>
+            </div>
           <% end %>
-          <div class="row">
-            <div class="col-12">
-              <p class="mt-2">
+        <% end %>
+      <% end %>
+    </div>
+      
+      
+    <h1 class='title-text mt-3 mb-1'>新着商品</h1>
+    <div class="slider_recently">
+      <% @recently_products.each do |recently_product| %>
+        <%= link_to product_path(recently_product), class: 'text-decoration-none' do %>
+          <% if recently_product.image.attached? %>
+            <div class='mr-2'>
+              <%= image_tag recently_product.image, class: "rounded img-thumbnail" %>
+              <p class="product-name mt-2">
                 <%= recently_product.name %>
                 <label>￥<%= recently_product.price %></label>
               </p>
             </div>
-          </div>
-        </div>
+          <% else %>
+              <div class='mr-2'>
+                <%= image_tag "/images/dummy.png", class: "rounded img-thumbnail" %>
+                <p class="product-name mt-2">
+                  <%= recently_product.name %>
+                  <label>￥<%= recently_product.price %></label>
+                </p>
+              </div>
+          <% end %>
+        <% end %>
       <% end %>
     </div>
       
-  </div><!--.col-9-->
-</div><!--.row-->
+  </div><%# .col-9 %>
+</div><%# .row %>
+
+<script>
+  $(document).on('turbolinks:load', function(){
+    $('.slider').not('.slick-initialized').slick({
+      arrows: false,
+      dots: true,
+      dotsClass: "slide-dots",
+      autoplay: true,
+      // autoplaySpeed: 3000 // 再生速度（ミリ秒）
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      responsive: [
+  			{
+  			breakpoint: 769,
+  			settings: {
+  				slidesToShow: 2, //スライドを画面に2枚表示
+  				slidesToScroll: 1, //1回のスクロールで1枚の写真を移動
+  			}
+    		},
+    		{
+    			breakpoint: 480,
+    			settings: {
+    				slidesToShow: 1,
+    				slidesToScroll: 1,
+    			}
+    		}
+    	]
+    });
+    
+    $('.slider_recently').not('.slick-initialized').slick({
+      arrows: false,
+      dots: true,
+      dotsClass: "slide-dots",
+      autoplay: true,
+      infinite: true,
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      responsive: [
+  			{
+  			breakpoint: 769,
+  			settings: {
+  				slidesToShow: 3,
+  				slidesToScroll: 2,
+  			}
+    		},
+    		{
+    			breakpoint: 480,
+    			settings: {
+    				slidesToShow: 1,
+    				slidesToScroll: 1,
+    			}
+    		}
+    	]
+    });
+  });
+</script>

@@ -1,5 +1,5 @@
 @import 'bootstrap';
-
+ 
 body {
   font-family: "Noto Sans JP";
   margin: 0;
@@ -25,11 +25,29 @@ h3, .h3 {
   white-space: nowrap
 }
 
+.navbar-light .navbar-toggler {
+  border: none;
+}
+
+.navbar-collapse {
+  margin-left: 15px;
+}
+
+.navbar-nav {
+  flex-direction: row;
+  padding: 0 22px 0 0;
+}
+
+.navbar-nav .nav-link {
+  padding: 5px 15px;
+}
+
 .nav-item label {
   color: #4b6f7d;
   font-size: 16px;
   cursor: pointer;
   margin-right: 18px;
+  white-space: nowrap;
 }
 
 .form-group {
@@ -53,7 +71,7 @@ h3, .h3 {
 
 .form-inline {
   flex-flow: nowrap;
-  height: 50px;
+  height: 40px;
 }
 
 .table {
@@ -68,7 +86,19 @@ h3, .h3 {
   color: #4b6f7d;
   text-decoration: none;
 }
+.rounded {
+  border-radius: 0.5rem !important;
+}
 
+.h-10 {
+  height: 10% !important;
+}
+.w-10 {
+  width: 10% !important;
+}
+.w-20 {
+  width: 20% !important;
+}
 .w-80 {
   width: 80% !important;
 }

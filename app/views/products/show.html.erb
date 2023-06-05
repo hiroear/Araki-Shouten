@@ -1,46 +1,45 @@
-<!--商品詳細ページ-->
-<div class="row">
-  <div class="col-2">
+<%# 商品詳細ページ %>
+<div class="d-flex">
+  <div class="col-2 pc-only">
     <%= render partial: "layouts/sidebar", locals: { categories: @categories, major_category_names: @major_category_names } %>
   </div>
-  <div class="col-9">
+  <div class="col-md-9">
     <div class="d-flex justify-content-center">
-      <div class="row">
-        <div class="col-5 offset-1">
+      <div class="row m-0">
+        <div class="col-md-5 offset-md-1 col-sm-4 offset-sm-1 col-8 show-image">
           <% if @product.image.attached? %>
             <%= image_tag @product.image, class: "w-100 img-fluid rounded" %>
+            <%#= image_tag @product.image.variant(resize: "200x170^", gravity: "center"), class: "w-100 img-fluid rounded" %>
           <% else %>
-            <%= image_tag "/images/dummy.png", class: "w-100 img-fuild rounded" %>
+            <%= image_tag "/images/dummy.png", class: "w-100 img-fluid rounded" %>
           <% end %>
         </div>
     
-        <div class="col">
-          <div class="d-flex flex-column">
+        <div class="col-sm-6 col-8 show-product-detail">
+          <div class="d-flex flex-column mb-3">
             <h1><%= @product.name %></h1>
             <p><%= @product.description %></p>
-            <hr>
-            <p>￥<%= @product.price %>（税込）</p>
-            <hr>
+            <p class='h6'>￥<%= @product.price %><span class='item-text'>（税込）</span></p>
           </div>
     
-          <% if user_signed_in? %> <!--ログインしていたら-->
+          <% if user_signed_in? %>
             <%= form_with url: cart_users_path, local: true do |f| %>
               <%= f.hidden_field :product_id, value: @product.id %>
               <%= f.hidden_field :name, value: @product.name %>
               <%= f.hidden_field :price, value: @product.price %>
-              <div class="form-group row">
-                <%= f.label "数量", class: "col-sm-2 col-form-label" %>
-                <div class="col-sm-10">
-                  <%= f.number_field :quantity, min:1, value:1, class: "form-control w-25"%>
+              <div class="show-quantity d-flex">
+                <%= f.label :quantity, "数量", class: "show-label" %>
+                <div class="">
+                  <%= f.number_field :quantity, min:1, value:1, class: "form-control show-numberfield"%>
                   <%# f.number_field: min: 最小値 / value:デフォルト%>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-5">
-                  <%= f.submit "カートに追加", class: "btn submit-button w-100" %>
+              <div class="d-flex">
+                <div class="mr-2">
+                  <%= f.submit "カートに追加", class: "btn submit-button" %>
                 </div>
-                <div class="col-5">
-                  <%= link_to favorite_product_path, class: "btn favorite-button w-100" do %>
+                <div>
+                  <%= link_to favorite_product_path, class: "btn show-favorite-button" do %>
                     <span class="heart"></span><%= current_user.likes?(@product) ? "お気に入り解除" : "お気に入り" %>
                       <%# current_user.likes?(@product): ログインユーザーが変数@productにある商品をいいねしているか? %>
                   <% end %>
@@ -50,17 +49,18 @@
           <% end %>
         </div>
     
-        <div class="offset-1 col-11">
+        <div class="col-md-11 offset-md-1 col-sm-9 offset-sm-1 col-12 review-label">
           <hr class="w-100">
-          <h3 class="float-left">カスタマーレビュー</h3>
+          <h3>カスタマーレビュー</h3>
         </div>
     
-        <div class="offset-1 col-10"><%# レビュー表示部分 %>
-          <div class="row">
+        <%# レビュー表示部分 %>
+        <div class="col-md-11 offset-md-1 col-sm-10 offset-sm-1 col-11 offset-1 review-area">
+          <div class="row m-0">
             <% @reviews.each do |review| %>
-              <div class="offset-md-1 col-md-11">
+              <div class="col-md-11 offset-md-1">
                 <h3 class="score-color"><%= score_on_star(review.score) %></h3>
-                <p class="review-text"><%= review.content %></p>
+                <p class="review-text"><%= simple_format(h(review.content)) %></p>
                 <span class="item-text"><%= review.user.name %></span>
                 <span class="item-text ml-3"><%= l review.created_at, format: :short %></span>
                 <hr/>
@@ -70,18 +70,18 @@
           
           <%# ログインしている場合のみレビュー用のフォーム表示 %>
           <% if user_signed_in? %>
-            <div class="row">
-              <div class="offset-md-1 col-md-11">
+            <div class="row m-0">
+              <div class="col-sm-11 show-form-area">
                 <%= form_with model: @review, url: product_reviews_path(@product) do |f| %>
                 <%# product_reviews_path 	POST 	/products/:product_id/reviews   reviews#create %>
                   <hr>
-                  <div class="col-10 col-lg-5">
+                  <div class="col-lg-4 col-sm-5 col-6 review-score-area">
                     <%= f.select :score, @star_repeat_select, {}, class: "form-control review-score-color w-100" %>
                   </div>
                   
                   <h5 class="review-h5">レビュー内容</h5>
-                  <%= f.text_area :content, class: "form-control m-2 ml-3", rows: 4, placeholder: '内容を入力', required: 'required' %>
-                  <%= f.submit "レビューを追加" , class:"btn submit-button ml-3"%>
+                  <%= f.text_area :content, class: "form-control", rows: 4, placeholder: '内容を入力', required: 'required' %>
+                  <%= f.submit "レビューを追加" , class:"btn submit-button review-submit"%>
                   <hr>
                 <% end %>
               </div>

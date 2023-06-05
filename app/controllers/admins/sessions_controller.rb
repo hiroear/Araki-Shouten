@@ -19,7 +19,7 @@ class Admins::SessionsController < Devise::SessionsController
     super
   end
   
-  #管理者としてログインした後のリダイレクト先をdashboard_pathに設定
+  #管理者としてログインした後のリダイレクト先
   def after_sign_in_path_for(admin)
     dashboard_path
   end
