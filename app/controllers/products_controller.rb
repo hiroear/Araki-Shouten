@@ -14,7 +14,7 @@ class ProductsController < ApplicationController
       
     elsif params[:category].present?  #サイドバーカテゴリ選択時  params[:category]だけが渡ってくる
       @category = Category.request_category(params[:category])
-      @products = Product.category_products(@category, params[:page])
+      @products = Product.category_products(@category, params[:page]) # Product.where(category_id: @category)
       
     else  #通常の商品一覧 (/products)
       @products = Product.display_list(params[:page])

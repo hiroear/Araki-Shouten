@@ -12,7 +12,7 @@
   </div>
     
   <div class="container col-9">
-    <h1 class='title-text'>おすすめ商品</h1>
+    <h1 class='title-text'><span class='star'></span>Pick Up</h1>
     <div class="slider">
       <% @recommend_products.each do |recommend_product| %>
         <%= link_to product_path(recommend_product), class: 'text-decoration-none' do %>
@@ -39,7 +39,7 @@
     </div>
       
       
-    <h1 class='title-text mt-3 mb-1'>新着商品</h1>
+    <h1 class='title-text mt-3 mb-1'><span class='thunder'></span>New Release</h1>
     <div class="slider_recently">
       <% @recently_products.each do |recently_product| %>
         <%= link_to product_path(recently_product), class: 'text-decoration-none' do %>

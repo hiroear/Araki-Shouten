@@ -239,28 +239,12 @@ caption {
 }
 
 /*サイドバー下線*/
-.sidebar-line1:after {
+.sidebar-line:after {
   content: '';
   display: block;
-  width: 50px;
+  width: 130px;
   height: 2.5px;
   margin-top: 5px;
-  background-color: #f99f1d;
-}
-.sidebar-line2:after {
-  content: '';
-  display: block;
-  width: 140px;
-  height: 2.5px;
-  margin-top: 5px;
-  background-color: #f99f1d;
-}
-.sidebar-line3:after {
-  content: '';
-  display: block;
-  width: 135px;
-  height: 2.5px;
-  margin: 5px 0 10px 0;
   background-color: #f99f1d;
 }
 .dashboard-sidebar-line:after {
@@ -282,6 +266,7 @@ caption {
   font-style: normal;
   line-height: 1;
   letter-spacing: normal;
+  white-space: nowrap;
 }
 .sidebar-category-label a {
   color: #4b6f7d;
@@ -501,8 +486,8 @@ caption {
   color:#4c7794;
 }
 
-.book::before {
-  content: '\f02d';
+.music::before {
+  content: '\f001';
   font-family: Font Awesome\ 5 Free;
   font-weight: 900;
   margin: 0 6px 0 0;
@@ -510,8 +495,8 @@ caption {
   color:#4c7794;
 }
 
-.computer::before {
-  content: '\f109';
+.movie::before {
+  content: '\f008';
   font-family: Font Awesome\ 5 Free;
   font-weight: 900;
   margin: 0 6px 0 0;
@@ -519,13 +504,31 @@ caption {
   color:#4c7794;
 }
 
-.display::before {
-  content: '\f108';
+.format::before {
+  content: '\f51f';
   font-family: Font Awesome\ 5 Free;
   font-weight: 900;
   margin: 0 6px 0 0;
   font-size: 17px;
   color:#4c7794;
+}
+
+.star::before {
+  content: '\f005';
+  font-family: Font Awesome\ 5 Free;
+  font-weight: 400;
+  margin: 0 8px 0 0;
+  font-size: 25px;
+  color:#ffee05;
+}
+
+.thunder::before {
+  content: '\f0e7';
+  font-family: Font Awesome\ 5 Free;
+  font-weight: 900;
+  margin: 0 8px 0 0;
+  font-size: 25px;
+  color:#ffee05;
 }
 
 .category-icon::before {
@@ -670,13 +673,13 @@ caption {
   text-align: right;
   white-space: nowrap;
 }
+.sp-sidebar-text {
+  font-size: 16px;
+  white-space: nowrap;
+}
 
   
 @media screen and (max-width:1150px) {
-  .sp-sidebar-text {
-    font-size: 15px;
-    white-space: nowrap;
-  }
   .title-text {
     font-size: 22px;
   }
@@ -976,12 +979,9 @@ caption {
   }
   .cart-modal-dialog {
     max-width: 300px;
-    // top: 30%;
-    // left: 10%;
-    // right: 50%;
-    // .modal-title {
-    //   font-size: .8rem;
-    // }
+  }
+  .star::before, .thunder::before {
+    font-size: 22px;
   }
 }
 
@@ -1075,6 +1075,9 @@ caption {
   }
   .footer-dashboard {
     margin-top: 6px;
+  }
+  .star::before, .thunder::before {
+    font-size: 18px;
   }
 }
 
