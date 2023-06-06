@@ -28,16 +28,12 @@ class User < ApplicationRecord
   
   # ダッシュボード / 顧客一覧 / 顧客検索
   scope :search_information, -> (keyword) {
-    where('name LIKE :keyword OR cast(id as text) LIKE :keyword OR email LIKE :keyword OR cast(phone as text) LIKE :keyword', keyword: "%#{keyword}%")
+    # where('name LIKE :keyword OR cast(id as text) LIKE :keyword OR email LIKE :keyword OR cast(phone as text) LIKE :keyword', keyword: "%#{keyword}%")
+    users = arel_table
+    where(users[:name].matches("%#{keyword}%")).
+    or(where(users[:email].matches("%#{keyword}%"))).
+    or(where('cast(id as text) LIKE ?', "%#{keyword}%")).
+    or(where('cast(phone as text) LIKE ?', "%#{keyword}%"))
   }
   
-  # ↓プレースホルダー(?)で以下のようにも書く事ができる
-  # scope :search_information, -> (keyword) {
-  #   where('name LIKE ?', "%#{keyword}%").
-  #   or(where('email LIKE ?', "%#{keyword}%")).
-  #   or(where('address LIKE ?', "%#{keyword}%")).
-  #   or(where('postal_code LIKE ?', "%#{keyword}%")).
-  #   or(where('phone LIKE ?', "%#{keyword}%")).
-  #   or(where('id LIKE ?', "%#{keyword}%"))
-  # }
 end

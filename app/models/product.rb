@@ -13,9 +13,11 @@ class Product < ApplicationRecord
   scope :on_category, -> (category) { where(category_id: category) }
   scope :sort_order, -> (order) { order(order) }
   
-  # キーワード検索
+  # ヘッダーキーワード検索
   scope :search_product, -> (keyword) {
-    where("name LIKE ? OR description LIKE ? OR cast(price as text) LIKE ?", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%")
+    # where("name LIKE ? OR description LIKE ? OR cast(price as text) LIKE ?", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%")
+    products = arel_table
+    where(products[:name].matches("%#{keyword}%")).or(where('description LIKE ?', "%#{keyword}%")).or(where('cast(price as text) LIKE ?', "%#{keyword}%"))
   }
   
   scope :category_products, -> (category, page) { 
@@ -41,8 +43,9 @@ class Product < ApplicationRecord
    
   
   scope :search_for_id_and_name, -> (keyword) {
-    # where('name LIKE ?', "%#{keyword}%").or(where('id LIKE ?', "%#{keyword}%"))
-    where("name LIKE ? OR cast(id as text) LIKE ?", "%#{keyword}%", "%#{keyword}%")
+    # where("name LIKE ? OR cast(id as text) LIKE ?", "%#{keyword}%", "%#{keyword}%")
+    products = arel_table
+    where(products[:name].matches("%#{keyword}%")).or(where('cast(id as text) LIKE ?', "%#{keyword}%"))
   }
   
   scope :recently_products, -> (number) { order(created_at: 'desc').take(number) }
