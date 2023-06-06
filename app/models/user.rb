@@ -10,6 +10,7 @@ class User < ApplicationRecord
          
   acts_as_liker
   
+  validates :name, presence: true
   
   # ユーザーから送信されたpasswordとpassword_confirmationが一致するかどうかを確認し一致する場合のみパスワードを暗号化してDBに保存
   def update_password(params, *options)
@@ -25,16 +26,12 @@ class User < ApplicationRecord
   end
   
   
-  validates :name, presence: true
-  
-  
+  # ダッシュボード / 顧客一覧 / 顧客検索
   scope :search_information, -> (keyword) {
-    where('name LIKE :keyword OR id LIKE :keyword OR email LIKE :keyword OR phone LIKE :keyword', keyword: "%#{keyword}%")
+    where('name LIKE :keyword OR cast(id as text) LIKE :keyword OR email LIKE :keyword OR cast(phone as text) LIKE :keyword', keyword: "%#{keyword}%")
   }
-  # LIKE :あいまい検索
-  # "%#{変数}%" :#{変数}内の文字列を部分一致で検索。必ずダブルクォートの中に入れる
   
-  # ⬇︎プレースホルダー(?)で以下のようにも書く事ができる
+  # ↓プレースホルダー(?)で以下のようにも書く事ができる
   # scope :search_information, -> (keyword) {
   #   where('name LIKE ?', "%#{keyword}%").
   #   or(where('email LIKE ?', "%#{keyword}%")).

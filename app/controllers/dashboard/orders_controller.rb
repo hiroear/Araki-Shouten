@@ -25,7 +25,7 @@ class Dashboard::OrdersController < ApplicationController
       user = User.where("name LIKE ?", "%#{@customer_name}%")
         # logger.debug("================== user = #{user}")
       user_id = User.where(id: user)  # userにはインスタンスが入っている為 id検索が可能
-      @orders = ShoppingCart.bought_carts.where(user_id: user_id).order(updated_at: "desc").page(params[:page]).per(PER)
+      @orders = ShoppingCart.search_bought_carts_by_user(user_id).order(updated_at: "desc").page(params[:page]).per(PER)
       @customer_name = ''
     else
       @orders = ShoppingCart.bought_carts.order(updated_at: "desc").page(params[:page]).per(PER)

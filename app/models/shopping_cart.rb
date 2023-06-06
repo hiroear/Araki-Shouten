@@ -55,12 +55,13 @@ class ShoppingCart < ApplicationRecord
   
   
   # ダッシュボード  受注一覧  注文番号検索
-  scope :search_carts_by_ids, -> (ids) { where("id LIKE ?", "%#{ids}%") }
+  scope :search_carts_by_ids, -> (ids) { where("cast(id as text) LIKE ?", "%#{ids}%") }
   scope :search_bought_carts_by_ids, -> (ids) { bought_carts.search_carts_by_ids(ids) }
   # where(buy_flag: true).where("id LIKE ?", "%#{ids}%")
   
-  
+  # ダッシュボード  受注一覧  注文者名検索
   scope :search_bought_carts_by_user, -> (user) { bought_carts.where(user_id: user) }
+  
   
   #︎ 月単位売上データ(カート)の [{配列}] を返すクラスメソッド (メソッド名の先頭に selfをつけることでクラスメソッドになる)
   def self.get_monthly_sales

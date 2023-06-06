@@ -15,7 +15,7 @@ class Product < ApplicationRecord
   
   # キーワード検索
   scope :search_product, -> (keyword) {
-    where("name LIKE ? OR description LIKE ? OR price LIKE ?", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%")
+    where("name LIKE ? OR description LIKE ? OR cast(price as text) LIKE ?", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%")
   }
   
   scope :category_products, -> (category, page) { 
@@ -41,10 +41,8 @@ class Product < ApplicationRecord
    
   
   scope :search_for_id_and_name, -> (keyword) {
-    where('name LIKE ?', "%#{keyword}%").or(where('id LIKE ?', "%#{keyword}%"))
-    # LIKE :あいまい検索
-    # ? :プレースホルダー("%#{keyword}%"" がここに入る)
-    # "%#{変数}%" :#{変数}内の文字列を部分一致で検索。必ずダブルクォートの中に入れる
+    # where('name LIKE ?', "%#{keyword}%").or(where('id LIKE ?', "%#{keyword}%"))
+    where("name LIKE ? OR cast(id as text) LIKE ?", "%#{keyword}%", "%#{keyword}%")
   }
   
   scope :recently_products, -> (number) { order(created_at: 'desc').take(number) }
