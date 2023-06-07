@@ -4,7 +4,11 @@
     <%= render partial: "layouts/sidebar", locals: { categories: @categories, major_category_names: @major_category_names } %>
   </div>
   <div class="col-md-9">
-    <div class="d-flex justify-content-center">
+    <span class='pankuzu show-pankuzu'>
+      <%= link_to "トップ", root_path, class: 'item-text text-decoration-none'  %> &nbsp;>&nbsp; <%= @product_major_category_name  %> &nbsp;>&nbsp; <%= @product_category_name %> &nbsp;>&nbsp; <%= @product.name %>
+    </span>
+    
+    <div class="d-flex justify-content-center mt-3">
       <div class="row m-0">
         <div class="col-md-5 offset-md-1 col-sm-4 offset-sm-1 col-8 show-image">
           <% if @product.image.attached? %>

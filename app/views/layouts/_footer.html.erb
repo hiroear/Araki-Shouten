@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-bottom mt-5 d-inline">
-  <%# <nav>タグにfixed-bottom: ページの下部にフッターを固定 %>
-  <div class="row">
+  <%# fixed-bottom: ページの下部にフッターを固定 %>
+  <div class="d-flex">
     <div class="col"></div>
     <%= link_to root_path, class: "col d-flex justify-content-center" do %>
       <%= image_tag "/images/logo.png", class: "footer-logo-image img-fuild" %>
     <% end %>
   
-    <div class="footer-dashboard col">
+    <div class="col footer-dashboard">
       <%= link_to 'Dashboard', dashboard_path, target: '_blank' %>
     </div>
   </div>

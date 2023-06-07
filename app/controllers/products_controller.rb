@@ -36,6 +36,9 @@ class ProductsController < ApplicationController
     @star_repeat_select = Review.star_repeat_select  # ★★★★★ 評価リスト
     @categories = Category.all
     @major_category_names = Category.major_categories
+    
+    @product_category_name = Category.find(@product.category_id).name
+    @product_major_category_name = Category.find(@product.category_id).major_category_name
   end
   
   

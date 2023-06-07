@@ -36,8 +36,8 @@ class Product < ApplicationRecord
        "並び替え" => "", 
        "価格の安い順" => "price asc",
        "価格の高い順" => "price desc", 
-       "出品の古い順" => "created_at asc", 
-       "出品の新しい順" => "created_at desc"
+       "出品の古い順" => "id asc", 
+       "出品の新しい順" => "id desc"
      }
    }
    
@@ -48,7 +48,7 @@ class Product < ApplicationRecord
     where(products[:name].matches("%#{keyword}%")).or(where('cast(id as text) LIKE ?', "%#{keyword}%"))
   }
   
-  scope :recently_products, -> (number) { order(created_at: 'desc').take(number) }
+  scope :recently_products, -> (number) { order(id: 'desc').take(number) }
   
   scope :recommend_products, -> (number) { where(recommended_flag: true).take(number) }
   

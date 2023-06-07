@@ -1,6 +1,6 @@
 <%# 商品一覧 %>
 
-<div class="row">
+<div class="d_flex_wrap">
   <div class="col-2 pc-only">
     <%= render partial: "layouts/sidebar", locals: { categories: @categories, major_category_names: @major_category_names } %>
     <%# インスタンス変数をローカルにしてパーシャルに渡す %>
@@ -17,7 +17,7 @@
     <div class="container mw-100 category-container">
       <% if @category.present? %>
         <span class='pankuzu'>
-          <%= link_to "トップ", root_path, category: @major_category_name, class: 'item-text text-decoration-none'  %> > <%= @category.name %>
+          <%= link_to "トップ", root_path, class: 'item-text text-decoration-none'  %> &nbsp;>&nbsp; <%= @category.major_category_name  %> &nbsp;>&nbsp; <%= @category.name %>
         </span>
         <h2 class="title-text mt-3"><%= @category.name %>の商品一覧 <%= @products.count %> 件</h2>
         <%# 並び替え%>

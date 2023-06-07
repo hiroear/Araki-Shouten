@@ -129,7 +129,7 @@ class ShoppingCart < ApplicationRecord
   
   
   
-  CARRIAGE = 800     #送料金額
+  CARRIAGE = 500     #送料金額
   FREE_SHIPPING = 0
   
   # 送料の有無を判定
