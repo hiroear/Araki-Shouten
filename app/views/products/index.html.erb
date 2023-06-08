@@ -17,7 +17,9 @@
     <div class="container mw-100 category-container">
       <% if @category.present? %>
         <span class='pankuzu'>
-          <%= link_to "トップ", root_path, class: 'item-text text-decoration-none'  %> &nbsp;>&nbsp; <%= @category.major_category_name  %> &nbsp;>&nbsp; <%= @category.name %>
+          <%= link_to "トップ", root_path, class: 'item-text text-decoration-none' %>
+          &nbsp;>&nbsp; <%= link_to @category.major_category_name, products_path(major_category_id: @category.major_category_id), class: 'item-text text-decoration-none' %>
+          &nbsp;>&nbsp; <%= link_to @category.name, products_path(category: @category.id), class: 'item-text text-decoration-none' %>
         </span>
         <h2 class="title-text mt-3"><%= @category.name %>の商品一覧 <%= @products.count %> 件</h2>
         <%# 並び替え%>
@@ -29,11 +31,20 @@
             <%= f.select :sort, @sort_list, {}, onChange: "javascript: this.form.submit();", class: "form-inline mt-3 form-control b-form-products" %>
           <% end %>
         <% end %>
+        
       <% elsif @keyword.present? %>
         <span class='pankuzu'>
           <%= link_to "トップ", root_path, class: 'item-text text-decoration-none'  %> > キーワード検索
         </span>
         <h2 class="title-text mt-2"><i class="fa fa-hashtag fa-fw"></i><%= @keyword %> の商品一覧&nbsp;&nbsp;<%= @products.count %> 件</h2>
+      
+      <% elsif @major_category.present? %>
+        <span class='pankuzu'>
+          <%= link_to "トップ", root_path, class: 'item-text text-decoration-none'  %>
+          &nbsp;>&nbsp; <%= link_to @major_category.name, products_path(major_category_id: @major_category.id), class: 'item-text text-decoration-none' %>
+        </span>
+        <h2 class="title-text mt-3"><%= @major_category.name %>の商品一覧 <%= @product_length.count %> 件</h2>
+      
       <% else %>
         <h2 class="title-text">商品一覧&nbsp;&nbsp;<%= @product_length.count %> 件</h2>
       <% end %>

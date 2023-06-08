@@ -5,7 +5,10 @@
   </div>
   <div class="col-md-9">
     <span class='pankuzu show-pankuzu'>
-      <%= link_to "トップ", root_path, class: 'item-text text-decoration-none'  %> &nbsp;>&nbsp; <%= @product_major_category_name  %> &nbsp;>&nbsp; <%= @product_category_name %> &nbsp;>&nbsp; <%= @product.name %>
+      <%= link_to "トップ", root_path, class: 'item-text text-decoration-none' %>
+      &nbsp;>&nbsp; <%= link_to @category.major_category_name, products_path(major_category_id: @category.major_category_id), class: 'item-text text-decoration-none' %>
+      &nbsp;>&nbsp; <%= link_to @category.name, products_path(category: @category.id), class: 'item-text text-decoration-none' %>
+      &nbsp;>&nbsp; <%= @product.name %>
     </span>
     
     <div class="d-flex justify-content-center mt-3">

@@ -646,6 +646,10 @@ caption {
   width: 77%;
   padding: 0 0 0 25px;
 }
+.favorite-text h5 {
+  width: 310px;
+  word-wrap: break-word;
+}
 .favorite-buttons {
   flex-direction: column;
 }
@@ -700,7 +704,6 @@ caption {
   }
   .favorite-text h5 {
     width: 275px;
-    word-wrap: break-word;
   }
 }
 
@@ -787,7 +790,6 @@ caption {
   .favorite-text h5 {
     font-size: 17px;
     width: 200px;
-    word-wrap: break-word;
   }
   .shoppingcart-area {
     width: 95%;
@@ -859,7 +861,6 @@ caption {
   .favorite-text h5 {
     font-size: 15px;
     width: 150px;
-    word-wrap: break-word;
   }
   .favorite-resize, .favorite-resize-dummy {
     height: 80px;
@@ -1005,7 +1006,6 @@ caption {
   }
   .favorite-text h5 {
     width: 200px;
-    word-wrap: break-word;
   }
   .favorite-resize, .favorite-resize-dummy {
     height: 60px;
@@ -1029,7 +1029,6 @@ caption {
   }
   .favorite-text h5 {
     width: 150px;
-    word-wrap: break-word;
   }
   .favorite-container {
     padding-left: 17px;
