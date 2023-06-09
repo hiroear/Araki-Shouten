@@ -35,11 +35,12 @@
       <%# @orders = ShoppingCartsテーブルの buy_flagが trueの検索結果 or 一覧が降順で入っている %>
       <% order_user_name = User.find(order.user_id).name %>
       <% order_updated_at = order.updated_at.to_datetime.strftime("%Y-%m-%d %H:%M:%S") %><%# to_datetime: datetime型に変換 %>
+      <% order_total_price = order.total.fractional / 100 %>  
         <tr>
           <td><%= link_to "#{ order.id }", dashboard_order_path(order) %></td>
           <td><%= link_to "#{ order_user_name }", dashboard_order_path(order) %></td>
           <td><%= link_to "#{ order_updated_at }", dashboard_order_path(order) %></td>
-          <td><%= link_to "#{ order.total.fractional / 100 }", dashboard_order_path(order) %></td>
+          <td><%= link_to "#{ order_total_price }", dashboard_order_path(order) %></td>
         </tr>
       <% end %>
     </tbody>

@@ -23,7 +23,7 @@
     
     <div class="form-inline my-4 row">
       <%= f.label :category_id, 'カテゴリ', class: "col-3 d-flex justify-content-start" %>
-      <%= f.select :category_id, @categories.map { |mc| [mc.name, mc.id] }, {}, class: "form-control" %>
+      <%= f.select :category_id, @categories.map { |mc| [mc.name, mc.id] }, {include_blank: "選択してください"}, class: "form-control" %>
       <%#= f.collection_select(:category_id, @categories, :id, :name) %>
     </div>
     

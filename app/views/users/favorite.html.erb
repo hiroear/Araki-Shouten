@@ -20,7 +20,7 @@
               </div>
               <div class="favorite-text">
                 <h5><%= favorite.name %></h5>
-                <h6>￥<%= favorite.price %></h6>
+                <h6>￥<%= favorite.price.to_s(:delimited) %></h6>
               </div>
             <% end %>
           </div>

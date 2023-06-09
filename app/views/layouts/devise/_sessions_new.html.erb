@@ -12,6 +12,7 @@
         <div class="form-group mb-2">
           <%= f.email_field :email,
             class: "form-control #{"is-invalid" if alert }",
+            value: "a@example.com",
             autofocus: "true",
             required: "required",
             autocomplete: "email",
@@ -27,6 +28,7 @@
         <div class="form-group mb-2">
           <%= f.password_field :password,
             class: "form-control #{"is-invalid" if alert }",
+            value: "aaaaaa",
             autofocus: "true",
             autocomplete: "current-password",
             placeholder: "パスワード"

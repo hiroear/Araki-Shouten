@@ -54,7 +54,7 @@
                 <div class="col-10 mt-2">&nbsp;<%= cart_item.quantity %> 点</div>
                 
                 <div class="col-2 mt-2 text-right text-nowrap">小計：</div>
-                <div class="col-10 mt-2">￥<%= price = cart_item.price_cents * cart_item.quantity %></div>
+                <div class="col-10 mt-2">￥<%= price = cart_item.price_cents.to_s(:delimited) * cart_item.quantity %></div>
               </div>
             </div>
           </div>

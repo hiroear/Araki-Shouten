@@ -38,7 +38,7 @@
           <h6 class="text-nowrap shoppingcart-product"><%= user_cart_item.quantity %> 点</h6>
         </div>
         <div class="col-2 shoppingcart-detail-area">
-          <h6 class="text-nowrap shoppingcart-product">￥<%= user_cart_item.price_cents * user_cart_item.quantity %></h6>
+          <h6 class="text-nowrap shoppingcart-product">￥<%= user_cart_item.price_cents.to_s(:delimited) * user_cart_item.quantity %></h6>
         </div>
         <div class="col-2 shoppingcart-detail-area">
           <%= link_to "削除", cart_delete_users_path(user_cart_item.id), method: :delete, class: "delete-link" %>

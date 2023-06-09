@@ -16,7 +16,7 @@
     
     <div class="form-inline my-4 row">
       <%= f.label :major_category_name, '親カテゴリ', class: "col-4 d-flex justify-content-start" %>
-      <%= f.select :major_category_id, @major_categories.map { |mc| [mc.name, mc.id] }, {}, class: "form-control col-8" %>
+      <%= f.select :major_category_id, @major_categories.map { |mc| [mc.name, mc.id] }, {include_blank: "選択してください"}, class: "form-control col-8" %>
     </div>
     
     <%= f.submit '更新', class: "btn submit-button" %>

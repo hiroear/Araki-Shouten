@@ -50,7 +50,7 @@ class Product < ApplicationRecord
   
   scope :recently_products, -> (number) { order(id: 'desc').take(number) }
   
-  scope :recommend_products, -> (number) { where(recommended_flag: true).take(number) }
+  scope :recommend_products, -> (number) { where(recommended_flag: true).order(id: 'asc').take(number) }
   
   
   # Productsテーブルから product_idsに入っている(複数商品の) item_idと一致する product_idを探し、それぞれの商品の carriage_flagカラムの値(boolean)のみを配列で取得
