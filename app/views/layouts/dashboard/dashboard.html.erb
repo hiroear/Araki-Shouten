@@ -20,6 +20,8 @@
       
       <div class="col">
         <main class="py-4 mb-5">
+          <% if notice %><p class="alert alert-warning"><%= notice %></p><% end %>
+          <% if alert %><p class="alert alert-danger"><%= alert %></p><% end %>
           <%= yield %>
         </main>
       </div>

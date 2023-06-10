@@ -718,7 +718,7 @@ caption {
     width: 60%;
   }
   .favorite-area {
-    width: 80%;
+    width: 85%;
   }
   .big-heart::before {
     font-size: 20px;
@@ -1157,5 +1157,12 @@ caption {
   .favorite-add-cart {
     font-size: 11px;
     padding: 0.25rem 0.33rem;
+  }
+}
+
+
+@media screen and (max-width:310px) {
+  .footer-logo-image {
+    height: 85%;
   }
 }

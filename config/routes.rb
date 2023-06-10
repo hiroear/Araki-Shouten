@@ -1,22 +1,5 @@
 Rails.application.routes.draw do
-  
-  # Deviseはカスタマイズ可能。元々あるコントローラーを継承した子供のコントローラーを優先する
-  devise_for :users, :controllers => {
-    :registrations => 'users/registrations',   #デフォルトのregistrationsコントローラを継承し'users/registrations'コントローラを使用
-    :sessions => 'users/sessions',
-    :passwords => 'users/passwords',
-    :confirmations => 'users/confirmations',
-    :unlocks => 'users/unlocks',
-  }
-
-  devise_scope :user do
-    root :to => "web#index"                            #root_path	 GET	/	web#index (root(TOP画面)を web#indexに設定)
-    get "signup", :to => "users/registrations#new"     #signup...URL(アクセスする時)
-    get "verify", :to => "users/registrations#verify"  #アカウント作成後、メールの送信完了を知らせる画面にリダイレクトされるよう画面のルーティングを設定
-    get "login", :to => "users/sessions#new"
-    delete "logout", :to => "users/sessions#destroy"
-  end
-  
+  root :to => "web#index"                      #root_path	 GET	/	web#index
   
   devise_for :admins, :controllers => {
     :sessions => 'admins/sessions'
@@ -28,6 +11,24 @@ Rails.application.routes.draw do
     post 'dashboard/login', to: 'admins/sessions#create'
     delete 'dashboard/logout', to: 'admins/sessions#destroy'
   end
+  
+  
+  # Deviseはカスタマイズ可能。元々あるコントローラーを継承した子供のコントローラーを優先する
+  devise_for :users, :controllers => {
+    :registrations => 'users/registrations',   #デフォルトのregistrationsコントローラを継承し'users/registrations'コントローラを使用
+    :sessions => 'users/sessions',
+    :passwords => 'users/passwords',
+    :confirmations => 'users/confirmations',
+    :unlocks => 'users/unlocks',
+  }
+
+  devise_scope :user do
+    get "signup", :to => "users/registrations#new"     #signup...URL(アクセスする時)
+    get "verify", :to => "users/registrations#verify"  #アカウント作成後、メールの送信完了を知らせる画面にリダイレクトされる際のルーティング
+    get "login", :to => "users/sessions#new"
+    delete "logout", :to => "users/sessions#destroy"
+  end
+  
   
   namespace :dashboard do                            # controllers/dashboard/
     resources :categories, except: [:new]            #ダッシュボード/カテゴリ管理 (newアクション省く)

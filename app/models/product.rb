@@ -22,6 +22,7 @@ class Product < ApplicationRecord
   
   scope :category_products, -> (category, page) { 
     on_category(category).
+    order(id: 'asc').
     display_list(page)
   }
 
@@ -55,6 +56,13 @@ class Product < ApplicationRecord
   
   # Productsテーブルから product_idsに入っている(複数商品の) item_idと一致する product_idを探し、それぞれの商品の carriage_flagカラムの値(boolean)のみを配列で取得
   scope :check_products_carriage_list, -> (product_item_ids) { where(id: product_item_ids).pluck(:carriage_flag)}
+  
+  
+  # productsテーブルのcategory_idカラムと category_idsが一致する複数商品を昇順に取得
+  scope :products_by_major_category, -> (category_ids, page) { where(category_id: category_ids).order(id: 'asc').display_list(page) }
+  # paginationを使用せず全件取得
+  scope :products_length_by_major_category, -> (category_ids) { where(category_id: category_ids).all }
+  
   
 
   #該当のProductモデルに紐づくReviewモデルが必要なので Productモデルにメソッドを記述

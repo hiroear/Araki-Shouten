@@ -4,6 +4,6 @@ class Admin < ApplicationRecord
   # devise :database_authenticatable, :registerable,
   #       :recoverable, :rememberable, :validatable
   
-  # deviseのログイン機能とバリデーション機能だけを有効にする
+  # ログインとバリデーション機能だけを有効に
   devise :database_authenticatable, :rememberable, :validatable
 end

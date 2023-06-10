@@ -18,7 +18,7 @@ class Users::SessionsController < Devise::SessionsController
     # logger.debug("================= users/sessions controllers create #{self.resource}")
     
     # userオブジェクトの emailカラムがテスト用の場合
-    # if self.resource.email == "a@example"
+    # if self.resource.email == "a@example.com"
     #   set_flash_message!(:notice, :signed_in)
     #   sign_in(resource_name, resource)
     #   yield resource if block_given?

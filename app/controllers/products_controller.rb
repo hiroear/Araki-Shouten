@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
     #キーワード検索
     if params[:keyword].present?
       @keyword = params[:keyword].strip
-      @products = Product.search_product(@keyword).display_list(params[:page])
+      @products = Product.search_product(@keyword).order(id: 'asc').display_list(params[:page])
       
     #カテゴリ選択後の並び替えフォーム
     elsif sort_params.present?
@@ -17,19 +17,18 @@ class ProductsController < ApplicationController
     #サイドバーカテゴリ選択時  params[:category]だけが渡ってきた時
     elsif params[:category].present?
       @category = Category.request_category(params[:category])
-      @products = Product.category_products(@category, params[:page]) # Product.where(category_id: @category)
+      @products = Product.category_products(@category, params[:page]) # Product.where(category_id: @category).order(id: 'asc')
       
     #該当のメジャーカテゴリーに属する商品のみ商品一覧に表示
     elsif params[:major_category_id].present?
-      @major_category = MajorCategory.find(params[:major_category_id])
-      category_ids = Category.where(major_category_id: params[:major_category_id]).pluck(:id)  #[1, 2, 3, 4, 5 ...]
-        #↑ categoriesテーブルのmajor_category_idカラムの値と params[:major_category_id] が一致するデータを探し(複数)、その category_idカラムの値のみ配列で取得
-      @products = Product.where(category_id: category_ids).display_list(params[:page])
-        #↑ productsテーブルのcategory_idと category_idsが一致する複数商品を @productsに格納
-      @product_length = Product.where(category_id: category_ids).all
+      major_category_id = params[:major_category_id]
+      category_ids = Category.find_category_ids(major_category_id)
+      @products = Product.products_by_major_category(category_ids, params[:page])
+      @product_length = Product.products_length_by_major_category(category_ids)
+      @major_category = MajorCategory.find(major_category_id)
       
     else  #通常の商品一覧 (/products)
-      @products = Product.display_list(params[:page])
+      @products = Product.order(id: 'asc').display_list(params[:page])
       @product_length = Product.all
       # logger.debug("================= products controllers index #{@products}")
     end
