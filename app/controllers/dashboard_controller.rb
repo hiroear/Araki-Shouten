@@ -11,10 +11,10 @@ class DashboardController < ApplicationController
     @sort_list = ShoppingCart.sort_list         # { '日別': 'daily', '月別': 'month'}
     
     if @sort == "month"
-      sales = ShoppingCart.get_monthly_sales    # 月単位の売上カートデータの [{配列}] を返す
+      sales = ShoppingCart.preload(:shopping_cart_items).get_monthly_sales    # 月単位の売上カートデータの [{配列}] を返す
       #sales = [{:period=>"2023-05", :total=>9, :count=>1, :average=>9}, {:period...]
     else
-      sales = ShoppingCart.get_daily_sales      # 日単位の売上データの [{配列}] を返すクラスメソッド
+      sales = ShoppingCart.preload(:shopping_cart_items).get_daily_sales      # 日単位の売上データの [{配列}] を返すクラスメソッド
     end
     
     @sales = Kaminari.paginate_array(sales).page(params[:page]).per(PER)

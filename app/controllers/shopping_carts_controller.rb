@@ -1,16 +1,14 @@
 class ShoppingCartsController < ApplicationController
-  before_action :set_cart, only: %i[index create destroy]
   before_action :set_user, only: %i[index show destroy]
+  before_action :set_cart, only: %i[index create destroy]
   
   # 現在カートに入っている商品一覧とこれまで購入した商品履歴(カートの履歴)を表示
   def index
+    # logger.debug("============================== shopping_carts controllers index #{@user_cart}")
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
     
-    logger.debug("============================== shopping_carts controllers index #{@user_cart}")
-    # @user_cartにはまだ注文が確定していないカート自体のインスタンスが入っている
-    @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)
-    # ShoppingCartItem.where(owner_id: @user_cart)
-    # user_cart_itemsメソッド: そのカートに入っている全ての商品データを返す (shopping_cart_itemモデルに定義)
+    # @user_cartにはまだ注文が確定していないカートのインスタンスが入っている
+    @user_cart_items = ShoppingCart.includes(:shopping_cart_items).where(shopping_cart_items: {owner_id: @user_cart.id})
     
     #︎確認
     if @user.token != ""
@@ -91,7 +89,7 @@ class ShoppingCartsController < ApplicationController
     end
     
     def set_cart
-      @user_cart = ShoppingCart.set_user_cart(current_user)
+      @user_cart = ShoppingCart.set_user_cart(@user)
       # set_user_cart :まだ注文が確定していないカートのデータを返し、データがなければ新しく作る(ShoppingCartモデルに作成される)
     end
 end

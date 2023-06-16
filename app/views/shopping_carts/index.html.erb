@@ -17,32 +17,32 @@
     <hr class='mt-0 mb-2'>
   
     <div class="row">
-      <% @user_cart_items.each do |user_cart_item| %>
-      <%# @user_cart_items :カートに入っている全ての商品データ %>
-        <% product = Product.find(user_cart_item.item_id) %>
-        <%# user_cart_item の item_idに該当する商品を Productモデルから取得、変数productに代入 %>
-        <div class="col-2 mb-3">
-          <%= link_to product_path(product) do %>
-            <% if product.image.attached? %>
-              <%= image_tag product.image, class: "shoppingcart-img rounded" %>
-              <%#= image_tag product.image.variant(resize: "200x100^", gravity: "center"), class: "shoppingcart-img rounded" %>
-            <% else %>
-              <%= image_tag "/images/dummy.png", class: "shoppingcart-img rounded" %>
+      <% @user_cart_items.each do |user_cart_item| %> <%# @user_cart_items :カートに入っている全ての商品データ %>
+        <% user_cart_item.shopping_cart_items.each do |shopping_cart_item| %>
+          <% product = Product.with_attached_image.find(shopping_cart_item.item_id) %>
+          <div class="col-2 mb-3">
+            <%= link_to product_path(product) do %>
+              <% if product.image.attached? %>
+                <%= image_tag product.image, class: "shoppingcart-img rounded" %>
+                <%#= image_tag product.image.variant(resize: "200x100^", gravity: "center"), class: "shoppingcart-img rounded" %>
+              <% else %>
+                <%= image_tag "/images/dummy.png", class: "shoppingcart-img rounded" %>
+              <% end %>
             <% end %>
-          <% end %>
-        </div>
-        <div class="col-4 shoppingcart-product-area">
-          <h6 class="shoppingcart-product"><%= product.name %></h6>
-        </div>
-        <div class="col-2 shoppingcart-detail-area">
-          <h6 class="text-nowrap shoppingcart-product"><%= user_cart_item.quantity %> 点</h6>
-        </div>
-        <div class="col-2 shoppingcart-detail-area">
-          <h6 class="text-nowrap shoppingcart-product">￥<%= user_cart_item.price_cents.to_s(:delimited) * user_cart_item.quantity %></h6>
-        </div>
-        <div class="col-2 shoppingcart-detail-area">
-          <%= link_to "削除", cart_delete_users_path(user_cart_item.id), method: :delete, class: "delete-link" %>
-        </div>
+          </div>
+          <div class="col-4 shoppingcart-product-area">
+            <h6 class="shoppingcart-product"><%= product.name %></h6>
+          </div>
+          <div class="col-2 shoppingcart-detail-area">
+            <h6 class="text-nowrap shoppingcart-product"><%= shopping_cart_item.quantity %> 点</h6>
+          </div>
+          <div class="col-2 shoppingcart-detail-area">
+            <h6 class="text-nowrap shoppingcart-product">￥<%= shopping_cart_item.price_cents.to_s(:delimited) * shopping_cart_item.quantity %></h6>
+          </div>
+          <div class="col-2 shoppingcart-detail-area">
+            <%= link_to "削除", cart_delete_users_path(user_cart_item.id), method: :delete, class: "delete-link" %>
+          </div>
+        <% end %>
       <% end %>
     </div>
     <hr class='mt-0 mb-2'>

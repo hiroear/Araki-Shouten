@@ -3,7 +3,6 @@ class UsersController < ApplicationController
   before_action :set_user
   before_action :authenticate_user!
   
-  
   # 会員情報の編集画面
   # mypage_edit_users_path	GET	 /users/mypage/edit  	users#edit
   def edit
@@ -63,7 +62,7 @@ class UsersController < ApplicationController
   
   # mypage_favorite_users_path 	GET	 /users/mypage/favorite  users#favorite
   def favorite
-    @favorites = @user.likees(Product)
+    @favorites = @user.likees(Product).with_attached_image
     # likees :socializationのメソッド
     # likees(Product) :ログインユーザーがお気に入りに追加した全商品データを取得
   end
@@ -83,16 +82,17 @@ class UsersController < ApplicationController
   
   # マイページ > 注文履歴を表示
   def cart_history_index
-    @orders = ShoppingCart.search_bought_carts_by_user(@user).page(params[:page]).per(13)
-      # ShoppingCart.where(buy_flag: true).where(user_id: current_user)
+    @orders = ShoppingCart.preload(:user, :shopping_cart_items).search_bought_carts_by_user(@user).display_list(params[:page])
+      # where(buy_flag: true).where(user_id: current_user)
   end
   
   
   # マイページ > 注文履歴 > 注文履歴詳細 を表示
   def cart_history_show
     @cart = ShoppingCart.find(params[:num])
-    @cart_items = ShoppingCartItem.user_cart_items(@cart.id)
       # shoppingcartItem.where(owner_id: @cart.id)
+    
+    @cart_items = ShoppingCart.includes(:shopping_cart_items).where(shopping_cart_items: {owner_id: @cart.id})
   end
   
   

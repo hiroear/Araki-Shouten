@@ -21,7 +21,7 @@ class Review < ApplicationRecord
     }
     
     # idを持っているReviewオブジェクトのみ取得 (product_idが nil以外を取得)
-    scope :reviews_with_id, -> { where.not(product_id: nil) }
+    scope :reviews_with_product_id, -> (product_id) { where(product_id: product_id).where.not(product_id: nil) }
 end
 
 # @review.save_review(,)

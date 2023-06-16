@@ -6,30 +6,31 @@ class ProductsController < ApplicationController
     #キーワード検索
     if params[:keyword].present?
       @keyword = params[:keyword].strip
-      @products = Product.search_product(@keyword).order(id: 'asc').display_list(params[:page])
+      @products = Product.search_product(@keyword).display_list(params[:page])
       
-    #カテゴリ選択後の並び替えフォーム
+    #サイドバーカテゴリ選択後の並び替えフォーム
     elsif sort_params.present?
-      @sorted = sort_params[:sort]  # params[:sort_category]
+      @sorted = sort_params[:sort]  # params[:sort]
       @category = Category.request_category(sort_params[:sort_category]) # Category.find(1)
       @products = Product.sort_products(sort_params, params[:page])
       
     #サイドバーカテゴリ選択時  params[:category]だけが渡ってきた時
     elsif params[:category].present?
       @category = Category.request_category(params[:category])
-      @products = Product.category_products(@category, params[:page]) # Product.where(category_id: @category).order(id: 'asc')
+      @products = Product.category_products(@category, params[:page])
+        # Product.where(category_id: @category).order(id: 'asc').with_attached_image
       
     #該当のメジャーカテゴリーに属する商品のみ商品一覧に表示
     elsif params[:major_category_id].present?
       major_category_id = params[:major_category_id]
       category_ids = Category.find_category_ids(major_category_id)
+        # Category.where(major_category_id: major_category_id).pluck(:id) 
       @products = Product.products_by_major_category(category_ids, params[:page])
-      @product_length = Product.products_length_by_major_category(category_ids)
+        # Product.where(category_id: category_ids).order(id: 'asc').with_attached_image
       @major_category = MajorCategory.find(major_category_id)
       
     else  #通常の商品一覧 (/products)
-      @products = Product.order(id: 'asc').display_list(params[:page])
-      @product_length = Product.all
+      @products = Product.order(id: 'asc').with_attached_image.display_list(params[:page])
       # logger.debug("================= products controllers index #{@products}")
     end
     
@@ -42,7 +43,8 @@ class ProductsController < ApplicationController
 
   # GET  product  /products/1
   def show
-    @reviews = @product.reviews_with_id              #idを持っているReviewオブジェクトのみ取得 (@product.reviews.all.where.not(product_id: nil))
+    #idを持っているReviewオブジェクトのみ取得 (where(product_id: @product.id).where.not(product_id: nil))
+    @reviews = Review.eager_load(:product, :user).reviews_with_product_id(@product.id)
     @review = @reviews.new                           # @reviews の新しいインスタンスを生成し、レビューフォームに渡す
     @star_repeat_select = Review.star_repeat_select  # ★★★★★ 評価リスト
     @category = Category.find(@product.category_id)
@@ -73,6 +75,6 @@ class ProductsController < ApplicationController
     
     def sort_params
       params.permit(:sort, :sort_category)
-      #index の並び替え部分からの params[:sort]、params[:sort_category] をjavascriptによるsubmit()で取得
+      #サイドバーカテゴリ選択→並び替えから params[:sort]、params[:sort_category] をjavascriptによるsubmit()で取得
     end
 end

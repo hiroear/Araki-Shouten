@@ -1,9 +1,11 @@
 # カートを1つのデータとしてカウントし、DBに保存するモデル
 
 class ShoppingCart < ApplicationRecord
+  belongs_to :user
   acts_as_shopping_cart
 
-
+  extend DisplayList
+  
   scope :set_user_cart, -> (user) { user_cart = where(user_id: user.id, buy_flag: false)&.last
                               user_cart.nil? ? ShoppingCart.create(user_id: user.id)
                                              : user_cart }
@@ -47,10 +49,10 @@ class ShoppingCart < ApplicationRecord
   
   
   # それぞれの月/日に購入された全てのカートデータ一覧
-  scope :bought_carts_by_month, -> (month) { bought_carts.where(updated_at: month.all_month) }
+  scope :bought_carts_by_month, -> (month) { bought_carts.where(updated_at: month.all_month).order(updated_at: 'desc') }
     # 全ての売上カートデータの内それぞれの月毎の全カートを取得 (引数にupdated_atカラムが含まれているカートのみ)
     # all_month: その月の期間の全範囲のデータを取得 (例：9月の1～30日)
-  scope :bought_carts_by_day, -> (day) { bought_carts.where(updated_at: day.all_day) }
+  scope :bought_carts_by_day, -> (day) { bought_carts.where(updated_at: day.all_day).order(updated_at: 'desc') }
     # all_day: 現時刻を含むその日1日の全範囲のデータを取得 (00:00:00から23:59:59までの全データ)
   
   
@@ -91,8 +93,8 @@ class ShoppingCart < ApplicationRecord
       # array[i]番目に [:period]というキーを作り値をキーに代入
       array[i][:period] = month.strftime("%Y-%m")          # 年月
       array[i][:total] = total                             # 金額
-      array[i][:count] = monthly_sales.count               # 件数
-      array[i][:average] = total / monthly_sales.count     # 平均単価
+      array[i][:count] = monthly_sales.size                # 件数
+      array[i][:average] = total / monthly_sales.size      # 平均単価
     end
     
     return array    #最後に上で生成した配列を明示的に返す
@@ -120,8 +122,8 @@ class ShoppingCart < ApplicationRecord
       
       array[i][:period] = day.strftime("%Y-%m-%d")   # 年月日
       array[i][:total] = total
-      array[i][:count] = daily_sales.count
-      array[i][:average] = total / daily_sales.count
+      array[i][:count] = daily_sales.size
+      array[i][:average] = total / daily_sales.size
     end
     
     return array

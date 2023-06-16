@@ -1,13 +1,13 @@
 class Product < ApplicationRecord
   belongs_to :category
-  has_many :reviews
+  has_many :reviews, dependent: :destroy
   acts_as_likeable
   has_one_attached :image
   # has_one_attached : 各レコードとファイルを1対1の関係で紐づけるメソッド。:ファイル名には添付するファイルがわかる名前をつける
   # この記述で @product.imageのようにして添付されたファイルにアクセスできる
   # ファイル名(:image)はそのモデルが紐づいたフォームから送られるパラメーターのキーになる為 dashboard/products_controller ストロングパラメータに :imageを追加)
   
-  
+  #ページネーション
   extend DisplayList
   
   scope :on_category, -> (category) { where(category_id: category) }
@@ -17,18 +17,24 @@ class Product < ApplicationRecord
   scope :search_product, -> (keyword) {
     # where("name LIKE ? OR description LIKE ? OR cast(price as text) LIKE ?", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%")
     products = arel_table
-    where(products[:name].matches("%#{keyword}%")).or(where('description LIKE ?', "%#{keyword}%")).or(where('cast(price as text) LIKE ?', "%#{keyword}%"))
+    where(products[:name].matches("%#{keyword}%")).or(where('description LIKE ?', "%#{keyword}%")).or(where('cast(price as text) LIKE ?', "%#{keyword}%")).
+    order(id: 'asc').
+    with_attached_image
   }
   
+  # productsテーブルから該当の category_idの商品を探し昇順で取得
   scope :category_products, -> (category, page) { 
     on_category(category).
     order(id: 'asc').
+    with_attached_image.
     display_list(page)
   }
 
-  scope :sort_products, -> (sort_order, page) {
-    on_category(sort_order[:sort_category]).
-    sort_order(sort_order[:sort]).
+  # サイドバーカテゴリ選択→並び替えフォーム。productsテーブルから該当の category_idの商品を探し params[:sort]で渡ってきた内容順に並び替えて商品を取得
+  scope :sort_products, -> (sort_params, page) {
+    on_category(sort_params[:sort_category]).
+    sort_order(sort_params[:sort]).
+    with_attached_image.
     display_list(page)
   }
 
@@ -49,9 +55,9 @@ class Product < ApplicationRecord
     where(products[:name].matches("%#{keyword}%")).or(where('cast(id as text) LIKE ?', "%#{keyword}%"))
   }
   
-  scope :recently_products, -> (number) { order(id: 'desc').take(number) }
+  scope :recently_products, -> (number) { order(id: 'desc').with_attached_image.take(number) }
   
-  scope :recommend_products, -> (number) { where(recommended_flag: true).order(id: 'asc').take(number) }
+  scope :recommend_products, -> (number) { where(recommended_flag: true).order(id: 'asc').with_attached_image.take(number) }
   
   
   # Productsテーブルから product_idsに入っている(複数商品の) item_idと一致する product_idを探し、それぞれの商品の carriage_flagカラムの値(boolean)のみを配列で取得
@@ -59,19 +65,18 @@ class Product < ApplicationRecord
   
   
   # productsテーブルのcategory_idカラムと category_idsが一致する複数商品を昇順に取得
-  scope :products_by_major_category, -> (category_ids, page) { where(category_id: category_ids).order(id: 'asc').display_list(page) }
-  # paginationを使用せず全件取得
-  scope :products_length_by_major_category, -> (category_ids) { where(category_id: category_ids).all }
+  scope :products_by_major_category, -> (category_ids, page) {
+    where(category_id: category_ids).
+    order(id: 'asc').
+    with_attached_image.
+    display_list(page)
+  }
   
   
 
   #該当のProductモデルに紐づくReviewモデルが必要なので Productモデルにメソッドを記述
   def reviews_new
     reviews.new
-  end
-  
-  def reviews_with_id
-    reviews.all.reviews_with_id  #Reviewモデルに reviews_with_idを定義。 reviews.all.where.not(product_id: nil)
   end
 
 

@@ -12,16 +12,13 @@ class Dashboard::ProductsController < ApplicationController
     if params[:keyword].present?
       keyword = params[:keyword].strip
         #strip :文字列先頭と末尾の空白文字を全て取り除いた文字列を生成して返す(全角スペースは削除されない)
-      @total_count = Product.search_for_id_and_name(keyword).count
-        # Product.where('name LIKE ?', '%#{keyword}%').or(where('id LIKE ?', '%#{keyword}%')).count
-      @products = Product.search_for_id_and_name(keyword).display_list(params[:pages])
+      @products = Product.with_attached_image.includes(:category).search_for_id_and_name(keyword).display_list(params[:page])
+        # Product.where('name LIKE ?', '%#{keyword}%').or(where('id LIKE ?', '%#{keyword}%'))
     elsif params[:sort].present?
       @sorted = params[:sort]       #(例：'price desc')
-      @total_count = Product.count
-      @products = Product.sort_order(@sorted).display_list(params[:page])  # Product.order('price desc')
+      @products = Product.with_attached_image.includes(:category).sort_order(@sorted).display_list(params[:page])  # Product.order('price desc')
     else
-      @total_count = Product.count
-      @products = Product.order('id asc').display_list(params[:page])
+      @products = Product.with_attached_image.includes(:category).order('id asc').display_list(params[:page])
     end
   end
   

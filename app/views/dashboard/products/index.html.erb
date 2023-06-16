@@ -21,7 +21,7 @@
   </div>
   
   <div class="d-flex justify-content-between w-75 mt-4">
-    <h3>合計<%= @total_count %>件</h3>
+    <h3>合計<%= @products.total_count %>件</h3>
     <%= link_to "+ 新規作成", new_dashboard_product_path, class: "btn submit-button" %>
   </div>
   
@@ -51,7 +51,7 @@
           </td>
           <td><%= product.name %></td>
           <td><%= product.price.to_s(:delimited) %></td>
-          <td><%= product.category.name %></td><%# Productモデルと Categoryモデルで関連付けがされているから categoryテーブルにカラムの情報を取得できる %>
+          <td><%= product.category.name %></td>
           <td><%= product.category.major_category_name %></td>
           <td class="dashboard-edit-delete">
             <%= link_to '編集', edit_dashboard_product_path(product) %>
